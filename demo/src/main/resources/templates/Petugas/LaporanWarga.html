@@ -353,7 +353,7 @@
                 </div>
 
                 <div class="action-buttons">
-                    <a th:href="@{/laporan/detail/{id}(id=${laporan.id})}" class="btn-action">Lihat Detail</a>
+                    <a th:href="@{/laporan/detail/{id}(id=${laporan.id})}" href="DetailBencana.html" class="btn-action">Lihat Detail</a>
                     <a th:if="${laporan.status == 'Baru'}" th:href="@{/pengumuman/tambah/{id}(id=${laporan.id})}" href="TambahPengumuman.html" class="btn-action">Tambah Pengumuman</a>
                 </div>
             </div>
@@ -375,7 +375,7 @@
                     <span class="value" th:text="${laporan.catatan ?: '-'}">-</span>
                 </div>
                 <div class="action-buttons">
-                    <a th:href="@{/laporan/detail/{id}(id=${laporan.id})}" class="btn-action">Lihat Detail</a>
+                    <a th:href="@{/laporan/detail/{id}(id=${laporan.id})}" href="DetailBencana.html" class="btn-action">Lihat Detail</a>
                     <a th:if="${laporan.status == 'Resmi'}" th:href="@{/pengumuman/tambah/{id}(id=${laporan.id})}" href="TambahPengumuman.html" class="btn-action">Tambah Pengumuman</a>
                 </div>
             </div>
@@ -394,8 +394,46 @@
                     <span class="value" th:text="${laporan.catatan ?: '-'}">-</span>
                 </div>
                 <div class="action-buttons">
-                    <a th:href="@{/laporan/detail/{id}(id=${laporan.id})}" class="btn-action">Lihat Detail</a>
+                    <a th:href="@{/laporan/detail/{id}(id=${laporan.id})}" href="DetailBencana.html" class="btn-action">Lihat Detail</a>
                     <a th:if="${laporan.status == 'Menunggu Verifikasi'}" th:href="@{/pengumuman/tambah/{id}(id=${laporan.id})}" href="TambahPengumuman.html" class="btn-action">Tambah Pengumuman</a>
+                </div>
+            </div>
+
+            <div class="report-card" data-status="Tidak terverifikasi">
+                <div class="badge-status status-tidak-resmi">Tidak Terverifikasi</div>
+                <h3 class="report-title" th:text="${laporan.jenisBencana}">Jenis Bencana</h3>
+                <div class="report-details">
+                    <span class="label">Lokasi</span>
+                    <span class="value" th:text="${laporan.lokasi ?: '-'}">-</span>
+
+                    <span class="label">Tanggal</span>
+                    <span class="value" th:text="${laporan.tanggal != null ? #temporals.format(laporan.tanggal, 'dd MMMM yyyy') : '-'}">-</span>
+
+                    <span class="label">Catatan</span>
+                    <span class="value" th:text="${laporan.catatan ?: '-'}">-</span>
+                </div>
+                <div class="action-buttons">
+                    <a th:href="@{/laporan/detail/{id}(id=${laporan.id})}" href="DetailBencana.html" class="btn-action">Lihat Detail</a>
+                    <a th:if="${laporan.status == 'Tidak Resmi'}" th:href="@{/pengumuman/tambah/{id}(id=${laporan.id})}" href="TambahPengumuman.html" class="btn-action">Tambah Pengumuman</a>
+                </div>
+            </div>
+
+            <div class="report-card" data-status="Selesai">
+                <div class="badge-status status-selesai">Selesai</div>
+                <h3 class="report-title" th:text="${laporan.jenisBencana}">Jenis Bencana</h3>
+                <div class="report-details">
+                    <span class="label">Lokasi</span>
+                    <span class="value" th:text="${laporan.lokasi ?: '-'}">-</span>
+
+                    <span class="label">Tanggal</span>
+                    <span class="value" th:text="${laporan.tanggal != null ? #temporals.format(laporan.tanggal, 'dd MMMM yyyy') : '-'}">-</span>
+
+                    <span class="label">Catatan</span>
+                    <span class="value" th:text="${laporan.catatan ?: '-'}">-</span>
+                </div>
+                <div class="action-buttons">
+                    <a th:href="@{/laporan/detail/{id}(id=${laporan.id})}" href="DetailBencana.html" class="btn-action">Lihat Detail</a>
+                    <a th:if="${laporan.status == 'Tidak Resmi'}" th:href="@{/pengumuman/tambah/{id}(id=${laporan.id})}" href="TambahPengumuman.html" class="btn-action">Tambah Pengumuman</a>
                 </div>
             </div>
         </div>
