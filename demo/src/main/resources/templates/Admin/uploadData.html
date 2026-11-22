@@ -1,0 +1,277 @@
+
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Data SiapSiaga</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #666;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background-color: #626F47;
+            padding: 25px 40px;
+            width: 100%;
+        }
+
+        header h1 {
+            color: #F5ECD5;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        /* Konten */
+        main {
+            flex: 1;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 15px;
+        }
+
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        .btn-back {
+            color: #000000;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .btn-back svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* Kotak Import */
+        .import-container {
+            background-color: #F5ECD5;
+            border-radius: 12px;
+            padding: 35px;
+            margin-top: 10px;
+            min-height: 255px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .import-form {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .form-group {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            width: 120px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .form-control {
+            width: 350px;
+            max-width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #cccccc;
+            border-radius: 6px;
+            background-color: #ffffff;
+            color: #333333;
+            font-size: 0.9rem;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #626F47;
+        }
+
+        input[type="file"] {
+            cursor: pointer;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: auto;
+            padding-top: 15px;
+        }
+
+        .btn-import {
+            background-color: #666;
+            color: #ffffff;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-import:hover {
+            background-color: #4F5A39;
+        }
+
+      
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            header {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            main {
+                padding: 25px 18px 100px;
+            }
+
+            .top-bar {
+                align-items: center;
+                gap: 10px;
+            }
+
+            .page-title {
+                font-size: 1.4rem;
+            }
+
+            .import-container {
+                padding: 22px 18px;
+            }
+
+            .form-group {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                margin-bottom: 20px;
+            }
+
+            .form-group label {
+                width: 100%;
+                
+            }
+
+            .form-control {
+                width: 100%;
+            }
+
+            .form-actions {
+                padding-top: 10px;
+            }
+
+            .btn-import {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>SiapSiaga</h1>
+    </header>
+
+    <main>
+
+        <div class="top-bar">
+
+            <div class="page-title">
+                <a th:href="@{/admin/manajemen-data}" href="importData.html" class="btn-back">
+                    <img src="../assets/back-black.png" alt="">
+                </a>
+
+                <h3>Import Data</h3>
+            </div>
+
+        </div>
+
+        <div class="import-container">
+
+            <form class="import-form"
+                  th:action="@{/admin/import-data}"
+                  method="post"
+                  enctype="multipart/form-data">
+
+                <div class="form-group">
+                    <label for="jenisData">Jenis Data</label>
+
+                    <select id="jenisData" name="jenisData" class="form-control" required>
+                        <option value="" disabled selected>Pilih Jenis Data</option>
+                        <option value="Warga">Warga</option>
+                        <option value="Petugas">Petugas</option>
+                        <option value="Wilayah">Wilayah</option>
+                        <option value="Sekolah">Sekolah</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="file">Upload File</label>
+
+                    <input type="file"
+                           id="file"
+                           name="file"
+                           class="form-control"
+                           accept=".csv, .xlsx, .xls"
+                           required>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-import">
+                        Import Data
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+
+    </main>
+
+ 
+</body>
+</html>

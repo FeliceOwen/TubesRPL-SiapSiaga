@@ -1,0 +1,268 @@
+
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Data SiapSiaga</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #333333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background-color: #626F47;
+            padding: 25px 40px;
+            width: 100%;
+        }
+
+        header h1 {
+            color: #F5ECD5;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        /* Konten */
+        main {
+            flex: 1;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 0;
+        }
+
+        /* Daftar Data */
+        .data-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .data-card {
+            background-color: #F5ECD5;
+            border-radius: 12px;
+            padding: 24px;
+        }
+
+        .data-card h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #000000;
+            margin-bottom: 8px;
+        }
+
+        .data-card p {
+            color: #666666;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        /* Tombol */
+        .btn-action {
+            background-color: #626F47;
+            color: #ffffff;
+            border: none;
+            padding: 8px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition: background-color 0.2s;
+        }
+
+        .btn-action:hover {
+            background-color: #4F5A39;
+        }
+
+        /* Navbar bawah */
+        nav.bottom-nav {
+            background-color: #F5ECD5;
+            border-top: 1px solid #e0d7c3;
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-item {
+            color: #626F47;
+            font-size: 2rem;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-item:hover {
+            color: #3f4a30;
+        }
+
+        .nav-icon {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            header {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            main {
+                padding: 25px 18px 100px;
+            }
+
+            .top-bar {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .page-title {
+                font-size: 1.4rem;
+            }
+
+            .data-card {
+                padding: 20px;
+            }
+
+            .data-card h3 {
+                font-size: 1.1rem;
+            }
+
+            .data-card p {
+                font-size: 0.85rem;
+            }
+
+            .btn-action {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>SiapSiaga</h1>
+    </header>
+
+    <main>
+
+        <div class="top-bar">
+            <h2 class="page-title">Manajemen Data</h2>
+        </div>
+
+        <div class="data-list">
+
+            <div class="data-card">
+                <h3>Import Data</h3>
+                <p>Unggah file untuk menambahkan data Warga, Petugas, Wilayah, Sekolah.</p>
+                <a th:href="@{/admin/import-data}" href="uploadData.html" class="btn-action">
+                    Upload Data
+                </a>
+            </div>
+
+            <div class="data-card">
+                <h3>Data Petugas</h3>
+                <p>Lihat dan kelola data Petugas beserta lokasi kerja yang terdaftar dalam sistem.</p>
+                <a th:href="@{/admin/data-petugas}" href="dataPetugas.html" class="btn-action">
+                    Lihat Data
+                </a>
+            </div>
+
+            <div class="data-card">
+                <h3>Data Wilayah</h3>
+                <p>Lihat dan kelola data Wilayah yang terdaftar dalam sistem.</p>
+                <a th:href="@{/admin/data-wilayah}" href="dataWilayah.html" class="btn-action">
+                    Lihat Data
+                </a>
+            </div>
+
+            <div class="data-card">
+                <h3>Data Sekolah</h3>
+                <p>Lihat dan kelola data Sekolah yang terdaftar dalam sistem.</p>
+                <a th:href="@{/admin/data-sekolah}" href="dataSekolah.html" class="btn-action">
+                    Lihat Data
+                </a>
+            </div>
+            
+            <div class="data-card">
+                <h3>Data Warga</h3>
+                <p>Lihat dan kelola data Warga yang terdaftar dalam sistem.</p>
+                <a th:href="@{/admin/data-sekolah}" href="dataWarga.html" class="btn-action">
+                    Lihat Data
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+
+        <a th:href="@{/dashboard-admin}" href="dashboardAdmin.html" class="nav-item">
+            <img th:src="@{/assets/home-black.png}" src="../assets/home-black.png"
+                 alt="Beranda" class="nav-icon">
+        </a>
+
+        <a th:href="@{/laporan-warga}" href="laporanWargaVerif.html" class="nav-item">
+            <img th:src="@{/assets/report-black.png}" src="../assets/report-black.png"
+                 alt="Laporan" class="nav-icon">
+        </a>
+
+        <a th:href="#" href="#" class="nav-item">
+            <img th:src="@{/assets/importData-green.png}" src="../assets/importData-black.png"
+                 alt="Manajemen Data" class="nav-icon">
+        </a>
+
+        <a th:href="#" href="#" class="nav-item">
+            <img th:src="@{/assets/profile-black.png}" src="../assets/profile-black.png"
+                 alt="Profil" class="nav-icon">
+        </a>
+
+    </nav>
+
+</body>
+</html>
