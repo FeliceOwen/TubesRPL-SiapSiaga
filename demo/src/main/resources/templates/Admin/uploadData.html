@@ -74,13 +74,6 @@
             align-items: center;
         }
 
-        .btn-back svg {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
-        }
-
-        /* Kotak Import */
         .import-container {
             background-color: #F5ECD5;
             border-radius: 12px;
@@ -148,13 +141,17 @@
             font-size: 0.95rem;
             cursor: pointer;
             transition: background-color 0.2s;
+            width: 250px;
+
         }
 
         .btn-import:hover {
             background-color: #4F5A39;
         }
 
-      
+        #note {
+            font-size: 0.8rem;
+        }
 
         /* Responsive */
         @media (max-width: 600px) {
@@ -252,18 +249,12 @@
                 <div class="form-group">
                     <label for="file">Upload File</label>
 
-                    <input type="file"
-                           id="file"
-                           name="file"
-                           class="form-control"
-                           accept=".csv, .xlsx, .xls"
-                           required>
+                    <input type="file" id="file" name="file"
+                           class="form-control" accept=".csv, .xlsx" required>
                 </div>
-
+                <p id="note">*Format file yang didukung: .xlsx atau .csv</p>
                 <div class="form-actions">
-                    <button type="submit" class="btn-import">
-                        Import Data
-                    </button>
+                    <button type="submit" class="btn-import"> Import Data </button>
                 </div>
 
             </form>
