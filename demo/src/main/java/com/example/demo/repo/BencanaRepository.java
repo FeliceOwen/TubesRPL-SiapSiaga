@@ -12,17 +12,16 @@ import com.example.demo.model.Bencana;
 public interface BencanaRepository extends JpaRepository<Warga, String> {
     @Query (value = """
         SELECT
-            bencana.nama_bencana,
-            COUNT(laporan.id) AS jumlah_kejadian
-        FROM 
+            bencana.nama_bencana AS namaBencana,
+            COUNT(laporan.id_laporan) AS jumlahKejadian
+        FROM
             bencana
         LEFT JOIN
-            laporanbencana as laporan
+            laporan_bencana AS laporan
             ON bencana.id_bencana = laporan.id_bencana
-        WHERE 
-            YEAR(laporan.tanggalKejadian) = :tahun
+            AND YEAR(laporan.tanggal_kejadian) = :tahun
         GROUP BY
-            bencana.id
+            bencana.id_bencana, bencana.nama_bencana
         """, nativeQuery=true)
-        List<RekapBencana> rekapBencana(@Param("tahun_sekarang") int tahun);
+        List<RekapBencana> rekapBencana(@Param("tahun") int tahun);
 }
