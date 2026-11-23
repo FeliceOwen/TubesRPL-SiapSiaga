@@ -45,8 +45,8 @@ public class LaporanBencana {
     private Bencana id_bencana;
 
     @ManyToOne
-    @JoinColumn(name="id_warga", referencedColumnName="id_warga", nullable = false)
-    private Kelurahan id_warga;
+    @JoinColumn(name="id_warga", referencedColumnName="nik", nullable = false)
+    private Warga id_warga;
 
     @Column(length=300)
     private String catatan;
