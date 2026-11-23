@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://thymeleaf.org"></htmlxmlns:th>
     <head>
         <title>Dashboard SiapSiaga</title>
         <meta charset="UTF-8">
@@ -156,8 +156,14 @@
                     <span>Jumlah kejadian di tahun ini</span>
                 </div>
                 <div id="jumlah-kejadian">
-                    <span th:text="${jenis-bencana}"></span>
-                    <span th:text="${jenis-bencana}"></span>
+                    <table>
+                        <tbody>
+                            <tr th:each="data : ${daftarBencana}">
+                                <td th:text="${data.nama_bencana}"></td>
+                                <td th:text="${data.jumlah_kejadian}"></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
             <div class="pengumuman">
