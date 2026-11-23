@@ -73,14 +73,15 @@ INSERT INTO Laporan_Bencana VALUES
 ("L05", "FK KELURAHAN", NULL, "ST2", "B05", 3273020505900005, "Abu vulkanik mulai turun di sekitar permukiman warga.", "gunung1.jpg", "2026-11-05", "06:30:00", FALSE),
 ("L06", "FK KELURAHAN", "S1", "ST2", "B06", 3273020606900006, "Sejumlah siswa mengalami gejala keracunan setelah mengonsumsi makanan dari program MBG.", "mbg1.jpg", "2026-11-06", "12:30:00", FALSE);
 
-Update_Laporan
-id_update, id_laporan, nik_warga, tanggal_update, jam_update, foto_terbaru, detail_update
-INSERT INTO("U01","L01",3273020101900001,"2026-11-01","15:00:00","update1.jpg","Air mulai memasuki rumah warga dengan ketinggian sekitar 30 cm.")
-INSERT INTO("U02","L01",3273020101900001,"2026-11-01","16:30:00","update2.jpg","Ketinggian air semakin meningkat dan beberapa warga mulai mengungsi.")
-INSERT INTO("U03","L02",3273020202900002,"2026-11-02","11:00:00","update3.jpg","Material longsor masih menutupi sebagian akses jalan.")
-INSERT INTO("U04","L04",3273020404900004,"2026-11-04","08:30:00","update4.jpg","Kondisi warga mulai membaik setelah gempa berhenti.")
-INSERT INTO("U05","L05",3273020505900005,"2026-11-05","08:00:00","update5.jpg","Abu vulkanik mulai menutupi beberapa rumah warga.")
-INSERT INTO("U06","L06",3273020606900006,"2026-11-06","13:30:00","update6.jpg","Beberapa siswa telah dibawa ke fasilitas kesehatan terdekat.")
+Update_Laporan 
+INSERT INTO Update_Laporan VALUES
+("U001", "L01", 3273020101900001, "Menunggu Verifikasi", "Air mulai memasuki rumah warga dengan ketinggian sekitar 30 cm.", "update1.jpg", "2026-11-01", "15:00:00"),
+("U002", "L01", 3273020101900001, "Menunggu Verifikasi", "Ketinggian air semakin meningkat dan beberapa warga mulai mengungsi.", "update2.jpg", "2026-11-01", "16:30:00"),
+("U003", "L02", 3273020202900002, "Menunggu Verifikasi", "Material longsor masih menutupi sebagian akses jalan.", "update3.jpg", "2026-11-02", "11:00:00"),
+("U004", "L04", 3273020404900004, "Menunggu Verifikasi", "Kondisi warga mulai membaik setelah gempa berhenti.", "update4.jpg", "2026-11-04", "08:30:00"),
+("U005", "L05", 3273020505900005, "Menunggu Verifikasi", "Abu vulkanik mulai menutupi beberapa rumah warga.", "update5.jpg", "2026-11-05", "08:00:00"),
+("U006", "L06", 3273020606900006, "Menunggu Verifikasi", "Beberapa siswa telah dibawa ke fasilitas kesehatan terdekat.", "update6.jpg", "2026-11-06", "13:30:00");
+
 
 Log_Penanganan
 id_log, id_laporan, nik_petugas, jumlah_personel, aktivitas, tanggal_penanganan, foto_penanganan
