@@ -1,0 +1,384 @@
+
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Sekolah SiapSiaga</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #333333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        header {
+            background-color: #626F47;
+            padding: 25px 40px;
+            width: 100%;
+        }
+
+        header h1 {
+            color: #F5ECD5;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        /* Konten */
+        main {
+            flex: 1;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 15px;
+        }
+
+        .page-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #000000;
+        }
+
+        .btn-back {
+            color: #000000;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .table-container {
+            background-color: #F5ECD5;
+            border-radius: 12px;
+            padding: 48px 40px;
+            margin-top: 10px;
+            overflow-x: auto;
+            min-height: 255px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sekolah-table {
+            width: 85%;
+            border-collapse: collapse;
+            text-align: center;
+            font-size: 0.85rem;
+        }
+
+        .sekolah-table th {
+            background-color: #626F47;
+            color: #ffffff;
+            font-weight: 600;
+            padding: 10px 12px;
+            border: 1px solid #ffffff;
+        }
+
+        .sekolah-table td {
+            background-color: #C9D09A;
+            color: #000000;
+            padding: 10px 12px;
+            border: 1px solid #ffffff;
+            font-weight: 500;
+        }
+
+        .sekolah-table th:first-child,
+        .sekolah-table td:first-child {
+            width: 10%;
+        }
+
+        .sekolah-table th:last-child,
+        .sekolah-table td:last-child {
+            width: 10%;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+        }
+
+        .modal-content {
+            background-color: #ffffff;
+            width: 90%;
+            max-width: 450px;
+            padding: 35px 30px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-content h2 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #333333;
+            margin-bottom: 18px;
+        }
+
+        .modal-content p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #555555;
+            margin-bottom: 28px;
+        }
+
+        /* Tombol Pop-up */
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .modal-buttons button {
+            padding: 11px 25px;
+            border: none;
+            border-radius: 7px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-cancel {
+            background-color: #D9D9D9;
+            color: #333333;
+        }
+
+        .btn-cancel:hover {
+            background-color: #C5C5C5;
+        }
+
+        .btn-confirm-delete {
+            background-color: #D9534F;
+            color: #ffffff;
+        }
+
+        .btn-confirm-delete:hover {
+            background-color: #C9302C;
+        }
+
+        .btn-edit {
+            background: transparent;
+            border: none;
+            outline: none;
+            padding: 0;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-edit img {
+            width: 20px;
+            height: 20px;
+            object-fit: contain;
+        }
+
+        .btn-edit:hover {
+            opacity: 0.7;
+        }
+
+        @media (max-width: 600px) {
+            header {
+                padding: 20px;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            main {
+                padding: 25px 18px 100px;
+            }
+
+            .top-bar {
+                align-items: center;
+                gap: 10px;
+            }
+
+            .page-title {
+                font-size: 1.4rem;
+            }
+
+            .btn-add {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+
+            .table-container {
+                padding: 30px 15px;
+                min-height: 220px;
+                justify-content: flex-start;
+            }
+
+            .sekolah-table {
+                width: 100%;
+                min-width: 450px;
+                font-size: 0.75rem;
+            }
+
+            .sekolah-table th,
+            .sekolah-table td {
+                padding: 9px 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>SiapSiaga</h1>
+    </header>
+
+    <main>
+
+        <div class="top-bar">
+
+            <div class="page-title">
+                <a th:href="@{/admin/manajemen-data}" href="importData.html" class="btn-back">
+                    <img src="../assets/back-black.png" alt="">
+                </a>
+
+                <h3>Data Sekolah</h3>
+            </div>
+
+        </div>
+
+        <div class="table-container">
+
+            <table class="sekolah-table">
+
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Sekolah</th>
+                        <th>Provinsi</th>
+                        <th>Kota</th>
+                        <th>Kecamatan</th>
+                        <th>Alamat</th>
+                        <th></th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr th:each="sekolah, iterStat : ${daftarSekolah}">
+                        <td th:text="${iterStat.count}">1</td>
+
+                        <td th:text="${sekolah.namaSekolah}">SD Melati 1</td>
+
+                        <td th:text="${sekolah.provinsi}">Jabar</td>
+                        <td th:text="${sekolah.kota}">Bandung</td>
+                        <td th:text="${sekolah.kecamatan}">Sukajadi</td>
+                        <td th:text="${sekolah.alamat}">Jln.Merdeka</td>
+
+                        <td>
+                            <form th:id="'deleteForm-' + ${sekolah.id}"
+                                th:action="@{/admin/data-sekolah/hapus/{id}(id=${sekolah.id})}"
+                                method="post">
+
+                                <button type="button"
+                                        class="btn-edit"
+                                        title="Hapus Sekolah"
+                                        onclick="openDeleteModal(this.form)">
+                                    <img src="../assets/delete-red.png" alt="Hapus">
+                                </button>
+
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </main>
+
+    
+    <div class="modal-overlay" id="deleteModal">
+
+        <div class="modal-content">
+
+            <h2>Konfirmasi Hapus</h2>
+
+            <p>
+                Yakin ingin menghapus data sekolah berikut?
+                Data yang dihapus tidak dapat dikembalikan.
+            </p>
+
+            <div class="modal-buttons">
+
+                <button type="button"
+                        class="btn-cancel"
+                        onclick="closeDeleteModal()">
+                    Batalkan
+                </button>
+
+                <button type="button"
+                        class="btn-confirm-delete"
+                        onclick="confirmDelete()">
+                    Hapus
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        let selectedDeleteForm = null;
+
+        // Pop-up Hapus
+        function openDeleteModal(form) {
+            selectedDeleteForm = form;
+            document.getElementById("deleteModal").style.display = "flex";
+        }
+
+        function closeDeleteModal() {
+            selectedDeleteForm = null;
+            document.getElementById("deleteModal").style.display = "none";
+        }
+
+        function confirmDelete() {
+            if (selectedDeleteForm !== null) {
+                selectedDeleteForm.submit();
+            }
+        }
+    </script>
+</body>
+</html>

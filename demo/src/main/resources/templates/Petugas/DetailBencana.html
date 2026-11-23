@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Bencana</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: white;
+        }
+
+        header {
+            background-color: #626F47;
+            color: #F5ECD5;
+            padding: 16px 28px;
+            font-weight: bold;
+            font-size: 26px;
+        }
+
+        main {
+            padding: 20px 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .back {
+            margin-bottom: 18px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .back a {
+            text-decoration: none;
+            color: black;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .back img {
+            width: 18px;
+            height: 18px;
+            object-fit: contain;
+        }
+
+        .container {
+            background-color: #F5ECD5;
+            border-radius: 10px;
+            padding: 28px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 32px;
+        }
+
+        /* Bagian kiri */
+        .detail {
+            flex: 1;
+        }
+
+        .judul {
+            color: #626F47;
+            font-size: 22px;
+            font-weight: 800;
+            margin: 0 0 18px;
+        }
+
+        .informasi {
+            display: grid;
+            grid-template-columns: 140px 1fr;
+            row-gap: 6px;
+            font-size: 13px;
+            color: #626262;
+        }
+
+        .informasi .label {
+            font-weight: bold;
+        }
+
+        .foto {
+            margin-top: 18px;
+        }
+
+        .foto p {
+            font-weight: bold;
+            font-size: 13px;
+            margin-bottom: 6px;
+            color: #626262;
+        }
+
+        .foto img {
+            width: 210px;
+            height: 125px;
+            object-fit: cover;
+            border-radius: 4px;
+            display: block;
+        }
+
+        .empty-img-box {
+            width: 210px;
+            height: 125px;
+            background-color: #e5dcc5;
+            border: 1px dashed #b5ad96;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #626262;
+            font-size: 13px;
+        }
+
+        /* Bagian kanan */
+        .penanganan {
+            width: 440px;
+            max-width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Form Update Status di Pojok Kanan Atas */
+        .status-form {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 8px;
+            margin-bottom: 28px;
+        }
+
+        .status-select {
+            width: 200px;
+            padding: 7px 12px;
+            border: 1px solid #333333;
+            border-radius: 6px;
+            background-color: #ffffff;
+            font-size: 12px;
+            font-weight: 500;
+            color: #000000;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .btn-simpan {
+            background-color: #626F47;
+            color: #ffffff;
+            border: none;
+            padding: 6px 32px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn-simpan:hover {
+            background-color: #4f5a39;
+        }
+
+        /* Header Log Penanganan + Tombol Tambah */
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            gap: 12px;
+        }
+
+        .log-header h2 {
+            font-size: 19px;
+            font-weight: 800;
+            margin: 0;
+            color: #000000;
+        }
+
+        .btn-tambah {
+            background-color: #626F47;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 6px 20px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-tambah:hover {
+            background-color: #4f5a39;
+        }
+
+        .log {
+            background-color: #626F47;
+            color: white;
+            padding: 18px 20px;
+            border-radius: 8px;
+            font-size: 12px;
+            width: 100%;
+        }
+
+        .log-info {
+            display: grid;
+            grid-template-columns: 135px 1fr;
+            row-gap: 6px;
+        }
+
+        .log-info .label {
+            font-weight: bold;
+        }
+
+        .foto-penanganan {
+            margin-top: 14px;
+        }
+
+        .foto-penanganan p {
+            font-weight: bold;
+            margin-bottom: 6px;
+        }
+
+        .foto-penanganan img {
+            width: 210px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 4px;
+            display: block;
+        }
+
+        .empty-img-box-dark {
+            width: 210px;
+            height: 110px;
+            background-color: #54603c;
+            border: 1px dashed #8c9970;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e0e6d3;
+            font-size: 13px;
+        }
+
+        /* Responsive */
+        @media (max-width: 820px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .penanganan {
+                width: 100%;
+            }
+
+            .status-form {
+                align-items: flex-start;
+                margin-bottom: 20px;
+            }
+
+            .status-select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>SiapSiaga</header>
+
+    <main>
+
+        <div class="back">
+            <a th:href="@{/laporan-petugas}" href="LaporanWarga.html">
+                <img th:src="@{/assets/back-black.png}" src="../assets/back-black.png" alt="Kembali">
+                Detail
+            </a>
+        </div>
+
+        <div class="container">
+
+            <!-- Bagian Kiri -->
+            <section class="detail">
+
+                <h2 class="judul" th:text="${laporan?.jenisBencana ?: '-'}">-</h2>
+
+                <div class="informasi">
+                    <div class="label">Jenis Bencana</div>
+                    <div th:text="${laporan?.jenisBencana ?: '-'}">-</div>
+
+                    <div class="label">Tanggal Kejadian</div>
+                    <div th:text="${laporan?.tanggalKejadian ?: '-'}">-</div>
+
+                    <div class="label">Waktu Kejadian</div>
+                    <div th:text="${laporan?.waktuKejadian ?: '-'}">-</div>
+
+                    <div style="height: 8px;"></div>
+                    <div style="height: 8px;"></div>
+
+                    <div class="label">Provinsi</div>
+                    <div th:text="${laporan?.provinsi ?: '-'}">-</div>
+
+                    <div class="label">Kabupaten / Kota</div>
+                    <div th:text="${laporan?.kota ?: '-'}">-</div>
+
+                    <div class="label">Kecamatan</div>
+                    <div th:text="${laporan?.kecamatan ?: '-'}">-</div>
+
+                    <div class="label">Kelurahan</div>
+                    <div th:text="${laporan?.kelurahan ?: '-'}">-</div>
+
+                    <div class="label">Sekolah</div>
+                    <div th:text="${laporan?.sekolah ?: '-'}">-</div>
+
+                    <div class="label">Alamat</div>
+                    <div th:text="${laporan?.alamat ?: '-'}">-</div>
+                </div>
+
+                <div class="foto">
+                    <p>Foto Kejadian</p>
+                    <!-- Muncul jika foto dari DB ada -->
+                    <img th:if="${laporan?.fotoKejadian != null}" 
+                         th:src="@{${laporan.fotoKejadian}}"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                         alt="Foto Kejadian">
+                </div>
+
+            </section>
+
+            <!-- Bagian Kanan -->
+            <section class="penanganan">
+
+                <!-- Dropdown Status & Tombol Simpan -->
+                <form class="status-form" 
+                      th:action="${laporan != null ? '/laporan/update-status/' + laporan.id : '#'}" 
+                      method="POST">
+
+                    <select name="status" class="status-select">
+                        <option value="Menunggu Verifikasi" th:selected="${laporan?.status == 'Menunggu Verifikasi'}">Menunggu Verifikasi</option>
+                        <option value="Terverifikasi" th:selected="${laporan?.status == 'Terverifikasi' or laporan?.status == 'Resmi'}">Terverifikasi</option>
+                        <option value="Tidak Terverifikasi" th:selected="${laporan?.status == 'Tidak Terverifikasi' or laporan?.status == 'Tidak Resmi'}">Tidak Terverifikasi</option>
+                        <option value="Selesai" th:selected="${laporan?.status == 'Selesai'}">Selesai</option>
+                    </select>
+
+                    <button type="submit" class="btn-simpan">Simpan</button>
+                </form>
+
+                <!-- Judul Log Penanganan & Tombol Tambah -->
+                <div class="log-header">
+                    <h2>Log Penanganan</h2>
+                    <a th:href="${laporan != null ? '/penanganan/tambah/' + laporan.id : '#'}" 
+                       href="LogPenanganan.html" 
+                       class="btn-tambah">Tambah</a>
+                </div>
+
+                <!-- Kotak Log Penanganan -->
+                <div class="log">
+
+                    <div class="log-info">
+                        <div class="label">Badan Penanganan</div>
+                        <div th:text="${penanganan?.badanPenanganan ?: '-'}">-</div>
+
+                        <div class="label">Jumlah Personel</div>
+                        <div>
+                            <span th:text="${penanganan?.jumlahPersonel ?: '-'}">-</span>
+                            <span th:if="${penanganan?.jumlahPersonel != null}"> orang</span>
+                        </div>
+
+                        <div class="label">Tanggal</div>
+                        <div th:text="${penanganan?.tanggal ?: '-'}">-</div>
+
+                        <div class="label">Aktivitas</div>
+                        <div th:text="${penanganan?.aktivitas ?: '-'}">-</div>
+                    </div>
+
+                    <div class="foto-penanganan">
+                        <p>Foto Penanganan</p>
+                        <img th:if="${penanganan?.fotoPenanganan != null}" 
+                             th:src="@{${penanganan.fotoPenanganan}}"
+                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                             alt="Foto Penanganan">
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+</body>
+</html>
