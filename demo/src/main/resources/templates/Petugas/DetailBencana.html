@@ -196,6 +196,13 @@
             background-color: #4f5a39;
         }
 
+        .btn-tambah.disabled {
+            background-color: #A0A0A0;
+            color: #EAEAEA;
+            pointer-events: none;
+            cursor: not-allowed;
+        }
+
         .log {
             background-color: #626F47;
             color: white;
@@ -351,9 +358,12 @@
                 <!-- Judul Log Penanganan & Tombol Tambah -->
                 <div class="log-header">
                     <h2>Log Penanganan</h2>
-                    <a th:href="${laporan != null ? '/penanganan/tambah/' + laporan.id : '#'}" 
-                       href="LogPenanganan.html" 
-                       class="btn-tambah">Tambah</a>
+                    <a th:href="${laporan != null and (laporan.status == 'Resmi' or laporan.status == 'Terverifikasi') ? '/penanganan/tambah/' + laporan.id : '#'}" 
+                    href="LogPenanganan.html" 
+                    class="btn-tambah"
+                    th:classappend="${laporan == null or (laporan.status != 'Resmi' and laporan.status != 'Terverifikasi') ? 'disabled' : ''}">
+                    Tambah
+                    </a>
                 </div>
 
                 <!-- Kotak Log Penanganan -->
