@@ -13,6 +13,8 @@ import com.example.demo.model.Warga;
 
 import org.springframework.ui.Model;
 
+import jakarta.servlet.http.HttpSession;
+
 @Controller
 @RequestMapping("/warga")
 
@@ -20,11 +22,14 @@ public class WargaController {
 
     @Autowired
     private WargaRepository wargaRepo;
+
+    @Autowired
     private BencanaRepository bencanaRepo;
 
     @GetMapping("/")
-    public String home(Model model) {
+    public String home(HttpSession session, Model model) {
 		int tahun_sekarang = LocalDate.now().getYear();
+        model.addAttribute("name", session.getAttribute("nama"));
         model.addAttribute("daftarBencana", bencanaRepo.rekapBencana(tahun_sekarang));
         return "Warga/index";
     }
