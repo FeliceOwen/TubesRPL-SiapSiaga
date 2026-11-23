@@ -8,28 +8,82 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
         <script>
+            document.addEventListener("DOMContentLoaded", function() {
+            const WILAYAH_API = "https://www.emsifa.com/api-wilayah-indonesia/v2";
+
             const provinsi = document.getElementById("provinsi-kejadian");
             const kabkot = document.getElementById("kabkot-kejadian");
             const kecamatan = document.getElementById("kecamatan-kejadian");
             const kelurahan = document.getElementById("kelurahan-kejadian");
             const sekolah = document.getElementById("sekolah-kejadian");
-            const bencana = document.getElementById("pilih-bencana");
+            const pilihBencana = document.getElementById("pilih-bencana");
+
+            function setOptions(select, items, placeholder) {
+                select.innerHTML = "";
+                const first = document.createElement("option");
+                first.value = "";
+                first.textContent = placeholder;
+                select.appendChild(first);
+                items.forEach(function(item) {
+                    const opt = document.createElement("option");
+                    opt.value = item.id;
+                    opt.textContent = item.name;
+                    select.appendChild(opt);
+                });
+            }
+
+            function setDisabled(select, disabled) {
+                select.disabled = disabled;
+            }
+
+            function resetBelow(selects) {
+                selects.forEach(function(s) {
+                    setOptions(s, [], "Pilih " + s.dataset.label);
+                    setDisabled(s, true);
+                });
+            }
+
+            async function fetchWilayah(path, select, placeholder) {
+                setDisabled(select, true);
+                try {
+                    const res = await fetch(WILAYAH_API + path);
+                    if (!res.ok) throw new Error("HTTP " + res.status);
+                    const json = await res.json();
+                    setOptions(select, json.data || [], placeholder);
+                    setDisabled(select, false);
+                } catch (err) {
+                    setOptions(select, [], "Gagal memuat data");
+                    console.error("Gagal memuat wilayah:", path, err);
+                }
+            }
+
             provinsi.addEventListener("change", function() {
-                kabkot.disabled = this.value === "";
+                resetBelow([kabkot, kecamatan, kelurahan]);
+                if (this.value === "") return;
+                fetchWilayah("/regencies/" + this.value + ".json", kabkot, "Pilih Kabupaten / Kota");
             });
 
             kabkot.addEventListener("change", function() {
-                kecamatan.disabled = this.value === "";
+                resetBelow([kecamatan, kelurahan]);
+                if (this.value === "") return;
+                fetchWilayah("/districts/" + this.value + ".json", kecamatan, "Pilih Kecamatan");
             });
 
             kecamatan.addEventListener("change", function() {
-                kelurahan.disabled = this.value === "";
+                resetBelow([kelurahan]);
+                if (this.value === "") return;
+                fetchWilayah("/villages/" + this.value + ".json", kelurahan, "Pilih Kelurahan");
             });
 
             kelurahan.addEventListener("change", function() {
-                if(bencana==="Keracunan MBG") {
-                    sekolah.disabled = this.value === "";
-                }
+                sekolah.disabled = this.value === "" || pilihBencana.value !== "keracunan-mbg";
+            });
+
+            pilihBencana.addEventListener("change", function() {
+                sekolah.disabled = this.value !== "keracunan-mbg" || kelurahan.value === "";
+            });
+
+            fetchWilayah("/provinces.json", provinsi, "Pilih Provinsi");
             });
         </script>
         <style>
@@ -168,19 +222,19 @@
                         </span>
                         <span id="kabkot-bencana">
                             <label for="kabkot-kejadian">Kabupaten / Kota</label>
-                            <select id="kabkot-kejadian" name="kabkot-bencana" disabled>
+                            <select id="kabkot-kejadian" name="kabkot-bencana" data-label="Kabupaten / Kota" disabled>
                                 <!-- masukin data dari data base -->
                             </select>
                         </span>
                         <span id="kecamatan-bencana">
                             <label for="kecamatan-kejadian">Kecamatan</label>
-                            <select id="kecamatan-kejadian" name="kecamatan-bencana" disabled>
+                            <select id="kecamatan-kejadian" name="kecamatan-bencana" data-label="Kecamatan" disabled>
                                 <!-- masukin data dari data base -->
                             </select>
                         </span>
                         <span id="kelurahan-bencana">
                             <label for="kelurahan-bencana">Kelurahan</label>
-                            <select id="kelurahan-kejadian" name="kelurahan-bencana" disabled>
+                            <select id="kelurahan-kejadian" name="kelurahan-bencana" data-label="Kelurahan" disabled>
                                 <!-- masukin data dari data base -->
                             </select>
                         </span>
