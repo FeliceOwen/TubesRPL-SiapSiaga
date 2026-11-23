@@ -10,6 +10,8 @@
         <script>
             document.addEventListener("DOMContentLoaded", function() {
             const WILAYAH_API = "https://www.emsifa.com/api-wilayah-indonesia/v2";
+            const SEKOLAH_API = "https://api-sekolah-indonesia.vercel.app/sekolah";
+            const SEKOLAH_BRIDGE = "https://sekolah.devapi.id/sekolah";
 
             const provinsi = document.getElementById("provinsi-kejadian");
             const kabkot = document.getElementById("kabkot-kejadian");
@@ -69,18 +71,97 @@
                 fetchWilayah("/districts/" + this.value + ".json", kecamatan, "Pilih Kecamatan");
             });
 
+            let sekolahCache = { kode: null, list: [] };
+            let kecCodeCache = {};
+
+            async function resolveKodeKec() {
+                const key = kecamatan.value;
+                if (key === "") return null;
+                if (key in kecCodeCache) return kecCodeCache[key];
+
+                const kodeKemendagri = key.replace(/\./g, "");
+                let hasil = null;
+                try {
+                    const jenjang = ["SD", "SMP", "SMA", "SMK"];
+                    cari:
+                    for (const b of jenjang) {
+                        const res = await fetch(SEKOLAH_BRIDGE + "?kode_wilayah=" + kodeKemendagri +
+                            "&bentuk_pendidikan=" + b + "&limit=5");
+                        const json = await res.json();
+                        for (const s of (json.data || [])) {
+                            const r2 = await fetch(SEKOLAH_API + "?npsn=" + s.npsn);
+                            const j2 = await r2.json();
+                            if (j2.total_data > 0 && j2.dataSekolah[0].kode_kec) {
+                                hasil = j2.dataSekolah[0].kode_kec.trim();
+                                break cari;
+                            }
+                        }
+                    }
+                } catch (err) {
+                    console.error("Gagal resolve kode kecamatan:", err);
+                }
+                kecCodeCache[key] = hasil;
+                return hasil;
+            }
+
+            async function updateSekolah() {
+                const aktif = pilihBencana.value === "keracunan-mbg" && kecamatan.value !== "";
+                if (!aktif) {
+                    sekolahCache = { kode: null, list: [] };
+                    setOptions(sekolah, [], "Pilih Sekolah");
+                    setDisabled(sekolah, true);
+                    return;
+                }
+
+                setDisabled(sekolah, true);
+                try {
+                    const kode = await resolveKodeKec();
+                    if (!kode) {
+                        setOptions(sekolah, [], "Data sekolah tidak tersedia");
+                        return;
+                    }
+
+                    if (sekolahCache.kode !== kode) {
+                        let semua = [];
+                        for (let page = 1; page <= 3; page++) {
+                            const res = await fetch(SEKOLAH_API + "?kec=" + kode + "&page=" + page + "&perPage=100");
+                            if (!res.ok) throw new Error("HTTP " + res.status);
+                            const json = await res.json();
+                            semua = semua.concat(json.dataSekolah || []);
+                            if (semua.length >= (json.total_data || 0)) break;
+                        }
+                        sekolahCache = { kode: kode, list: semua };
+                    }
+
+                    const list = sekolahCache.list;
+                    if (list.length === 0) {
+                        setOptions(sekolah, [], "Tidak ada sekolah di wilayah ini");
+                    } else {
+                        setOptions(sekolah, list.map(function(s) {
+                            return { id: s.npsn, name: s.sekolah + " (" + s.bentuk + ")" };
+                        }), "Pilih Sekolah");
+                    }
+                    setDisabled(sekolah, false);
+                } catch (err) {
+                    setOptions(sekolah, [], "Gagal memuat data sekolah");
+                    console.error("Gagal memuat sekolah:", err);
+                }
+            }
+
             kecamatan.addEventListener("change", function() {
                 resetBelow([kelurahan]);
+                sekolahCache = { kode: null, list: [] };
+                updateSekolah();
                 if (this.value === "") return;
                 fetchWilayah("/villages/" + this.value + ".json", kelurahan, "Pilih Kelurahan");
             });
 
             kelurahan.addEventListener("change", function() {
-                sekolah.disabled = this.value === "" || pilihBencana.value !== "keracunan-mbg";
+                updateSekolah();
             });
 
             pilihBencana.addEventListener("change", function() {
-                sekolah.disabled = this.value !== "keracunan-mbg" || kelurahan.value === "";
+                updateSekolah();
             });
 
             fetchWilayah("/provinces.json", provinsi, "Pilih Provinsi");

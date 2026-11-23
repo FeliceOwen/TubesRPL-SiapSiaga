@@ -33,3 +33,7 @@ dependencies {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+tasks.withType<JavaExec> {
+	systemProperty("java.library.path", layout.projectDirectory.dir("libs").asFile.absolutePath)
+}
