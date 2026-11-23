@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" th:href="@{/style.css}" />
+    <link rel="stylesheet" href="style.css" th:href="@{/General/style.css}" />
   </head>
   <body class="page">
     <main class="container">
@@ -85,10 +85,10 @@
 
         <p class="alt">
           Belum memiliki akun?
-          <a class="alt-link" href="register.html">Buat akun</a>
+          <a class="alt-link" href="register.html" th:href="@{/register}">Buat akun</a>
         </p>
       </section>
     </main>
-    <script src="script.js" th:src="@{/script.js}"></script>
+    <script src="script.js" th:src="@{/General/script.js}"></script>
   </body>
 </html>

@@ -15,7 +15,7 @@
     }
 
     function isValidPassword(value) {
-      return value.length >= 8;
+      return value.length > 0;
     }
 
     function showAlert(message, type) {
@@ -44,28 +44,6 @@
       });
     }
 
-    function collectCredentials() {
-      var data = new FormData(form);
-      return {
-        nik: String(data.get("nik") || "").trim(),
-        password: String(data.get("password") || ""),
-      };
-    }
-
-    function submitLogin(credentials) {
-      /* Ganti bagian ini dengan fetch() ke Spring Boot, contoh:
-               return fetch("/api/auth/login", {
-                   method: "POST",
-                   headers: { "Content-Type": "application/json" },
-                   body: JSON.stringify(credentials)
-               }).then(function (res) { return res.json(); }); */
-      return new Promise(function (resolve) {
-        setTimeout(function () {
-          resolve({ success: true, redirectUrl: "../Warga/index.html" });
-        }, 600);
-      });
-    }
-
     function setSubmitLoading(isLoading) {
       var submitButton = form.querySelector(".submit");
       submitButton.disabled = isLoading;
@@ -74,7 +52,6 @@
 
     function initFormSubmit() {
       form.addEventListener("submit", function (event) {
-        event.preventDefault();
         hideAlert();
 
         var nikInput = document.getElementById("nik");
@@ -82,36 +59,13 @@
         var passwordValid = isValidPassword(passwordInput.value);
 
         if (!nikValid || !passwordValid) {
+          event.preventDefault();
           showAlert(INVALID_CREDENTIALS_MESSAGE, "error");
           (nikValid ? passwordInput : nikInput).focus();
           return;
         }
 
         setSubmitLoading(true);
-
-        submitLogin(collectCredentials())
-          .then(function (response) {
-            if (response && response.success) {
-              showAlert("Berhasil masuk. Mengalihkan...", "success");
-              if (response.redirectUrl) {
-                window.location.href = response.redirectUrl;
-              }
-            } else {
-              showAlert(
-                (response && response.message) || INVALID_CREDENTIALS_MESSAGE,
-                "error",
-              );
-            }
-          })
-          .catch(function () {
-            showAlert(
-              "Tidak dapat terhubung ke server. Coba lagi nanti.",
-              "error",
-            );
-          })
-          .finally(function () {
-            setSubmitLoading(false);
-          });
       });
     }
 
@@ -143,8 +97,6 @@
     var passwordInput = null;
     var passwordToggle = null;
 
-    var INVALID_DATA_MESSAGE = "NIK, Nama, atau Password tidak valid";
-
     function isValidNik(value) {
       return /^\d{16}$/.test(value.trim());
     }
@@ -154,7 +106,7 @@
     }
 
     function isValidPassword(value) {
-      return value.length >= 8;
+      return value.length >= 8 && value.length <= 10;
     }
 
     function showAlert(message, type) {
@@ -183,29 +135,6 @@
       });
     }
 
-    function collectData() {
-      var data = new FormData(form);
-      return {
-        nik: String(data.get("nik") || "").trim(),
-        nama: String(data.get("nama") || "").trim(),
-        password: String(data.get("password") || ""),
-      };
-    }
-
-    function submitRegister(payload) {
-      /* Ganti bagian ini dengan fetch() ke Spring Boot, contoh:
-               return fetch("/api/auth/register", {
-                   method: "POST",
-                   headers: { "Content-Type": "application/json" },
-                   body: JSON.stringify(payload)
-               }).then(function (res) { return res.json(); }); */
-      return new Promise(function (resolve) {
-        setTimeout(function () {
-          resolve({ success: true, redirectUrl: "login.html" });
-        }, 600);
-      });
-    }
-
     function setSubmitLoading(isLoading) {
       var submitButton = form.querySelector(".submit");
       submitButton.disabled = isLoading;
@@ -214,7 +143,6 @@
 
     function initFormSubmit() {
       form.addEventListener("submit", function (event) {
-        event.preventDefault();
         hideAlert();
 
         var nikInput = document.getElementById("nik");
@@ -224,42 +152,21 @@
         var passwordValid = isValidPassword(passwordInput.value);
 
         if (!nikValid || !namaValid || !passwordValid) {
-          showAlert(INVALID_DATA_MESSAGE, "error");
+          event.preventDefault();
           if (!nikValid) {
+            showAlert("NIK harus 16 digit angka", "error");
             nikInput.focus();
           } else if (!namaValid) {
+            showAlert("Nama lengkap minimal 3 karakter", "error");
             namaInput.focus();
           } else {
+            showAlert("Password harus 8-10 karakter", "error");
             passwordInput.focus();
           }
           return;
         }
 
         setSubmitLoading(true);
-
-        submitRegister(collectData())
-          .then(function (response) {
-            if (response && response.success) {
-              showAlert("Berhasil mendaftar. Mengalihkan...", "success");
-              if (response.redirectUrl) {
-                window.location.href = response.redirectUrl;
-              }
-            } else {
-              showAlert(
-                (response && response.message) || INVALID_DATA_MESSAGE,
-                "error",
-              );
-            }
-          })
-          .catch(function () {
-            showAlert(
-              "Tidak dapat terhubung ke server. Coba lagi nanti.",
-              "error",
-            );
-          })
-          .finally(function () {
-            setSubmitLoading(false);
-          });
       });
     }
 

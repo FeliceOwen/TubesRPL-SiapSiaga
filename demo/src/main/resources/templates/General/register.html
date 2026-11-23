@@ -14,7 +14,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="style.css" th:href="@{/style.css}" />
+    <link rel="stylesheet" href="style.css" th:href="@{/General/style.css}" />
   </head>
   <body class="page">
     <main class="container">
@@ -65,7 +65,7 @@
               name="nama"
               th:field="*{nama}"
               autocomplete="name"
-              maxlength="100"
+              maxlength="50"
               placeholder="Masukkan nama lengkap Anda"
               required
             />
@@ -82,6 +82,7 @@
                 th:field="*{password}"
                 autocomplete="new-password"
                 minlength="8"
+                maxlength="10"
                 placeholder="Masukkan password Anda"
                 required
               />
@@ -101,10 +102,10 @@
 
         <p class="alt">
           Sudah memiliki akun?
-          <a class="alt-link" href="login.html">Masuk</a>
+          <a class="alt-link" href="login.html" th:href="@{/login}">Masuk</a>
         </p>
       </section>
     </main>
-    <script src="script.js" th:src="@{/script.js}"></script>
+    <script src="script.js" th:src="@{/General/script.js}"></script>
   </body>
 </html>
