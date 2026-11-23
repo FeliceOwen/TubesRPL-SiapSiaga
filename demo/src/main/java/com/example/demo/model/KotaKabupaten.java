@@ -20,7 +20,7 @@ public class KotaKabupaten {
 
     @ManyToOne
     @JoinColumn(name="id_provinsi", referencedColumnName="id_provinsi", nullable = false)
-    private String id_provinsi;
+    private Provinsi id_provinsi;
 
     @Column(length=30)
     private String nama_kota_kab;    
