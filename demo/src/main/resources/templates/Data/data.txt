@@ -16,42 +16,37 @@ Kelurahan
 
 Kecamatan
 
-=======================================
+
 
 Petugas 
-
-No | Nama Petugas | NIK (PK) | PW 
-INSERT INTO(1,"Andi Pratama",1234061006000002, "andi1")
-INSERT INTO(2,"Siti Rahmawati",4321061006000002,"siti1")
-INSERT INTO(3,"Bagas Ramadhan",3421061006000002,"bagas1")
-INSERT INTO(4,"Rizky Maulana",4213061006000002,"rizky1")
-INSERT INTO(5,"Dinda Permatasari",4312061006000002,"dinda1")
-INSERT INTO(6,"Fajar Nugroho",1432061006000002,"fajar1")
+INSERT INTO(1234061006000002,"Andi Pratama","andi1")
+INSERT INTO(4321061006000002,"Siti Rahmawati","siti1")
+INSERT INTO(3421061006000002,"Bagas Ramadhan","bagas1")
+INSERT INTO(4213061006000002,"Rizky Maulana","rizky1")
+INSERT INTO(4312061006000002,"Dinda Permatasari","dinda1")
+INSERT INTO(1432061006000002,"Fajar Nugroho","fajar1")
 
 
 Warga
 
-No | Nama | NIK (PK) | PW 
-INSERT INTO(1,"Keisya",1234061006000001,"keisya1")
-INSERT INTO(2,"Nona",2341061006000001,"nona1")
-INSERT INTO(3,"Felice",3412061006000001,"felice1")
-INSERT INTO(4,"Clarisa",4321061006000001,"clarisa1")
-INSERT INTO(5,"Natasya",2143061006000001,"natasya1")
-INSERT INTO(6,"Helena",3124061006000001,"helena1")
+INSERT INTO(1234061006000001,"Keisya","keisya1")
+INSERT INTO(2341061006000001,"Nona","nona1")
+INSERT INTO(3412061006000001,"Felice","felice1")
+INSERT INTO(4321061006000001,"Clarisa","clarisa1")
+INSERT INTO(2143061006000001,"Natasya","natasya1")
+INSERT INTO(3124061006000001,"Helena","helena1")
 
 Admin 
-
-No | Nama Admin | NIK (PK) | PW 
-INSERT INTO(1,"Admin",1234030101900001, "admin1")
+Nama Admin | NIK (PK) | PW 
+INSERT INTO(1234030101900001, "Admin", "admin1")
 
 Sekolah 
-Id_sekolah (PK) | nama_sekolah | alamat | id_kel (FK)
-INSERT INTO("S1","SD Melati 1","Jln.Merdeka","FK KELURAHAN")
-INSERT INTO("S2","SD Mawar","Jln.Aceh","FK KELURAHAN")
-INSERT INTO("S3","SMP Mentari","Jln.Anggrek","FK KELURAHAN")
-INSERT INTO("S4","SMP Harapan","Jln.Garuda","FK KELURAHAN")
-INSERT INTO("S5","SMA Cahaya","Jln.Elang","FK KELURAHAN")
-INSERT INTO("S6","SMA Ceria","Jln.Bima","FK KELURAHAN")
+INSERT INTO("S1","FK KELURAHAN","SD Melati 1","Jln.Merdeka")
+INSERT INTO("S2","FK KELURAHAN","SD Mawar","Jln.Aceh")
+INSERT INTO("S3","FK KELURAHAN","SMP Mentari","Jln.Anggrek")
+INSERT INTO("S4","FK KELURAHAN","SMP Harapan","Jln.Garuda")
+INSERT INTO("S5","FK KELURAHAN","SMA Cahaya","Jln.Elang")
+INSERT INTO("S6","FK KELURAHAN","SMA Ceria","Jln.Bima")
 
 
 Status_Laporan
@@ -70,12 +65,13 @@ INSERT INTO("B06","Keracunan MBG")
 
 Laporan_Bencana
 ID laporan, catatan, foto, tanggal, jam, status hapus, ID sekolah, ID kelurahan, ID status, ID bencana, NIK warga.
-INSERT INTO("L01","Banjir akibat hujan deras menyebabkan air masuk ke rumah warga.","banjir1.jpg","2026-11-01","14:00:00",FALSE,NULL,"FK KELURAHAN","ST2","B01",3273020101900001)
-INSERT INTO("L02","Longsor menutupi sebagian akses jalan menuju permukiman warga.","longsor1.jpg","2026-11-02","09:30:00",FALSE,NULL,"FK KELURAHAN","ST2","B02",3273020202900002)
-INSERT INTO("L03","Terjadi kebakaran hutan di sekitar area perbukitan.","kebakaran1.jpg","2026-11-03","11:15:00",FALSE,NULL,"FK KELURAHAN","ST4","B03",3273020303900003)
-INSERT INTO("L04","Gempa bumi dirasakan oleh warga di sekitar permukiman.","gempa1.jpg","2026-11-04","07:45:00",FALSE,NULL,"FK KELURAHAN","ST2","B04",3273020404900004)
-INSERT INTO("L05","Abu vulkanik mulai turun di sekitar permukiman warga.","gunung1.jpg","2026-11-05","06:30:00",FALSE,NULL,"FK KELURAHAN","ST2","B05",3273020505900005)
-INSERT INTO("L06","Sejumlah siswa mengalami gejala keracunan setelah mengonsumsi makanan dari program MBG.","mbg1.jpg","2026-11-06","12:30:00",FALSE,"S1","FK KELURAHAN","ST2","B06",3273020606900006)
+INSERT INTO Laporan_Bencana VALUES
+("L01", "FK KELURAHAN", NULL, "ST2", "B01", 3273020101900001, "Banjir akibat hujan deras menyebabkan air masuk ke rumah warga.", "banjir1.jpg", "2026-11-01", "14:00:00", FALSE),
+("L02", "FK KELURAHAN", NULL, "ST2", "B02", 3273020202900002, "Longsor menutupi sebagian akses jalan menuju permukiman warga.", "longsor1.jpg", "2026-11-02", "09:30:00", FALSE),
+("L03", "FK KELURAHAN", NULL, "ST4", "B03", 3273020303900003, "Terjadi kebakaran hutan di sekitar area perbukitan.", "kebakaran1.jpg", "2026-11-03", "11:15:00", FALSE),
+("L04", "FK KELURAHAN", NULL, "ST2", "B04", 3273020404900004, "Gempa bumi dirasakan oleh warga di sekitar permukiman.", "gempa1.jpg", "2026-11-04", "07:45:00", FALSE),
+("L05", "FK KELURAHAN", NULL, "ST2", "B05", 3273020505900005, "Abu vulkanik mulai turun di sekitar permukiman warga.", "gunung1.jpg", "2026-11-05", "06:30:00", FALSE),
+("L06", "FK KELURAHAN", "S1", "ST2", "B06", 3273020606900006, "Sejumlah siswa mengalami gejala keracunan setelah mengonsumsi makanan dari program MBG.", "mbg1.jpg", "2026-11-06", "12:30:00", FALSE);
 
 Update_Laporan
 id_update, id_laporan, nik_warga, tanggal_update, jam_update, foto_terbaru, detail_update
