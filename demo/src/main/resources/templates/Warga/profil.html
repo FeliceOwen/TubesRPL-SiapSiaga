@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Dashboard SiapSiaga</title>
+        <title>Profil | SiapSiaga</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -11,97 +11,126 @@
             body {
                 font-family: 'Inter', sans-serif;
                 margin: 0;
-               header {
-                    background-color: #626F47;
-                    color: #F5ECD5;
-                    margin : 0;
-                    padding : 10px;            
-                    font-weight: bold;
-                    font-size: 40px;
-                    position: sticky;
-                } 
-                main {
-                    display: flex;
-                    align-items: center;
-                    flex-direction: column;
-                    margin-top: 50%;
-                    img {
-                        width: 75px;
-                        margin-bottom: 10px;
-                    }
-                    h1 {
-                        margin: 0;
-                        margin-bottom: 10px;
-                    }
-                    #biodata {
-                        display: flex;
-                        align-items: center;
-                        flex-direction: column;
-                        background-color:#626F47;
-                        border-radius: 10px;
-                        padding: 10px;
-                        color: white;
-                        label {
-                            font-weight: bold;
-                        }
-                        span {
-                            width: 300px;
-                            margin: 5px;
-                            p {
-                                display: inline;
-                            }
-                        }
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+            }
 
-                    }
+            header {
+                background-color: #626F47;
+                color: #F5ECD5;
+                margin: 0;
+                padding: 10px;
+                font-weight: bold;
+                font-size: 40px;
+                position: sticky;
+                top: 0;
+            }
 
-                }
-                nav {
-                    background-color: #F5ECD5;
-                    display: flex;
-                    justify-content: space-evenly;
-                    position: fixed;
-                    align-items: center;
-                    bottom: 0;
-                    left: 0;
-                    right: 0;
-                    padding: 10px;
-                    box-sizing: border-box;
-                    height: 60px;
-                }
+            main {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 20px 20px 90px;
+            }
+
+            main > img {
+                width: 110px;
+                margin-bottom: 25px;
+            }
+
+            #role {
+                margin: 0 0 25px;
+                font-size: 24px;
+                font-weight: 800;
+                color: #626F47;
+            }
+
+            #biodata {
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+                width: 100%;
+                max-width: 340px;
+                box-sizing: border-box;
+                background-color: #626F47;
+                border-radius: 10px;
+                padding: 20px;
+                color: white;
+            }
+
+            #biodata label {
+                display: block;
+                font-size: 13px;
+                font-weight: bold;
+                color: #F5ECD5;
+                margin-bottom: 2px;
+            }
+
+            #biodata p {
+                margin: 0;
+                font-size: 18px;
+                font-weight: 600;
+                word-break: break-word;
+            }
+
+            #logout {
+                margin-top: 25px;
+                padding: 10px 40px;
+                border-radius: 10px;
+                background-color: #F5ECD5;
+                color: #626F47;
+                border: 2px solid #626F47;
+                font-weight: bold;
+                font-size: 16px;
+                text-decoration: none;
+            }
+
+            nav {
+                background-color: #F5ECD5;
+                display: flex;
+                justify-content: space-evenly;
+                position: fixed;
+                align-items: center;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 10px;
+                box-sizing: border-box;
+                height: 60px;
             }
         </style>
     </head>
     <body>
         <header>SiapSiaga</header>
         <main>
-            <img src="../assets/profile-black.png">
-            <h1>Warga</h1>
+            <img src="../assets/profile-black.png" th:src="@{/assets/profile-black.png}" alt="Profil">
+            <h1 id="role" th:text="${role}">Warga</h1>
             <div id="biodata">
-                <span>
-                    <label>Nama : </label>
-                    <p th:text="nama-warga">Nama Warga</p>
-                </span>
-                
-                <span>
-                    <label>NIK : </label>
-                    <p th:text="nik-warga">NIK Warga</p>
-                </span>
-                
+                <div>
+                    <label>NIK</label>
+                    <p th:text="${nik}">NIK Warga</p>
+                </div>
+                <div>
+                    <label>Nama</label>
+                    <p th:text="${nama}">Nama Warga</p>
+                </div>
             </div>
+            <a id="logout" href="#" th:href="@{/logout}">Logout</a>
         </main>
-           
-            
+
         <nav>
-            <a href="index.html">
-                <img src="../assets/home-black.png" value="dashboard">
+            <a href="index.html" th:href="@{/warga/}">
+                <img src="../assets/home-black.png" th:src="@{/assets/home-black.png}" value="dashboard">
             </a>
             <a href="laporan.html">
-                <img src="../assets/report-black.png" value="laporan">
+                <img src="../assets/report-black.png" th:src="@{/assets/report-black.png}" value="laporan">
             </a>
-            <a href="profil.html">
-                <img src="../assets/profile-green.png" value="profil">
+            <a href="profil.html" th:href="@{/profil}">
+                <img src="../assets/profile-green.png" th:src="@{/assets/profile-green.png}" value="profil">
             </a>
-        </nav>       
+        </nav>
     </body>
 </html>
-
