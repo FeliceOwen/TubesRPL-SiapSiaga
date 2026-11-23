@@ -1,0 +1,105 @@
+Provinsi
+Id_provinsi (PK) | nama Provinsi
+INSERT INTO("JBR","Jawa Barat")
+INSERT INTO("JTG","Jawa Tengah")
+INSERT INTO("JKT","Jakarta")
+INSERT INTO("BLI","Bali")
+
+Kota/Kabupaten 
+Id_provinsi (FK) | Id_kota (PK) | nama
+INSERT INTO("BDG","Bandung")
+INSERT INTO("SMG","Semarang")
+INSERT INTO("JKT","Jakarta")
+INSERT INTO("BLI","Bali")
+
+Kelurahan
+
+Kecamatan
+
+=======================================
+
+Petugas 
+
+No | Nama Petugas | NIK (PK) | PW 
+INSERT INTO(1,"Andi Pratama",1234061006000002, "andi1")
+INSERT INTO(2,"Siti Rahmawati",4321061006000002,"siti1")
+INSERT INTO(3,"Bagas Ramadhan",3421061006000002,"bagas1")
+INSERT INTO(4,"Rizky Maulana",4213061006000002,"rizky1")
+INSERT INTO(5,"Dinda Permatasari",4312061006000002,"dinda1")
+INSERT INTO(6,"Fajar Nugroho",1432061006000002,"fajar1")
+
+
+Warga
+
+No | Nama | NIK (PK) | PW 
+INSERT INTO(1,"Keisya",1234061006000001,"keisya1")
+INSERT INTO(2,"Nona",2341061006000001,"nona1")
+INSERT INTO(3,"Felice",3412061006000001,"felice1")
+INSERT INTO(4,"Clarisa",4321061006000001,"clarisa1")
+INSERT INTO(5,"Natasya",2143061006000001,"natasya1")
+INSERT INTO(6,"Helena",3124061006000001,"helena1")
+
+Admin 
+
+No | Nama Admin | NIK (PK) | PW 
+INSERT INTO(1,"Admin",1234030101900001, "admin1")
+
+Sekolah 
+Id_sekolah (PK) | nama_sekolah | alamat | id_kel (FK)
+INSERT INTO("S1","SD Melati 1","Jln.Merdeka","FK KELURAHAN")
+INSERT INTO("S2","SD Mawar","Jln.Aceh","FK KELURAHAN")
+INSERT INTO("S3","SMP Mentari","Jln.Anggrek","FK KELURAHAN")
+INSERT INTO("S4","SMP Harapan","Jln.Garuda","FK KELURAHAN")
+INSERT INTO("S5","SMA Cahaya","Jln.Elang","FK KELURAHAN")
+INSERT INTO("S6","SMA Ceria","Jln.Bima","FK KELURAHAN")
+
+
+Status_Laporan
+INSERT INTO("ST1","Menunggu Verifikasi")
+INSERT INTO("ST2","Terverifikasi / On Progress")
+INSERT INTO("ST3","Tidak Terverifikasi")
+INSERT INTO("ST4","Selesai")
+
+Bencana
+INSERT INTO("B01","Banjir")
+INSERT INTO("B02","Tanah Longsor")
+INSERT INTO("B03","Kebakaran Hutan")
+INSERT INTO("B04","Gempa Bumi")
+INSERT INTO("B05","Gunung Meletus")
+INSERT INTO("B06","Keracunan MBG")
+
+Laporan_Bencana
+ID laporan, catatan, foto, tanggal, jam, status hapus, ID sekolah, ID kelurahan, ID status, ID bencana, NIK warga.
+INSERT INTO("L01","Banjir akibat hujan deras menyebabkan air masuk ke rumah warga.","banjir1.jpg","2026-11-01","14:00:00",FALSE,NULL,"FK KELURAHAN","ST2","B01",3273020101900001)
+INSERT INTO("L02","Longsor menutupi sebagian akses jalan menuju permukiman warga.","longsor1.jpg","2026-11-02","09:30:00",FALSE,NULL,"FK KELURAHAN","ST2","B02",3273020202900002)
+INSERT INTO("L03","Terjadi kebakaran hutan di sekitar area perbukitan.","kebakaran1.jpg","2026-11-03","11:15:00",FALSE,NULL,"FK KELURAHAN","ST4","B03",3273020303900003)
+INSERT INTO("L04","Gempa bumi dirasakan oleh warga di sekitar permukiman.","gempa1.jpg","2026-11-04","07:45:00",FALSE,NULL,"FK KELURAHAN","ST2","B04",3273020404900004)
+INSERT INTO("L05","Abu vulkanik mulai turun di sekitar permukiman warga.","gunung1.jpg","2026-11-05","06:30:00",FALSE,NULL,"FK KELURAHAN","ST2","B05",3273020505900005)
+INSERT INTO("L06","Sejumlah siswa mengalami gejala keracunan setelah mengonsumsi makanan dari program MBG.","mbg1.jpg","2026-11-06","12:30:00",FALSE,"S1","FK KELURAHAN","ST2","B06",3273020606900006)
+
+Update_Laporan
+id_update, id_laporan, nik_warga, tanggal_update, jam_update, foto_terbaru, detail_update
+INSERT INTO("U01","L01",3273020101900001,"2026-11-01","15:00:00","update1.jpg","Air mulai memasuki rumah warga dengan ketinggian sekitar 30 cm.")
+INSERT INTO("U02","L01",3273020101900001,"2026-11-01","16:30:00","update2.jpg","Ketinggian air semakin meningkat dan beberapa warga mulai mengungsi.")
+INSERT INTO("U03","L02",3273020202900002,"2026-11-02","11:00:00","update3.jpg","Material longsor masih menutupi sebagian akses jalan.")
+INSERT INTO("U04","L04",3273020404900004,"2026-11-04","08:30:00","update4.jpg","Kondisi warga mulai membaik setelah gempa berhenti.")
+INSERT INTO("U05","L05",3273020505900005,"2026-11-05","08:00:00","update5.jpg","Abu vulkanik mulai menutupi beberapa rumah warga.")
+INSERT INTO("U06","L06",3273020606900006,"2026-11-06","13:30:00","update6.jpg","Beberapa siswa telah dibawa ke fasilitas kesehatan terdekat.")
+
+Log_Penanganan
+id_log, id_laporan, nik_petugas, jumlah_personel, aktivitas, tanggal_penanganan, foto_penanganan
+INSERT INTO("LG1","L02",3273010101900001,8,"Melakukan pemeriksaan dan pengamanan lokasi longsor.","2026-11-02","penanganan1.jpg")
+INSERT INTO("LG2","L02",3273010202900002,12,"Membersihkan material longsor yang menutupi akses jalan.","2026-11-03","penanganan2.jpg")
+INSERT INTO("LG3","L03",3273010303900003,15,"Melakukan pemadaman api di area hutan terdampak.","2026-11-03","penanganan3.jpg")
+INSERT INTO("LG4","L04",3273010404900004,6,"Melakukan pendataan warga dan pemeriksaan kondisi bangunan.","2026-11-04","penanganan4.jpg")
+INSERT INTO("LG5","L05",3273010505900005,10,"Melakukan pemantauan dampak abu vulkanik dan membagikan masker kepada warga.","2026-11-05","penanganan5.jpg")
+INSERT INTO("LG6","L06",3273010606900006,8,"Melakukan pendataan siswa terdampak dan membantu proses evakuasi menuju fasilitas kesehatan.","2026-11-06","penanganan6.jpg")
+
+Pengumuman 
+id_pengumuman, nik_petugas, id_laporan, isi_pengumuman, detail_lokasi
+INSERT INTO("P01",3273010101900001,"L02","Masyarakat di sekitar lokasi longsor diimbau menghindari area terdampak karena proses pembersihan masih berlangsung.","Sekitar lokasi longsor")
+INSERT INTO("P02",3273010303900003,"L03","Warga diminta menjauhi area kebakaran hutan dan tidak melakukan aktivitas di sekitar lokasi terdampak.","Area perbukitan")
+INSERT INTO("P03",3273010404900004,"L04","Masyarakat diimbau tetap waspada terhadap kemungkinan gempa susulan dan memeriksa kondisi bangunan.","Wilayah terdampak gempa")
+INSERT INTO("P04",3273010505900005,"L05","Warga di sekitar gunung diimbau menggunakan masker untuk mengurangi paparan abu vulkanik.","Area sekitar gunung")
+INSERT INTO("P05",3273010606900006,"L06","Orang tua dan masyarakat diimbau tetap waspada serta mengikuti informasi resmi terkait penanganan siswa yang mengalami gejala keracunan MBG.","Sekolah terdampak")
+INSERT INTO("P06",3273010202900002,"L01","Warga diimbau berhati-hati dan menghindari area yang masih tergenang banjir.","Area permukiman terdampak")
