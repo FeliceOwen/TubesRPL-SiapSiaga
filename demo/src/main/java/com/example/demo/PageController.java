@@ -4,14 +4,20 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+
+import com.example.demo.repo.Pengumuman.PengumumanRepository;
 
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class PageController {
+
+	@Autowired
+	private PengumumanRepository pengumumanRepo;
 
 	/** Null kalau role sesuai; kalau tidak, alamat redirect (login atau dashboard role-nya). */
 	private String guard(HttpSession session, String requiredRole) {
@@ -67,7 +73,9 @@ public class PageController {
 		if (redirect != null) {
 			return redirect;
 		}
+		
 		model.addAttribute("statistik", statistikKosong());
+		model.addAttribute("daftarPengumuman", pengumumanRepo.pengumumanAktif());
 		return "Petugas/DashboardPetugas";
 	}
 
@@ -78,6 +86,7 @@ public class PageController {
 			return redirect;
 		}
 		model.addAttribute("statistik", statistikKosong());
+		model.addAttribute("daftarPengumuman", pengumumanRepo.pengumumanAktif());
 		return "Admin/dashboardAdmin";
 	}
 
