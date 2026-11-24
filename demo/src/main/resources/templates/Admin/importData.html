@@ -242,22 +242,21 @@
 
     <nav class="bottom-nav">
 
-        <a th:href="@{/dashboard-admin}" href="dashboardAdmin.html" class="nav-item">
+        <a th:href="@{/admin/dashboard}" href="dashboardAdmin.html" class="nav-item">
             <img th:src="@{/assets/home-black.png}" src="../assets/home-black.png"
                  alt="Beranda" class="nav-icon">
         </a>
 
-        <a th:href="@{/laporan-warga}" href="laporanWargaVerif.html" class="nav-item">
+        <a th:href="@{/admin/laporan-warga}" class="nav-item">
             <img th:src="@{/assets/report-black.png}" src="../assets/report-black.png"
                  alt="Laporan" class="nav-icon">
         </a>
 
-        <a th:href="#" href="#" class="nav-item">
-            <img th:src="@{/assets/importData-green.png}" src="../assets/import_green.png"
-                 alt="Manajemen Data" class="nav-icon">
+        <a th:href="@{/admin/import-data}" class="nav-item">
+            <img src="../assets/import_green.png" alt="Import" class="nav-icon">
         </a>
 
-        <a th:href="#" href="#" class="nav-item">
+        <a th:href="@{/admin/profil}" class="nav-item">
             <img th:src="@{/assets/profile-black.png}" src="../assets/profile-black.png"
                  alt="Profil" class="nav-icon">
         </a>

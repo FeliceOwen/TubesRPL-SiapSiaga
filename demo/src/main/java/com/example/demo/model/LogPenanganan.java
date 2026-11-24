@@ -34,7 +34,10 @@ public class LogPenanganan {
 
     @Column(length=300)
     private String aktivitas;
-    
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private LocalDate tanggal_penanganan;
+
     @Lob
     @Column(columnDefinition = "VARBINARY(MAX)")
     private byte[] foto_penanganan;

@@ -97,13 +97,13 @@
                 text-decoration: none;
             }
 
-            nav.bottom-nav {
-                background-color: #F5ECD5;
-                border-top: 1px solid #e0d7c3;
-                padding: 15px 0;
-                display: flex;
-                justify-content: space-around;
-                align-items: center;
+           nav.bottom-nav {
+            background-color: #F5ECD5;
+            border-top: 1px solid #e0d7c3;
+            padding: 15px 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
             }
 
             .nav-item {
@@ -115,6 +115,12 @@
 
             .nav-item:hover {
                 color: #3f4a30;
+            }
+
+            .nav-icon {
+                width: 36px;
+                height: 36px;
+                object-fit: contain;
             }
         </style>
     </head>
@@ -140,19 +146,19 @@
         </main>
 
         <nav class="bottom-nav">
-            <a th:href="@{/admin/dashboard}" href="dashboardAdmin.html" class="nav-item">
+            <a th:href="@{/admin/dashboard}" class="nav-item">
                 <img src="../assets/home-black.png" th:src="@{/assets/home-black.png}" alt="Beranda" class="nav-icon">
             </a>
 
-            <a th:href="@{/laporan-warga}" href="laporanWargaVerif.html" class="nav-item">
+            <a th:href="@{/admin/laporan-warga}" class="nav-item">
                 <img src="../assets/report-black.png" th:src="@{/assets/report-black.png}" alt="Laporan" class="nav-icon">
             </a>
 
-            <a th:href="@{/laporan-warga}" href="importData.html" class="nav-item">
+            <a th:href="@{/admin/import-data}" class="nav-item">
                 <img src="../assets/importData-black.png" th:src="@{/assets/importData-black.png}" alt="Import" class="nav-icon">
             </a>
 
-            <a th:href="@{/admin/profil}" href="profilAdmin.html" class="nav-item">
+            <a th:href="@{/admin/profil}" class="nav-item">
                 <img src="../assets/profile-green.png" th:src="@{/assets/profile-green.png}" alt="Profil" class="nav-icon">
             </a>
         </nav>

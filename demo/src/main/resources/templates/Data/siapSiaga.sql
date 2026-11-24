@@ -118,20 +118,22 @@ INSERT INTO update_bencana (id_update, id_laporan, nik, id_status, detail_update
 ('U005', 'L05', '2143061006000001', 'ST1', 'Abu vulkanik mulai menutupi beberapa rumah warga.', NULL, '2026-11-05', '08:00:00'),
 ('U006', 'L06', '3124061006000001', 'ST1', 'Beberapa siswa telah dibawa ke fasilitas kesehatan terdekat.', NULL, '2026-11-06', '13:30:00');
 
-
-
 -- --Log_Penanganan
--- INSERT INTO("LG1","L02",3273010101900001,8,"Melakukan pemeriksaan dan pengamanan lokasi longsor.","2026-11-02","penanganan1.jpg")
--- INSERT INTO("LG2","L02",3273010202900002,12,"Membersihkan material longsor yang menutupi akses jalan.","2026-11-03","penanganan2.jpg")
--- INSERT INTO("LG3","L03",3273010303900003,15,"Melakukan pemadaman api di area hutan terdampak.","2026-11-03","penanganan3.jpg")
--- INSERT INTO("LG4","L04",3273010404900004,6,"Melakukan pendataan warga dan pemeriksaan kondisi bangunan.","2026-11-04","penanganan4.jpg")
--- INSERT INTO("LG5","L05",3273010505900005,10,"Melakukan pemantauan dampak abu vulkanik dan membagikan masker kepada warga.","2026-11-05","penanganan5.jpg")
--- INSERT INTO("LG6","L06",3273010606900006,8,"Melakukan pendataan siswa terdampak dan membantu proses evakuasi menuju fasilitas kesehatan.","2026-11-06","penanganan6.jpg")
+INSERT INTO log_penanganan (id_log, id_laporan, nik, jumlah_personel, aktivitas, tanggal_penanganan, foto_penanganan) VALUES
+('LG1', 'L02', '3273010101900001', 8, 'Melakukan pemeriksaan dan pengamanan lokasi longsor.', '2026-11-02', NULL),
+('LG2', 'L02', '3273010202900002', 12, 'Membersihkan material longsor yang menutupi akses jalan.', '2026-11-03', NULL),
+('LG3', 'L03', '3273010303900003', 15, 'Melakukan pemadaman api di area hutan terdampak.', '2026-11-03', NULL),
+('LG4', 'L04', '3273010404900004', 6, 'Melakukan pendataan warga dan pemeriksaan kondisi bangunan.', '2026-11-04', NULL),
+('LG5', 'L05', '3273010505900005', 10, 'Melakukan pemantauan dampak abu vulkanik dan membagikan masker kepada warga.', '2026-11-05', NULL),
+('LG6', 'L06', '3273010606900006', 8, 'Melakukan pendataan siswa terdampak dan membantu proses evakuasi menuju fasilitas kesehatan.', '2026-11-06', NULL);
 
 -- --Pengumuman 
--- INSERT INTO("P01",3273010101900001,"L02","Masyarakat di sekitar lokasi longsor diimbau menghindari area terdampak karena proses pembersihan masih berlangsung.","Sekitar lokasi longsor")
--- INSERT INTO("P02",3273010303900003,"L03","Warga diminta menjauhi area kebakaran hutan dan tidak melakukan aktivitas di sekitar lokasi terdampak.","Area perbukitan")
--- INSERT INTO("P03",3273010404900004,"L04","Masyarakat diimbau tetap waspada terhadap kemungkinan gempa susulan dan memeriksa kondisi bangunan.","Wilayah terdampak gempa")
--- INSERT INTO("P04",3273010505900005,"L05","Warga di sekitar gunung diimbau menggunakan masker untuk mengurangi paparan abu vulkanik.","Area sekitar gunung")
--- INSERT INTO("P05",3273010606900006,"L06","Orang tua dan masyarakat diimbau tetap waspada serta mengikuti informasi resmi terkait penanganan siswa yang mengalami gejala keracunan MBG.","Sekolah terdampak")
--- INSERT INTO("P06",3273010202900002,"L01","Warga diimbau berhati-hati dan menghindari area yang masih tergenang banjir.","Area permukiman terdampak")
+
+INSERT INTO pengumuman (id_pengumuman, id_laporan, nik, isi_pengumuman, detail_lokasi) VALUES
+
+("P01","L02","3273010101900001","Masyarakat di sekitar lokasi longsor diimbau menghindari area terdampak karena proses pembersihan masih berlangsung.","Sekitar lokasi longsor"),
+("P02","L03","3273010303900003","Warga diminta menjauhi area kebakaran hutan dan tidak melakukan aktivitas di sekitar lokasi terdampak.","Area perbukitan"),
+("P03","L04","3273010404900004","Masyarakat diimbau tetap waspada terhadap kemungkinan gempa susulan dan memeriksa kondisi bangunan.","Wilayah terdampak gempa"),
+("P04","L05","3273010505900005","Warga di sekitar gunung diimbau menggunakan masker untuk mengurangi paparan abu vulkanik.","Area sekitar gunung"),
+("P05","L06","3273010606900006","Orang tua dan masyarakat diimbau tetap waspada serta mengikuti informasi resmi terkait penanganan siswa yang mengalami gejala keracunan MBG.","Sekolah terdampak"),
+("P06","L01","3273010202900002","Warga diimbau berhati-hati dan menghindari area yang masih tergenang banjir.","Area permukiman terdampak");
