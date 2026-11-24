@@ -8,6 +8,8 @@ GO
 -- Kosongkan data lama (urutan anak -> induk karena ada foreign key),
 -- supaya file ini bisa dijalankan berulang kali tanpa error duplikat.
 -- Syarat: tabel sudah ada (jalankan gradlew bootRun sekali dulu).
+DELETE FROM pengumuman;
+DELETE FROM log_penanganan;
 DELETE FROM update_bencana;
 DELETE FROM laporan_bencana;
 DELETE FROM sekolah;
@@ -120,20 +122,20 @@ INSERT INTO update_bencana (id_update, id_laporan, nik, id_status, detail_update
 
 -- --Log_Penanganan
 INSERT INTO log_penanganan (id_log, id_laporan, nik, jumlah_personel, aktivitas, tanggal_penanganan, foto_penanganan) VALUES
-('LG1', 'L02', '3273010101900001', 8, 'Melakukan pemeriksaan dan pengamanan lokasi longsor.', '2026-11-02', NULL),
-('LG2', 'L02', '3273010202900002', 12, 'Membersihkan material longsor yang menutupi akses jalan.', '2026-11-03', NULL),
-('LG3', 'L03', '3273010303900003', 15, 'Melakukan pemadaman api di area hutan terdampak.', '2026-11-03', NULL),
-('LG4', 'L04', '3273010404900004', 6, 'Melakukan pendataan warga dan pemeriksaan kondisi bangunan.', '2026-11-04', NULL),
-('LG5', 'L05', '3273010505900005', 10, 'Melakukan pemantauan dampak abu vulkanik dan membagikan masker kepada warga.', '2026-11-05', NULL),
-('LG6', 'L06', '3273010606900006', 8, 'Melakukan pendataan siswa terdampak dan membantu proses evakuasi menuju fasilitas kesehatan.', '2026-11-06', NULL);
+('LG1', 'L02', '1234061006000001', 8, 'Melakukan pemeriksaan dan pengamanan lokasi longsor.', '2026-11-02', NULL),
+('LG2', 'L02', '2341061006000001', 12, 'Membersihkan material longsor yang menutupi akses jalan.', '2026-11-03', NULL),
+('LG3', 'L03', '3412061006000001', 15, 'Melakukan pemadaman api di area hutan terdampak.', '2026-11-03', NULL),
+('LG4', 'L04', '4321061006000001', 6, 'Melakukan pendataan warga dan pemeriksaan kondisi bangunan.', '2026-11-04', NULL),
+('LG5', 'L05', '2143061006000001', 10, 'Melakukan pemantauan dampak abu vulkanik dan membagikan masker kepada warga.', '2026-11-05', NULL),
+('LG6', 'L06', '3124061006000001', 8, 'Melakukan pendataan siswa terdampak dan membantu proses evakuasi menuju fasilitas kesehatan.', '2026-11-06', NULL);
 
 -- --Pengumuman 
 
 INSERT INTO pengumuman (id_pengumuman, id_laporan, nik, isi_pengumuman, detail_lokasi) VALUES
 
-('P01','L02','3273010101900001','Masyarakat di sekitar lokasi longsor diimbau menghindari area terdampak karena proses pembersihan masih berlangsung.','Sekitar lokasi longsor'),
-('P02','L03','3273010303900003','Warga diminta menjauhi area kebakaran hutan dan tidak melakukan aktivitas di sekitar lokasi terdampak.','Area perbukitan'),
-('P03','L04','3273010404900004','Masyarakat diimbau tetap waspada terhadap kemungkinan gempa susulan dan memeriksa kondisi bangunan.','Wilayah terdampak gempa'),
-('P04','L05','3273010505900005','Warga di sekitar gunung diimbau menggunakan masker untuk mengurangi paparan abu vulkanik.','Area sekitar gunung'),
-('P05','L06','3273010606900006','Orang tua diimbau tetap waspada dan menunggu informasi resmi terkait keracunan MBG.','Sekolah terdampak'),
-('P06','L01','3273010202900002','Warga diimbau berhati-hati dan menghindari area yang masih tergenang banjir.','Area permukiman terdampak');
+('P01','L02','1234061006000001','Masyarakat di sekitar lokasi longsor diimbau menghindari area terdampak karena proses pembersihan masih berlangsung.','Sekitar lokasi longsor'),
+('P02','L03','3412061006000001','Warga diminta menjauhi area kebakaran hutan dan tidak melakukan aktivitas di sekitar lokasi terdampak.','Area perbukitan'),
+('P03','L04','4321061006000001','Masyarakat diimbau tetap waspada terhadap kemungkinan gempa susulan dan memeriksa kondisi bangunan.','Wilayah terdampak gempa'),
+('P04','L05','2143061006000001','Warga di sekitar gunung diimbau menggunakan masker untuk mengurangi paparan abu vulkanik.','Area sekitar gunung'),
+('P05','L06','3124061006000001','Orang tua diimbau tetap waspada dan menunggu informasi resmi terkait keracunan MBG.','Sekolah terdampak'),
+('P06','L01','2341061006000001','Warga diimbau berhati-hati dan menghindari area yang masih tergenang banjir.','Area permukiman terdampak');

@@ -23,8 +23,9 @@ public interface PengumumanRepository extends JpaRepository<Pengumuman, String> 
         SELECT 
             bencana.nama_bencana AS jenis,
             CONCAT_WS(', ', kelurahan.nama_kel, kecamatan.nama_kec, kota_kabupaten.nama_kota_kab, provinsi.nama_provinsi) AS lokasi,
-            laporan.tanggal_kejadian AS tanggal,
-            laporan.jam_kejadian AS jam, 
+            CONVERT(VARCHAR(10), laporan.tanggal_kejadian, 23) AS tanggal,
+            CONVERT(VARCHAR(5), laporan.jam_kejadian, 108) AS jam,
+            laporan.catatan AS catatan,
             laporan.foto AS gambar
         FROM
             pengumuman
