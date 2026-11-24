@@ -1,200 +1,231 @@
-<!DOCTYPE html>
-<html xmlns:th="http://thymeleaf.org"></htmlxmlns:th>
-    <head>
-        <title>Dashboard SiapSiaga</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-        <style>
-            header {
-                background-color: #626F47;
-                color: #F5ECD5;
-                margin : 0;
-                padding : 10px;            
-                font-weight: bold;
-                font-size: 40px;
-                position: sticky;
-            }
-            body {
-                font-family: 'Inter', sans-serif;
-                margin : 0;
-            }
-            main {
-                display: flex;
-                margin : 20px;
-                flex-direction: column;
-            }
-            #greetings {
-                h1 {
-                    font-weight: bold;
-                    font-size: 25px;
-                    margin-bottom:5px;
-                }
-                span {
-                    color : #5D5D5D;
-                }
-            }
-            .tambah-laporan {
-                margin-top: 20px;
-                display: flex;
-                flex-direction: row;
-                padding: 10px;
-                background-color: #F5ECD5;
-                border-radius: 10px;
-                align-items: center;
-                #teks-tambah {
-                    h1 {
-                        margin-top: 0;
-                        font-size: 25px;
-                        font-weight: bold;
-                        color:#626F47;
-                        margin-bottom:5px;
-                    }
-                }
-                input {
-                    width:70px;
-                }
-            }
-            #teks-statistik {
-                margin-top: 20px;
-                h1 {
-                    font-size: 25px;
-                    font-weight: bold;
-                    margin-bottom:5px;
-                }
-
-            }
-            #jumlah-kejadian {
-                margin-top: 10px;
-                padding: 10px;
-                background-color: #626F47;
-                border-radius: 10px;
-                color :#F5ECD5;
-                font-weight: bold;
-            }
-            .pengumuman {
-                margin-top: 20px;
-                #teks-pengumuman {
-                    h1 {
-                        font-size: 25px;
-                        font-weight: bold;
-                        margin-bottom:5px;
-                    }
-                }
-                .card {
-                    margin-top: 10px;
-                    display: flex;
-                    flex-direction: row;
-                    background-color: #F5ECD5;
-                    color : #626F47;
-                    border-radius: 10px;
-                    padding: 10px;
-                    h2 {
-                        font-weight: bold;
-                        margin-bottom: 20px;
-                    }
-                    span:nth-child(4) {
-                        font-weight: bold;
-                        color : red;
-                    }
-                    a {
-                        font-weight: bold;
-                        background-color: #626F47;
-                        color : white;
-                        border-radius: 10px;
-                        padding: 10px;
-                        margin-top: 20px;
-                        padding-left: 20px;
-                        padding-right: 20px;
-                        text-decoration: none;
-                    }
-                    img {
-                        width: 50%;
-                        height: 100px;
-                        object-fit: cover;
-                        border-radius: 10px;
-                    }
-
-                }
-            }
-            nav {
-                background-color: #F5ECD5;
-                display: flex;
-                justify-content: space-evenly;
-                position: fixed;
-                align-items: center;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                padding: 10px;
-                box-sizing: border-box;
-                height: 60px;
-            }
-        </style>
-    </head>
-    <body>
-        <header>SiapSiaga</header>
-        <main>
-            <div id="greetings">
-                <h1>Halo, <span th:text="${name}"></span></h1>
-                <span>Sudah siap lapor bencana?</span>
-            </div>
-            <div class="tambah-laporan">
-                <div id="teks-tambah">
-                    <h1>Tambah Laporan</h1>
-                    <span>Tekan tombol + untuk laporkan bencana</span>
-                </div>
-                <a href="instruksi.html">
-                    <img src="../assets/icon-tambah.png" value="tambah">
-                </a>
-            </div>
-            <div class="statistik-bencana">
-                <div id="teks-statistik">
-                    <h1>Statistik Bencana</h1>
-                    <span>Jumlah kejadian di tahun ini</span>
-                </div>
-                <div id="jumlah-kejadian">
-                    <table>
-                        <tbody>
-                            <tr th:each="data : ${daftarBencana}">
-                                <td th:text="${data.namaBencana}"></td>
-                                <td th:text="${data.jumlahKejadian}"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="pengumuman">
-                <div id="teks-pengumuman">
-                    <h1>Pengumuman</h1>
-                    <span>Gulir ke bawah untuk lihat seluruh pengumuman</span>
-                </div>
-                <div class="card" th:each="pengumuman : ${daftarPengumumanAktif}">
-                    <div class="card-pengumuman">
-                        <h2 th:text="${pengumuman.jenis}"></h2>
-                        <span th:text="${pengumuman.lokasi}"></span>
-                        <span th:text="${pengumuman.tanggal}"></span>
-                        <span th:text="${pengumuman.jam}"></span>
-                        <span th:text="${pengumuman.catatan}"></span>
-                        <a id="detail-pengumuman" href="detail_pengumuman.html">Lihat Detail</a>
-                    </div>
-                    <img th:src="@{'/assets/' + ${pengumuman.gambar}}" alt="gambar-pengumuman">
-                </div>
-            </div>
-        </main>
-        <nav>
-            <a href="index.html" th:href="@{/warga/}">
-                <img src="../assets/dashboard-green.png" value="dashboard">
-            </a>
-            <a href="laporan.html">
-                <img src="../assets/report-black.png" value="laporan">
-            </a>
-            <a href="profil.html" th:href="@{/profil}">
-                <img src="../assets/profile-black.png" value="profil">
-            </a>
-        </nav>
-    </body>
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Dashboard SiapSiaga</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      header {
+        background-color: #626f47;
+        color: #f5ecd5;
+        margin: 0;
+        padding: 10px;
+        font-weight: bold;
+        font-size: 40px;
+        position: sticky;
+      }
+      body {
+        font-family: "Inter", sans-serif;
+        margin: 0;
+      }
+      main {
+        display: flex;
+        margin: 20px;
+        margin-bottom: 80px;
+        flex-direction: column;
+      }
+      #greetings {
+        h1 {
+          font-weight: bold;
+          font-size: 25px;
+          margin-bottom: 5px;
+        }
+        span {
+          color: #5d5d5d;
+        }
+      }
+      .tambah-laporan {
+        margin-top: 20px;
+        display: flex;
+        flex-direction: row;
+        padding: 10px;
+        background-color: #f5ecd5;
+        border-radius: 10px;
+        align-items: center;
+        #teks-tambah {
+          h1 {
+            margin-top: 0;
+            font-size: 25px;
+            font-weight: bold;
+            color: #626f47;
+            margin-bottom: 5px;
+          }
+        }
+        input {
+          width: 70px;
+        }
+      }
+      #teks-statistik {
+        margin-top: 20px;
+        h1 {
+          font-size: 25px;
+          font-weight: bold;
+          margin-bottom: 5px;
+        }
+      }
+      #jumlah-kejadian {
+        margin-top: 10px;
+        padding: 10px;
+        background-color: #626f47;
+        border-radius: 10px;
+        color: #f5ecd5;
+        font-weight: bold;
+      }
+      .pengumuman {
+        margin-top: 20px;
+        #teks-pengumuman {
+          h1 {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 5px;
+          }
+        }
+        .card {
+          margin-top: 12px;
+          display: flex;
+          flex-direction: row;
+          align-items: stretch;
+          gap: 12px;
+          background-color: #f5ecd5;
+          color: #626f47;
+          border-radius: 10px;
+          padding: 12px;
+          .card-pengumuman {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            overflow-wrap: anywhere;
+          }
+          h2 {
+            font-weight: bold;
+            font-size: 20px;
+            margin: 0 0 8px 0;
+          }
+          span {
+            display: block;
+            font-size: 14px;
+            line-height: 1.4;
+          }
+          .waktu {
+            font-weight: bold;
+            color: red;
+          }
+          .catatan {
+            color: #5d5d5d;
+          }
+          a {
+            align-self: flex-start;
+            font-weight: bold;
+            background-color: #626f47;
+            color: white;
+            border-radius: 10px;
+            padding: 10px 20px;
+            margin-top: auto;
+            text-decoration: none;
+          }
+          .gambar-pengumuman {
+            width: 45%;
+            flex-shrink: 0;
+            min-height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+          }
+        }
+      }
+      nav {
+        background-color: #f5ecd5;
+        display: flex;
+        justify-content: space-evenly;
+        position: fixed;
+        align-items: center;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 10px;
+        box-sizing: border-box;
+        height: 60px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>SiapSiaga</header>
+    <main>
+      <div id="greetings">
+        <h1>Halo, <span th:text="${name}"></span></h1>
+        <span>Sudah siap lapor bencana?</span>
+      </div>
+      <div class="tambah-laporan">
+        <div id="teks-tambah">
+          <h1>Tambah Laporan</h1>
+          <span>Tekan tombol + untuk laporkan bencana</span>
+        </div>
+        <a href="instruksi.html">
+          <img src="../assets/icon-tambah.png" value="tambah" />
+        </a>
+      </div>
+      <div class="statistik-bencana">
+        <div id="teks-statistik">
+          <h1>Statistik Bencana</h1>
+          <span>Jumlah kejadian di tahun ini</span>
+        </div>
+        <div id="jumlah-kejadian">
+          <table>
+            <tbody>
+              <tr th:each="data : ${daftarBencana}">
+                <td th:text="${data.namaBencana}"></td>
+                <td th:text="${data.jumlahKejadian}"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="pengumuman">
+        <div id="teks-pengumuman">
+          <h1>Pengumuman</h1>
+          <span>Gulir ke bawah untuk lihat seluruh pengumuman</span>
+        </div>
+        <div class="card" th:each="pengumuman : ${daftarPengumumanAktif}">
+          <div class="card-pengumuman">
+            <h2 th:text="${pengumuman.jenis}"></h2>
+            <span th:text="${pengumuman.lokasi}"></span>
+            <span class="waktu"
+              ><span
+                th:text="${pengumuman.tanggal}"
+                style="display: inline"
+              ></span>
+              · <span th:text="${pengumuman.jam}" style="display: inline"></span
+            ></span>
+            <span class="catatan" th:text="${pengumuman.catatan}"></span>
+            <a id="detail-pengumuman" href="detail_pengumuman.html"
+              >Lihat Detail</a
+            >
+          </div>
+          <img
+            class="gambar-pengumuman"
+            th:src="${pengumuman.gambar != null} ? @{'/assets/' + ${pengumuman.gambar}} : @{/assets/gunung_meletus.jpg}"
+            alt="gambar-pengumuman"
+          />
+        </div>
+      </div>
+    </main>
+    <nav>
+      <a href="index.html" th:href="@{/warga/}">
+        <img src="../assets/dashboard-green.png" value="dashboard" />
+      </a>
+      <a href="laporan.html">
+        <img src="../assets/report-black.png" value="laporan" />
+      </a>
+      <a href="profil.html" th:href="@{/profil}">
+        <img src="../assets/profile-black.png" value="profil" />
+      </a>
+    </nav>
+  </body>
 </html>
-
