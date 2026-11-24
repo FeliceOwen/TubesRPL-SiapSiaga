@@ -131,9 +131,9 @@ INSERT INTO log_penanganan (id_log, id_laporan, nik, jumlah_personel, aktivitas,
 
 INSERT INTO pengumuman (id_pengumuman, id_laporan, nik, isi_pengumuman, detail_lokasi) VALUES
 
-("P01","L02","3273010101900001","Masyarakat di sekitar lokasi longsor diimbau menghindari area terdampak karena proses pembersihan masih berlangsung.","Sekitar lokasi longsor"),
-("P02","L03","3273010303900003","Warga diminta menjauhi area kebakaran hutan dan tidak melakukan aktivitas di sekitar lokasi terdampak.","Area perbukitan"),
-("P03","L04","3273010404900004","Masyarakat diimbau tetap waspada terhadap kemungkinan gempa susulan dan memeriksa kondisi bangunan.","Wilayah terdampak gempa"),
-("P04","L05","3273010505900005","Warga di sekitar gunung diimbau menggunakan masker untuk mengurangi paparan abu vulkanik.","Area sekitar gunung"),
-("P05","L06","3273010606900006","Orang tua dan masyarakat diimbau tetap waspada serta mengikuti informasi resmi terkait penanganan siswa yang mengalami gejala keracunan MBG.","Sekolah terdampak"),
-("P06","L01","3273010202900002","Warga diimbau berhati-hati dan menghindari area yang masih tergenang banjir.","Area permukiman terdampak");
+('P01','L02','3273010101900001','Masyarakat di sekitar lokasi longsor diimbau menghindari area terdampak karena proses pembersihan masih berlangsung.','Sekitar lokasi longsor'),
+('P02','L03','3273010303900003','Warga diminta menjauhi area kebakaran hutan dan tidak melakukan aktivitas di sekitar lokasi terdampak.','Area perbukitan'),
+('P03','L04','3273010404900004','Masyarakat diimbau tetap waspada terhadap kemungkinan gempa susulan dan memeriksa kondisi bangunan.','Wilayah terdampak gempa'),
+('P04','L05','3273010505900005','Warga di sekitar gunung diimbau menggunakan masker untuk mengurangi paparan abu vulkanik.','Area sekitar gunung'),
+('P05','L06','3273010606900006','Orang tua diimbau tetap waspada dan menunggu informasi resmi terkait keracunan MBG.','Sekolah terdampak'),
+('P06','L01','3273010202900002','Warga diimbau berhati-hati dan menghindari area yang masih tergenang banjir.','Area permukiman terdampak');
