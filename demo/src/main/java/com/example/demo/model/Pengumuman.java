@@ -28,7 +28,7 @@ public class Pengumuman {
 
     @ManyToOne
     @JoinColumn(name = "nik", referencedColumnName = "nik", nullable = true)
-    private Warga nik;
+    private Petugas nik;
 
     @Column(length = 300)
     private String isi_pengumuman;
