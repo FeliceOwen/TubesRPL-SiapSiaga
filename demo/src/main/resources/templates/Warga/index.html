@@ -57,22 +57,24 @@
                     width:70px;
                 }
             }
-            #teks-statistik {
-                margin-top: 20px;
-                h1 {
-                    font-size: 25px;
-                    font-weight: bold;
-                    margin-bottom:5px;
-                }
+            .statistik-bencana {
+                #teks-statistik {
+                    margin-top: 20px;
+                    h1 {
+                        font-size: 25px;
+                        font-weight: bold;
+                        margin-bottom:5px;
+                    }
 
-            }
-            #jumlah-kejadian {
-                margin-top: 10px;
-                padding: 10px;
-                background-color: #626F47;
-                border-radius: 10px;
-                color :#F5ECD5;
-                font-weight: bold;
+                }
+                #jumlah-kejadian {
+                    margin-top: 10px;
+                    padding: 10px;
+                    background-color: #626F47;
+                    border-radius: 10px;
+                    color :#F5ECD5;
+                    font-weight: bold;
+                }
             }
             .pengumuman {
                 margin-top: 20px;
@@ -87,35 +89,42 @@
                     margin-top: 10px;
                     display: flex;
                     flex-direction: row;
+                    justify-content: space-between;
                     background-color: #F5ECD5;
                     color : #626F47;
                     border-radius: 10px;
                     padding: 10px;
-                    h2 {
-                        font-weight: bold;
-                        margin-bottom: 20px;
-                    }
-                    span:nth-child(4) {
-                        font-weight: bold;
-                        color : red;
-                    }
-                    a {
-                        font-weight: bold;
-                        background-color: #626F47;
-                        color : white;
-                        border-radius: 10px;
-                        padding: 10px;
-                        margin-top: 20px;
-                        padding-left: 20px;
-                        padding-right: 20px;
-                        text-decoration: none;
+                    gap: 10px;
+                    .card-pengumuman {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 5px;
+                        h2 {
+                            font-weight: bold;
+                            margin: 0;
+                            margin-bottom: 10px;
+                        }
+                        span#catatan {
+                            font-weight: bold;
+                            color : red;
+                        }
+                        a {
+                            font-weight: bold;
+                            background-color: #626F47;
+                            color : white;
+                            border-radius: 10px;
+                            padding: 10px;
+                            text-decoration: none;
+                            display: block;
+                            text-align: center;
+                        }
                     }
                     img {
                         width: 50%;
-                        height: 100px;
                         object-fit: cover;
                         border-radius: 10px;
                     }
+                    
 
                 }
             }
@@ -159,8 +168,8 @@
                     <table>
                         <tbody>
                             <tr th:each="data : ${daftarBencana}">
-                                <td th:text="${data.namaBencana}"></td>
-                                <td th:text="${data.jumlahKejadian}"></td>
+                                <td style="width:100%" th:text="${data.namaBencana}">Bencana</td>
+                                <td th:text="${data.jumlahKejadian}">1</td>
                             </tr>
                         </tbody>
                     </table>
@@ -173,15 +182,14 @@
                 </div>
                 <div class="card" th:each="pengumuman : ${daftarPengumumanAktif}">
                     <div class="card-pengumuman">
-                        <h2 th:text="${pengumuman.jenis}"></h2>
-                        <span th:text="${pengumuman.lokasi}"></span>
-                        <span th:text="${pengumuman.tanggal}"></span>
-                        <span th:text="${pengumuman.jam}"></span>
-                        <span th:text="${pengumuman.catatan}"></span>
+                        <h2 th:text="${pengumuman.jenis}">Jenis</h2>
+                        <span th:text="${pengumuman.lokasi}">Lokasi</span><br>
+                        <span th:text="${pengumuman.tanggal}">Tanggal</span><br>
+                        <span th:text="${pengumuman.jam}">Jam</span><br>
+                        <span id="catatan" th:text="${pengumuman.catatan}">Catatan</span><br>
                         <a id="detail-pengumuman" href="detail_pengumuman.html">Lihat Detail</a>
                     </div>
-                    <img th:src="@{'/assets/' + ${pengumuman.gambar}}" alt="gambar-pengumuman">
-                </div>
+                   <img class="gambar-pengumuman" th:src="${pengumuman.gambar != null} ? @{'/assets/' + ${pengumuman.gambar}} : @{/assets/gunung_meletus.jpg}" alt="gambar-pengumuman"/>
             </div>
         </main>
         <nav>

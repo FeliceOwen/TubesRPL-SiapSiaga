@@ -1,21 +1,12 @@
-package com.example.demo.repo;
+package com.example.demo.repo.Pengumuman;
+
+import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.example.demo.model.Pengumuman;
-import com.example.demo.model.LaporanBencana;
-import com.example.demo.model.Bencana;
-import com.example.demo.model.Provinsi;
-import com.example.demo.model.KotaKabupaten;
-import com.example.demo.model.Kecamatan;
-import com.example.demo.model.Kelurahan;
-
-import com.example.demo.repo.RekapPengumuman;
-
-import java.util.List;
-
 @Repository 
 public interface PengumumanRepository extends JpaRepository<Pengumuman, String> {
     

@@ -1,4 +1,4 @@
-package com.example.demo.repo;
+package com.example.demo.repo.Bencana;
 
 import com.example.demo.model.Warga;
 import org.springframework.data.jpa.repository.JpaRepository;
