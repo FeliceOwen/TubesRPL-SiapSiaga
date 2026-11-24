@@ -245,30 +245,32 @@
             </div>
 
             <form class="form-card" 
-                  th:action="${pengumuman != null ? '/pengumuman/update/' + pengumuman.id : '#'}" 
+                  th:action="@{/pengumuman/simpan}" 
                   method="POST">
+
+                <input type="hidden" name="idLaporan" th:value="${laporan.id_laporan}" />
 
                 <div class="form-column">
                     <div class="form-group">
                         <label>Jenis Bencana</label>
-                        <div class="readonly-value" th:text="${pengumuman?.jenisBencana ?: '-'}">-</div>
+                        <div class="readonly-value" th:text="${laporan?.id_bencana?.nama_bencana ?: '-'}">-</div>
                     </div>
 
                     <div class="form-group">
                         <label>Tanggal Kejadian</label>
-                        <div class="readonly-value" th:text="${pengumuman?.tanggalLaporan != null ? #temporals.format(pengumuman.tanggalLaporan, 'dd/MM/yyyy') : '-'}">-</div>
+                        <div class="readonly-value" th:text="${laporan?.tanggalKejadian != null ? #temporals.format(laporan.tanggalKejadian, 'dd/MM/yyyy') : '-'}">-</div>
                     </div>
 
                     <div class="form-group">
                         <label>Waktu Kejadian</label>
-                        <div class="readonly-value" th:text="${pengumuman?.waktuLaporan != null ? #temporals.format(pengumuman.waktuLaporan, 'HH:mm') : '-'}">-</div>
+                        <div class="readonly-value" th:text="${laporan?.jamKejadian != null ? #temporals.format(laporan.jamKejadian, 'HH:mm') : '-'}">-</div>
                     </div>
 
                     <div class="form-group top-aligned">
                         <label>Foto Kejadian</label>
                         <div class="image-preview-container">
-                            <img th:if="${pengumuman?.foto != null}" 
-                                 th:src="${pengumuman.foto}" 
+                            <img th:if="${laporan?.foto_bencana != null}" 
+                                 th:src="@{/laporan/foto/{id}(id=${laporan.id_laporan})}" 
                                  alt="Foto Bencana" 
                                  class="image-preview">
                         </div>
@@ -276,12 +278,12 @@
 
                     <div class="form-group">
                         <label>Provinsi</label>
-                        <div class="readonly-value" th:text="${pengumuman?.provinsi ?: '-'}">-</div>
+                        <div class="readonly-value" th:text="${laporan?.id_kel?.id_kec?.id_kota_kab?.id_provinsi?.nama_provinsi ?: '-'}">-</div>
                     </div>
 
                     <div class="form-group">
                         <label>Kabupaten / Kota</label>
-                        <div class="readonly-value" th:text="${pengumuman?.kabupaten ?: '-'}">-</div>
+                        <div class="readonly-value" th:text="${laporan?.id_kel?.id_kec?.id_kota_kab?.nama_kota_kab ?: '-'}">-</div>
                     </div>
 
                     <div class="form-group top-aligned">
@@ -290,7 +292,7 @@
                                   name="detailLokasi" 
                                   class="input-control"
                                   placeholder="Isi detail lokasi daerah yang terdampak"
-                                  th:text="${pengumuman?.detailLokasi ?: ''}"></textarea>
+                                  required></textarea>
                     </div>
                 </div>
 
@@ -300,12 +302,11 @@
                         <textarea name="catatanPetugas" 
                                   class="notes-textarea" 
                                   placeholder="Beri catatan untuk peringatan warga" 
-                                  required
-                                  th:text="${pengumuman?.catatanPetugas ?: ''}"></textarea>
+                                  required></textarea>
                     </div>
 
                     <div class="action-container">
-                        <button type="submit" class="btn-submit">Simpan Perubahan</button>
+                        <button type="submit" class="btn-submit">Buat Pengumuman</button>
                     </div>
                 </div>
             </form>
