@@ -27,7 +27,7 @@ public class LogPenanganan {
 
     @ManyToOne
     @JoinColumn(name="nik", referencedColumnName="nik", nullable = true)
-    private Warga nik;
+    private Petugas nik;
 
     @Column(length=4)
     private int jumlah_personel;
