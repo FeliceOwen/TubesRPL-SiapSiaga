@@ -171,7 +171,7 @@
                     <h1>Pengumuman</h1>
                     <span>Gulir ke bawah untuk lihat seluruh pengumuman</span>
                 </div>
-                <div class="card" th:each="pengumuman : ${pengumumanList}">
+                <div class="card" th:each="pengumuman : ${daftarPengumumanAktif}">
                     <div class="card-pengumuman">
                         <h2 th:text="${pengumuman.jenis}"></h2>
                         <span th:text="${pengumuman.lokasi}"></span>

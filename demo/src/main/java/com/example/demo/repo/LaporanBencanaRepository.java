@@ -1,5 +1,14 @@
 package com.example.demo.repo;
 
-public class LaporanBencanaRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.example.demo.model.LaporanBencana;
+
+import java.util.List;
+
+@Repository 
+public interface LaporanBencanaRepository extends JpaRepository<LaporanBencana, String> {
     
 }
