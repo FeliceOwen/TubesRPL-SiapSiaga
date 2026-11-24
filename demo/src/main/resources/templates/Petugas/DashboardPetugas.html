@@ -207,33 +207,36 @@
 
             <section>
                 <h2>Pengumuman</h2>
-                <div class="announcement-card" th:if="${pengumuman != null}">
-                    <img src="${pengumuman.foto}" alt="Foto Bencana" class="announcement-img">
+
+                <div th:if="${#lists.isEmpty(daftarPengumuman)}" style="color: #666; font-style: italic;">
+                    Belum ada pengumuman yang diterbitkan.
+                </div>
+
+                <div class="announcement-card" th:each="p : ${daftarPengumuman}" style="margin-bottom: 20px;">
+                    <img th:if="${p.gambar != null}"
+                        th:src="'data:image/jpeg;base64,' + ${T(java.util.Base64).getEncoder().encodeToString(p.gambar)}"
+                        alt="Foto Bencana"
+                        class="announcement-img">
+                    <div th:if="${p.gambar == null}"
+                        class="announcement-img"
+                        style="background-color: #e0d7c3; display: flex; align-items: center; justify-content: center; color: #666; font-size: 0.9rem;">
+                        Tidak ada foto
+                    </div>
+
                     <div class="announcement-content">
-                        <h3 class="announcement-title" th:text="${pengumuman.judul}">Judul Pengumuman</h3>
+                        <h3 class="announcement-title" th:text="${p.jenis}">Jenis Bencana</h3>
                         <div class="announcement-meta">
-                            <p>
-                                Tanggal:
-                                <span th:text="${pengumuman.tanggalLaporan}"></span>
-                            </p>
-
-                            <p>
-                                Lokasi:
-                                <span th:text="${pengumuman.lokasi}"></span>
-                            </p>
-
-                            <p>
-                                Jenis Bencana:
-                                <span th:text="${pengumuman.jenisBencana}"></span>
-                            </p>
+                            <p>Tanggal: <span th:text="${p.tanggal + ' ' + p.jam}"></span></p>
+                            <p>Lokasi: <span th:text="${p.lokasi}"></span></p>
+                            <p>Jenis Bencana: <span th:text="${p.jenis}"></span></p>
                         </div>
 
                         <div class="announcement-note">
                             <span class="note-title">Catatan Petugas:</span>
-                            <span th:text="${pengumuman.catatanPetugas}"></span>
+                            <span th:text="${p.catatan}"></span>
                         </div>
                     </div>
-                    <a th:href="@{/edit-pengumuman}" href="EditPengumuman.html" class="btn-edit">Edit</a>
+                    <a th:href="@{/laporan-warga}" class="btn-edit">Edit</a>
                 </div>
             </section>
         </main>
