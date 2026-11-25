@@ -255,14 +255,14 @@
     </head>
     <body>
         <header>
-            <a href="instruksi.html">
+            <a th:href="@{/instruksi}">
                 <img src="../assets/back-black.png" value="back">
             </a>
             <h1>Buat Laporan Bencana</h1>
         </header>
         <main>
             <!-- to do -->
-            <form method="get" action="">
+            <form method="get" action="konfirmasi_laporan.html">
                 <div id="input-laporan">
                     <div id="bencana">
                         <h2>Bencana</h2>
@@ -337,7 +337,7 @@
                     </div>
                 </div>
                 <!-- to do : kirim ke konfirmasi laporan -->
-                <a id="submit-laporan" href="konfirmasi_laporan.html">
+                <a id="submit-laporan">
                     Buat Laporan
                 </a>
             </form>

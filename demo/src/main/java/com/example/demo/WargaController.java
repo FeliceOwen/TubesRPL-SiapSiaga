@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.demo.repo.Bencana.BencanaRepository;
-import com.example.demo.repo.WargaRepository;
 import com.example.demo.repo.Pengumuman.PengumumanRepository;
-
+import com.example.demo.repo.WargaRepository;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -40,7 +39,12 @@ public class WargaController {
         return "Warga/index";
     }
 
-    @GetMapping("/laporan/tambah")
+    @GetMapping("/instruksi")
+    public String instruksi() {
+        return "Warga/instruksi";
+    }
+
+    @GetMapping("/tambah")
     public String tambahLaporan() {
         return "Warga/tambah_laporan";
     }
