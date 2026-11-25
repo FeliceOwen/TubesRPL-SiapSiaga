@@ -285,7 +285,7 @@
         <div class="top-bar">
 
             <div class="page-title">
-                <a th:href="@{/admin/manajemen-data}" href="importData.html" class="btn-back">
+                <a th:href="@{/admin/import-data}" href="importData.html" class="btn-back">
                     <img src="../assets/back-black.png" alt="">
                 </a>
 
@@ -311,13 +311,13 @@
                     <tr th:each="warga, iterStat : ${daftarWarga}">
                         <td th:text="${iterStat.count}">1</td>
 
-                        <td th:text="${warga.namaWarga}">Keisya</td>
+                        <td th:text="${warga.nama_lengkap}">Keisya</td>
 
                         <td th:text="${warga.nik}">1234061006000001</td>
 
                         <td>
-                            <form th:id="'deleteForm-' + ${warga.id}"
-                                th:action="@{/admin/data-warga/hapus/{id}(id=${warga.id})}"
+                            <form th:id="'deleteForm-' + ${warga.nik}"
+                                th:action="@{/admin/data-warga/hapus/{id}(id=${warga.nik})}"
                                 method="post">
 
                                 <button type="button"

@@ -245,17 +245,12 @@
                     <tr th:each="petugas, iterStat : ${daftarPetugas}">
                         <td th:text="${iterStat.count}">1</td>
 
-                        <td th:text="${petugas.namaPetugas}">
-                            Andi Pratama
-                        </td>
+                        <td th:text="${petugas.nama_lengkap}">Andi Pratama</td>
 
-                        <td th:text="${petugas.kotaLokasiKerja}">
-                            Bandung
-                        </td>
+                        <td th:text="${petugas.nik}">1234061006000002</td>
 
                         <td>
-                            <a th:href="@{/admin/data-petugas/edit/{id}(id=${petugas.id})}"
-                            href="editPetugas.html"
+                            <a th:href="@{/admin/data-petugas/edit/{nik}(nik=${petugas.nik})}"
                             class="btn-edit"
                             title="Edit Petugas">
                                 <img src="../assets/edit_icon.png" alt="Edit">

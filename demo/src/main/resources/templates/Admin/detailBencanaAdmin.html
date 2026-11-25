@@ -236,17 +236,17 @@
             <!-- Bagian Kiri -->
             <section class="detail">
 
-                <h2 class="judul" th:text="${laporan?.jenisBencana ?: '-'}">-</h2>
-
+                <h2 class="judul" th:text="${laporan.id_bencana?.nama_bencana ?: '-'}">-</h2>
+                
                 <div class="informasi">
                     <div class="label">Jenis Bencana</div>
-                    <div th:text="${laporan?.jenisBencana ?: '-'}">-</div>
-
+                    <div th:text="${laporan.id_bencana?.nama_bencana ?: '-'}">-</div>
+                    
                     <div class="label">Tanggal Kejadian</div>
                     <div th:text="${laporan?.tanggalKejadian ?: '-'}">-</div>
 
                     <div class="label">Waktu Kejadian</div>
-                    <div th:text="${laporan?.waktuKejadian ?: '-'}">-</div>
+                    <div th:text="${laporan?.jamKejadian ?: '-'}">-</div>
 
                     <div style="height: 8px;"></div>
                     <div style="height: 8px;"></div>
@@ -255,7 +255,7 @@
                     <div th:text="${laporan?.provinsi ?: '-'}">-</div>
 
                     <div class="label">Kabupaten / Kota</div>
-                    <div th:text="${laporan?.kota ?: '-'}">-</div>
+                    <div th:text="${laporan.id_bencana.nama_bencana}"></div>
 
                     <div class="label">Kecamatan</div>
                     <div th:text="${laporan?.kecamatan ?: '-'}">-</div>

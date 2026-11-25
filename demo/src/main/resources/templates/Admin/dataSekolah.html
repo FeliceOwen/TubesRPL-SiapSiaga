@@ -269,7 +269,7 @@
         <div class="top-bar">
 
             <div class="page-title">
-                <a th:href="@{/admin/manajemen-data}" href="importData.html" class="btn-back">
+                <a th:href="@{/admin/import-data}" class="btn-back">
                     <img src="../assets/back-black.png" alt="">
                 </a>
 
@@ -298,7 +298,7 @@
                     <tr th:each="sekolah, iterStat : ${daftarSekolah}">
                         <td th:text="${iterStat.count}">1</td>
 
-                        <td th:text="${sekolah.namaSekolah}">SD Melati 1</td>
+                        <td th:text="${sekolah.nama_sekolah}">SD Melati 1</td>
 
                         <td th:text="${sekolah.provinsi}">Jabar</td>
                         <td th:text="${sekolah.kota}">Bandung</td>

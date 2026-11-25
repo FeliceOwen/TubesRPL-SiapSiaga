@@ -181,6 +181,15 @@
             .announcement-note span:not(.note-title) {
                 color: red;
             }
+
+            #pengumuman {
+                display: flex;
+                flex-direction: column;
+            }
+
+            #pengumuman .announcement-card {
+                margin-bottom: 20px;
+            }
         </style>
     </head>
     <body>
@@ -195,6 +204,10 @@
                     <div class="stat-card">
                         <div class="label">Kebakaran</div>
                         <div class="value" th:text="${statistik['Kebakaran Hutan']}">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">Gunung<br>Meletus</div>
+                        <div class="value" th:text="${statistik['Gunung Meletus']}">0</div>
                     </div>
                     <div class="stat-card">
                         <div class="label">Gempa</div>
@@ -216,11 +229,11 @@
             </section>
 
             
-            <section>
+            <section id="pengumuman">
                 <h2>Pengumuman</h2>
 
                 <div class="announcement-card"  th:each="pengumuman : ${daftarPengumuman}">
-                    <img th:src="@{'/assets/' + ${pengumuman.gambar}}" alt="foto bencana">                    
+                    <img class="gambar-pengumuman" th:src="${pengumuman.gambar != null} ? @{'/assets/' + ${pengumuman.gambar}} : @{/assets/gunung_meletus.jpg}" alt="gambar-pengumuman"/>
                     <div class="announcement-content">
                         <h3 class="announcement-title"
                             th:text="${pengumuman.jenis}">
