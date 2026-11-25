@@ -279,36 +279,6 @@
                         Lihat Detail
                     </a>
                 </div>
-
-            </div>
-
-             <div class="report-card" th:each="laporan : ${daftarLaporan}" data-status="Resmi">
-
-                <div class="badge-status status-resmi">Terverifikasi</div>
-
-                <h3 class="report-title" th:text="${laporan.jenisBencana}">Jenis Bencana</h3>
-
-                <div class="report-details">
-                    <span class="label">Lokasi</span>
-                    <span class="value" th:text="${laporan.lokasi ?: '-'}">-</span>
-
-                    <span class="label">Tanggal</span>
-                    <span class="value" th:text="${laporan.tanggal != null ? #temporals.format(laporan.tanggal, 'dd MMMM yyyy') : '-'}">-</span>
-
-                    <span class="label">Jam</span>
-                    <span class="value" th:text="${laporan.waktu != null ? #temporals.format(laporan.waktu, 'HH.mm') : '-'}">-</span>
-
-                    <span class="label">Catatan</span>
-                    <span class="value" th:text="${laporan.catatan ?: '-'}">-</span>
-                </div>
-
-                <div class="action-buttons">
-                    <a th:href="@{/laporan/detail/{id}(id=${laporan.id})}" href="detailBencanaAdmin.html" class="btn-action">
-                        Lihat Detail
-                    </a>
-                </div>
-
-            </div>
         </div>
     </main>
 

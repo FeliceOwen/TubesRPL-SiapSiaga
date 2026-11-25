@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" xmlns="https://www.thymeleaf.org">
+<html lang="id" xmlns:th="https://www.thymeleaf.org">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -194,15 +194,15 @@
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="label">Kebakaran</div>
-                        <div class="value" th:text="${statistik['Kebakaran']}">0</div>
+                        <div class="value" th:text="${statistik['Kebakaran Hutan']}">0</div>
                     </div>
                     <div class="stat-card">
                         <div class="label">Gempa</div>
-                        <div class="value" th:text="${statistik['Gempa']}">0</div>
+                        <div class="value" th:text="${statistik['Gempa Bumi']}">0</div>
                     </div>
                     <div class="stat-card">
                         <div class="label">Keracunan<br>Makanan</div>
-                        <div class="value" th:text="${statistik['Keracunan Makanan']}">0</div>
+                        <div class="value" th:text="${statistik['Keracunan MBG']}">0</div>
                     </div>
                     <div class="stat-card">
                         <div class="label">Banjir</div>
@@ -215,12 +215,18 @@
                 </div>
             </section>
 
+            
             <section>
                 <h2>Pengumuman</h2>
-                <div class="announcement-card" th:if="${pengumuman != null}">
-                    <img src="${pengumuman.foto}" alt="Foto Bencana" class="announcement-img">
+
+                <div class="announcement-card"  th:each="pengumuman : ${daftarPengumuman}">
+                    <img th:src="@{'/assets/' + ${pengumuman.gambar}}" alt="foto bencana">                    
                     <div class="announcement-content">
-                        <h3 class="announcement-title" th:text="${pengumuman.judul}">Judul Pengumuman</h3>
+                        <h3 class="announcement-title"
+                            th:text="${pengumuman.jenis}">
+                            Jenis Bencana
+                        </h3>
+
                         <div class="announcement-meta">
                             <p>
                                 Lokasi:
@@ -229,22 +235,28 @@
 
                             <p>
                                 Tanggal:
-                                <span th:text="${pengumuman.tanggalLaporan}"></span>
+                                <span th:text="${pengumuman.tanggal}"></span>
                             </p>
 
                             <p>
-                                Jam :
-                                <span th:text="${pengumuman.jamLaporan}"></span>
+                                Jam:
+                                <span th:text="${pengumuman.jam}"></span>
                             </p>
                         </div>
 
                         <div class="announcement-note">
-                            <span class="note-title">Catatan Petugas:</span>
-                            <span th:text="${pengumuman.catatanPetugas}"></span>
+                            <span class="note-title">Catatan:</span>
+                            <span th:text="${pengumuman.catatan}"></span>
                         </div>
+
                     </div>
                 </div>
+
+                <p th:if="${pengumuman == null}">
+                    Belum ada pengumuman.
+                </p>
             </section>
+
         </main>
 
         <nav class="bottom-nav">

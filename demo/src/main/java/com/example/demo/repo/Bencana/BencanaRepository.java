@@ -9,7 +9,7 @@ import java.util.List;
 import com.example.demo.model.Bencana;
 
 @Repository
-public interface BencanaRepository extends JpaRepository<Warga, String> {
+public interface BencanaRepository extends JpaRepository<Bencana, String> {
     @Query (value = """
         SELECT
             bencana.nama_bencana AS namaBencana,
@@ -20,6 +20,7 @@ public interface BencanaRepository extends JpaRepository<Warga, String> {
             laporan_bencana AS laporan
             ON bencana.id_bencana = laporan.id_bencana
             AND YEAR(laporan.tanggal_kejadian) = :tahun
+            AND laporan.status_hapus = 0
         GROUP BY
             bencana.id_bencana, bencana.nama_bencana
         """, nativeQuery=true)
