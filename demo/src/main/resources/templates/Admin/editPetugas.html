@@ -473,7 +473,7 @@
             <div class="petugas-form">
 
                 <form id="editForm" th:object="${petugas}"
-                    th:action="@{/admin/data-petugas/edit/{id}(id=${petugas.id})}"
+                    th:action="@{/admin/data-petugas/edit/{id}(id=${petugas.nik})}"
                     method="post"
                     class="petugas-form">
 
@@ -533,7 +533,7 @@
                 </form>
 
                 <form id="deleteForm"
-                    th:action="@{/admin/data-petugas/hapus/{id}(id=${petugas.id})}"
+                    th:action="@{/admin/data-petugas/hapus/{id}(id=${petugas.nik})}"
                     method="post">
                 </form>
 

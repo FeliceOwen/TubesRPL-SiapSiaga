@@ -21,6 +21,7 @@ public interface BencanaRepository extends JpaRepository<Bencana, String> {
             laporan_bencana AS laporan
             ON bencana.id_bencana = laporan.id_bencana
             AND YEAR(laporan.tanggal_kejadian) = :tahun
+            AND laporan.status_hapus = 0
         GROUP BY
             bencana.id_bencana, bencana.nama_bencana
         """, nativeQuery=true)

@@ -269,7 +269,7 @@
         <div class="top-bar">
 
             <div class="page-title">
-                <a th:href="@{/admin/manajemen-data}" href="importData.html" class="btn-back">
+                <a th:href="@{/admin/import-data}" href="importData.html" class="btn-back">
                     <img src="../assets/back-black.png" alt="">
                 </a>
 
@@ -297,11 +297,11 @@
                     <tr th:each="wilayah, iterStat : ${daftarWilayah}">
                         <td th:text="${iterStat.count}">1</td>
 
-                        <td th:text="${wilayah.provinsi}">Jawa Barat</td>
+                        <td th:text="${provinsi.nama_provinsi}">Jawa Barat</td>
 
-                        <td th:text="${wilayah.kotaKabupaten}">Bandung</td>
-                        <td th:text="${wilayah.kecamatan}">Andir</td>
-                        <td th:text="${wilayah.kelurahan}">Kebon Jeruk</td>
+                        <td th:text="${kotakabupaten.nama_kota_kab}">Bandung</td>
+                        <td th:text="${kecamatan.nama_kec}">Andir</td>
+                        <td th:text="${kelurahan.nama_kel}">Kebon Jeruk</td>
 
                         <td>
                             <form th:id="'deleteForm-' + ${wilayah.id}"
