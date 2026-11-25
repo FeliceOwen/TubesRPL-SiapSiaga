@@ -1,15 +1,16 @@
 package com.example.demo.repo.Bencana;
 
-import com.example.demo.model.Warga;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import java.util.List;
+
 import com.example.demo.model.Bencana;
 
 @Repository
-public interface BencanaRepository extends JpaRepository<Warga, String> {
+public interface BencanaRepository extends JpaRepository<Bencana, String> {
     @Query (value = """
         SELECT
             bencana.nama_bencana AS namaBencana,

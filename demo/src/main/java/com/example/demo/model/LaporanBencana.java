@@ -50,10 +50,13 @@ public class LaporanBencana {
 
     @Column(length=300)
     private String catatan;
+
+    @Column(length=300)
+    private String alamat;
     
     @Lob
-    @Column(columnDefinition = "VARBINARY(MAX)")
-    private byte[] foto;
+    @Column(length=500)
+    private String foto;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate tanggalKejadian;
