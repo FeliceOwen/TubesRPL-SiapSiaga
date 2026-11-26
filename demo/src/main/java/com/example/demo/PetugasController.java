@@ -184,18 +184,18 @@ public class PetugasController {
         return "redirect:/petugas/dashboard";
     }
 
-    // 6. Endpoint Render Foto dari Database
-    @GetMapping("/laporan/foto/{id}")
-    @ResponseBody
-    public ResponseEntity<byte[]> tampilkanFotoLaporan(@PathVariable("id") String id) {
-        LaporanBencana laporan = laporanRepo.findById(id).orElse(null);
-        if (laporan == null || laporan.getFoto() == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok()
-                .contentType(MediaType.IMAGE_JPEG)
-                .body(laporan.getFoto());
-    }
+    // // 6. Endpoint Render Foto dari Database
+    // @GetMapping("/laporan/foto/{id}")
+    // @ResponseBody
+    // public ResponseEntity<byte[]> tampilkanFotoLaporan(@PathVariable("id") String id) {
+    //     LaporanBencana laporan = laporanRepo.findById(id).orElse(null);
+    //     if (laporan == null || laporan.getFoto() == null) {
+    //         return ResponseEntity.notFound().build();
+    //     }
+    //     return ResponseEntity.ok()
+    //             .contentType(MediaType.IMAGE_JPEG)
+    //             .body(laporan.getFoto());
+    // }
 
     @GetMapping("/penanganan/foto/{id}")
     @ResponseBody

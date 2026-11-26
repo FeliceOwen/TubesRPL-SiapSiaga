@@ -261,28 +261,28 @@
             <h1>Buat Laporan Bencana</h1>
         </header>
         <main>
-            <form method="post" th:action="@{/warga/tambah/}" th:object="${laporanbencana}">
+            <form method="post" th:action="@{/warga/laporan/}" th:object="${laporanBencana}">
                 <div id="input-laporan">
                     <div id="bencana">
                         <h2>Bencana</h2>
                         <span id="jenis-bencana">
                             <label for="pilih-bencana">Jenis Bencana</label>
-                            <select id="pilih-bencana" name="jenis_bencana" th:object="${}">
+                            <select id="pilih-bencana" name="id_bencana" required>
                                 <option value="">Pilih Jenis Bencana</option>
-                                <option th:each="data : ${daftarBencana}" th:field="*{id_bencana}" th:value="${data.id_bencana}"></option>
+                                <option th:each="data : ${daftarBencana}" th:text="${data.nama_bencana}" th:value="${data.id_bencana}"></option>
                             </select>
                         </span>
                         <span id="tanggal-bencana">
                             <label>Tanggal Kejadian</label>
-                            <input id="tanggal-kejadian" type="date" th:field="*{tanggalKejadian}">
+                            <input type="date" th:field="*{tanggalKejadian}" required>
                         </span>
                         <span id="waktu-bencana">
                             <label>Waktu Kejadian</label>
-                            <input id="waktu-kejadian" type="time" th:field="*{jamKejadian}">
+                            <input type="time" th:field="*{jamKejadian}" required>
                         </span>
                         <span id="foto-bencana">
                             <label>Foto Kejadian</label>
-                            <input id="foto-kejadian" type="file">
+                            <input type="file" accept="image/jpeg, image/png" name="foto" required>
                         </span>
                     </div>
 
@@ -290,44 +290,43 @@
                         <h2>Lokasi</h2>
                         <span id="provinsi-bencana">
                             <label for="provinsi-kejadian">Provinsi</label>
-                            <select id="provinsi-kejadian" name="provinsi-bencana">
+                            <select id="provinsi-kejadian" name="provinsi-bencana" required>
                             </select>
                         </span>
                         <span id="kabkot-bencana">
                             <label for="kabkot-kejadian">Kabupaten / Kota</label>
-                            <select id="kabkot-kejadian" name="kabkot-bencana" data-label="Kabupaten / Kota" disabled>
+                            <select id="kabkot-kejadian" name="kabkot-bencana" data-label="Kabupaten / Kota" disabled required>
                             </select>
                         </span>
                         <span id="kecamatan-bencana">
                             <label for="kecamatan-kejadian">Kecamatan</label>
-                            <select id="kecamatan-kejadian" name="kecamatan-bencana" data-label="Kecamatan" disabled>
+                            <select id="kecamatan-kejadian" name="kecamatan-bencana" data-label="Kecamatan" disabled required>
                             </select>
                         </span>
                         <span id="kelurahan-bencana">
                             <label for="kelurahan-bencana">Kelurahan</label>
-                            <select id="kelurahan-kejadian" th:field="*{id_kel}" data-label="Kelurahan" th:value="${kelurahan.id_kelurahan}" disabled>
+                            <select id="kelurahan-kejadian" name="id_kel" disabled required>
                             </select>
                         </span>
                         <span id="sekolah-bencana">
                             <label for="sekolah-kejadian">Sekolah</label>
-                            <select id="sekolah-kejadian" th:field="*{id_sekolah}" th:value="${sekolah.id_sekolah}" disabled>
+                            <select id="sekolah-kejadian" name="id_sekolah" disabled>
                             </select>
                         </span>
                         <span id="alamat-bencana">
                             <label for="alamat-bencana">Alamat</label>
-                            <textarea placeholder="Isi alamat (nama jalan dan nomor)" th:field="*{alamat}"></textarea>
+                            <textarea placeholder="Isi alamat (nama jalan dan nomor)" th:field="*{alamat}" required></textarea>
                         </span>
                     </div>
 
                     <div id="catatan">
                         <h2>Catatan</h2>
-                        <textarea th:field="*{catatan}" placeholder="Tambah catatan kejadian di sini"></textarea>
+                        <textarea th:field="*{catatan}" placeholder="Tambah catatan kejadian di sini" required></textarea>
                     </div>
                 </div>
-                <!-- to do : kirim ke konfirmasi laporan -->
-                <a id="submit-laporan" th:action="@{/warga/laporan}">
+                <button id="submit-laporan">
                     Buat Laporan
-                </a>
+                </button>
             </form>
         </main>
         

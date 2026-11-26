@@ -6,7 +6,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -54,7 +53,6 @@ public class LaporanBencana {
     @Column(length=300)
     private String alamat;
     
-    @Lob
     @Column(length=500)
     private String foto;
 
