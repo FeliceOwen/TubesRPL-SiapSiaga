@@ -236,7 +236,7 @@
                             <span th:text="${p.catatan}"></span>
                         </div>
                     </div>
-                    <a th:href="@{/laporan-warga}" class="btn-edit">Edit</a>
+                    <a th:href="@{/pengumuman/edit/{id}(id=${p.idPengumuman})}" class="btn-edit">Edit</a>
                 </div>
             </section>
         </main>
