@@ -24,6 +24,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
 @Controller
 public class PetugasController {
 
@@ -39,36 +42,66 @@ public class PetugasController {
     @Autowired
     private StatusLaporanRepository statusRepo;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     // 1. Daftar Laporan Warga
     @GetMapping("/laporan-warga")
-    public String laporanWarga(HttpSession session, Model model) {
-        String role = (String) session.getAttribute("role");
-        if(role == null) {
-            return "redirect:/login";
+    public String laporanWarga(Model model) {
+        List<LaporanBencana> daftarLaporan = laporanRepo.findAll();
+
+        @SuppressWarnings("unchecked")
+        List<Object[]> rowsLokasi = entityManager.createNativeQuery("""
+                SELECT 
+                    laporan.id_laporan,
+                    CONCAT_WS(', ', kelurahan.nama_kel, kota_kabupaten.nama_kota_kab, provinsi.nama_provinsi)
+                FROM laporan_bencana AS laporan
+                JOIN kelurahan ON kelurahan.id_kel = laporan.id_kel
+                JOIN kecamatan ON kecamatan.id_kec = kelurahan.id_kec
+                JOIN kota_kabupaten ON kota_kabupaten.id_kota_kab = kecamatan.id_kota_kab
+                JOIN provinsi ON provinsi.id_provinsi = kota_kabupaten.id_provinsi
+                """)
+                .getResultList();
+
+        java.util.Map<String, String> lokasiMap = new java.util.HashMap<>();
+        for (Object[] row : rowsLokasi) {
+            if (row[0] != null && row[1] != null) {
+                lokasiMap.put(row[0].toString(), row[1].toString());
+            }
         }
 
-        List<LaporanBencana> daftarLaporan = laporanRepo.findAllActiveLaporan();
         model.addAttribute("daftarLaporan", daftarLaporan);
+        model.addAttribute("lokasiMap", lokasiMap);
         return "Petugas/LaporanWarga";
     }
 
     // 2. Detail Bencana
     @GetMapping("/laporan/detail/{id}")
     public String detailLaporan(@PathVariable("id") String id, Model model) {
-        LaporanBencana laporan = laporanRepo.findById(id).orElse(null);
+        LaporanBencana laporan = laporanRepo.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Laporan tidak ditemukan: " + id));
 
-        if (laporan == null) {
-            return "redirect:/laporan-warga";
+        String lokasiLengkap = laporan.getId_kel() != null ? laporan.getId_kel() : "-";
+
+        @SuppressWarnings("unchecked")
+        List<String> hasilLokasi = entityManager.createNativeQuery("""
+                SELECT CONCAT_WS(', ', kelurahan.nama_kel, kecamatan.nama_kec, kota_kabupaten.nama_kota_kab, provinsi.nama_provinsi)
+                FROM laporan_bencana AS laporan
+                JOIN kelurahan ON kelurahan.id_kel = laporan.id_kel
+                JOIN kecamatan ON kecamatan.id_kec = kelurahan.id_kec
+                JOIN kota_kabupaten ON kota_kabupaten.id_kota_kab = kecamatan.id_kota_kab
+                JOIN provinsi ON provinsi.id_provinsi = kota_kabupaten.id_provinsi
+                WHERE laporan.id_laporan = :idLaporan
+                """)
+                .setParameter("idLaporan", id)
+                .getResultList();
+
+        if (!hasilLokasi.isEmpty() && hasilLokasi.get(0) != null) {
+            lokasiLengkap = hasilLokasi.get(0);
         }
 
-        // Ambil log penanganan terbaru untuk laporan ini (jika ada)
-        LogPenanganan penanganan = logRepo.findAll().stream()
-                .filter(l -> l.getId_laporan() != null && id.equals(l.getId_laporan().getId_laporan()))
-                .reduce((first, second) -> second)
-                .orElse(null);
-
         model.addAttribute("laporan", laporan);
-        model.addAttribute("penanganan", penanganan);
+        model.addAttribute("lokasiLengkap", lokasiLengkap);
         return "Petugas/DetailBencana";
     }
 
@@ -165,6 +198,7 @@ public class PetugasController {
     }
 
     // Form Edit Pengumuman (/pengumuman/edit/{id})
+    // Form Edit Pengumuman (/pengumuman/edit/{id})
     @GetMapping("/pengumuman/edit/{id}")
     public String formEditPengumuman(@PathVariable("id") String id, Model model) {
         Pengumuman pengumuman = pengumumanRepo.findById(id)
@@ -174,14 +208,24 @@ public class PetugasController {
         String namaProvinsi = "-";
         String namaKotaKab = "-";
 
-        if (laporan != null && laporan.getId_kel() != null && laporan.getId_kel().getId_kec() != null) {
-            var kotaKab = laporan.getId_kel().getId_kec().getId_kota_kab();
-            if (kotaKab != null) {
-                namaKotaKab = kotaKab.getNama_kota_kab() != null ? kotaKab.getNama_kota_kab() : "-";
-                if (kotaKab.getId_provinsi() != null && kotaKab.getId_provinsi().getNama_provinsi() != null) {
-                    namaProvinsi = kotaKab.getId_provinsi().getNama_provinsi();
-                }
-            }
+        @SuppressWarnings("unchecked")
+        List<Object[]> hasilWilayah = entityManager.createNativeQuery("""
+                SELECT provinsi.nama_provinsi, kota_kabupaten.nama_kota_kab
+                FROM pengumuman
+                JOIN laporan_bencana AS laporan ON pengumuman.id_laporan = laporan.id_laporan
+                JOIN kelurahan ON kelurahan.id_kel = laporan.id_kel
+                JOIN kecamatan ON kecamatan.id_kec = kelurahan.id_kec
+                JOIN kota_kabupaten ON kota_kabupaten.id_kota_kab = kecamatan.id_kota_kab
+                JOIN provinsi ON provinsi.id_provinsi = kota_kabupaten.id_provinsi
+                WHERE pengumuman.id_pengumuman = :idPengumuman
+                """)
+                .setParameter("idPengumuman", id)
+                .getResultList();
+
+        if (!hasilWilayah.isEmpty()) {
+            Object[] row = hasilWilayah.get(0);
+            if (row[0] != null) namaProvinsi = row[0].toString();
+            if (row[1] != null) namaKotaKab = row[1].toString();
         }
 
         model.addAttribute("pengumuman", pengumuman);
