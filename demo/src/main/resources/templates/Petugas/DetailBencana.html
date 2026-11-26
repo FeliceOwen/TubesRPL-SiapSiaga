@@ -281,8 +281,8 @@
     <main>
 
         <div class="back">
-            <a th:href="@{/laporan-petugas}" href="LaporanWarga.html">
-                <img th:src="@{/assets/back-black.png}" src="../assets/back-black.png" alt="Kembali">
+            <a th:href="@{/laporan-warga}">
+                <img th:src="@{/assets/back-black.png}" alt="Kembali">
                 Detail
             </a>
         </div>
@@ -292,47 +292,42 @@
             <!-- Bagian Kiri -->
             <section class="detail">
 
-                <h2 class="judul" th:text="${laporan?.jenisBencana ?: '-'}">-</h2>
+                <h2 class="judul" th:text="${laporan.id_bencana?.nama_bencana ?: '-'}">-</h2>
 
                 <div class="informasi">
                     <div class="label">Jenis Bencana</div>
-                    <div th:text="${laporan?.jenisBencana ?: '-'}">-</div>
+                    <div th:text="${laporan.id_bencana?.nama_bencana ?: '-'}">-</div>
 
                     <div class="label">Tanggal Kejadian</div>
-                    <div th:text="${laporan?.tanggalKejadian ?: '-'}">-</div>
+                    <div th:text="${laporan.tanggalKejadian != null ? #temporals.format(laporan.tanggalKejadian, 'dd MMMM yyyy') : '-'}">-</div>
 
                     <div class="label">Waktu Kejadian</div>
-                    <div th:text="${laporan?.waktuKejadian ?: '-'}">-</div>
+                    <div th:text="${laporan.jamKejadian != null ? #temporals.format(laporan.jamKejadian, 'HH.mm') : '-'}">-</div>
 
                     <div style="height: 8px;"></div>
                     <div style="height: 8px;"></div>
-
-                    <div class="label">Provinsi</div>
-                    <div th:text="${laporan?.provinsi ?: '-'}">-</div>
-
-                    <div class="label">Kabupaten / Kota</div>
-                    <div th:text="${laporan?.kota ?: '-'}">-</div>
-
-                    <div class="label">Kecamatan</div>
-                    <div th:text="${laporan?.kecamatan ?: '-'}">-</div>
 
                     <div class="label">Kelurahan</div>
-                    <div th:text="${laporan?.kelurahan ?: '-'}">-</div>
+                    <div th:text="${laporan.id_kel?.nama_kel ?: '-'}">-</div>
 
                     <div class="label">Sekolah</div>
-                    <div th:text="${laporan?.sekolah ?: '-'}">-</div>
+                    <div th:text="${laporan.id_sekolah?.nama_sekolah ?: '-'}">-</div>
 
-                    <div class="label">Alamat</div>
-                    <div th:text="${laporan?.alamat ?: '-'}">-</div>
+                    <div class="label">Catatan / Detail</div>
+                    <div th:text="${laporan.catatan ?: '-'}">-</div>
+
+                    <div class="label">Status Saat Ini</div>
+                    <div style="font-weight: 700; color: #626F47;" th:text="${laporan.id_status?.status_verifikasi ?: '-'}">-</div>
                 </div>
 
                 <div class="foto">
                     <p>Foto Kejadian</p>
-                    <!-- Muncul jika foto dari DB ada -->
-                    <img th:if="${laporan?.fotoKejadian != null}" 
-                         th:src="@{${laporan.fotoKejadian}}"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                    <img th:if="${laporan.foto != null}" 
+                         th:src="@{/laporan/foto/{id}(id=${laporan.id_laporan})}"
                          alt="Foto Kejadian">
+                    <div th:if="${laporan.foto == null}" class="empty-img-box">
+                        Tidak ada foto
+                    </div>
                 </div>
 
             </section>
@@ -340,29 +335,28 @@
             <!-- Bagian Kanan -->
             <section class="penanganan">
 
-                <!-- Dropdown Status & Tombol Simpan -->
+                <!-- Dropdown Status & Tombol Simpan (pakai kode ST1-ST4) -->
                 <form class="status-form" 
-                      th:action="${laporan != null ? '/laporan/update-status/' + laporan.id : '#'}" 
+                      th:action="@{/laporan/update-status/{id}(id=${laporan.id_laporan})}" 
                       method="POST">
 
                     <select name="status" class="status-select">
-                        <option value="Menunggu Verifikasi" th:selected="${laporan?.status == 'Menunggu Verifikasi'}">Menunggu Verifikasi</option>
-                        <option value="Terverifikasi" th:selected="${laporan?.status == 'Terverifikasi' or laporan?.status == 'Resmi'}">Terverifikasi</option>
-                        <option value="Tidak Terverifikasi" th:selected="${laporan?.status == 'Tidak Terverifikasi' or laporan?.status == 'Tidak Resmi'}">Tidak Terverifikasi</option>
-                        <option value="Selesai" th:selected="${laporan?.status == 'Selesai'}">Selesai</option>
+                        <option value="ST1" th:selected="${laporan.id_status?.id_status == 'ST1'}">Menunggu Verifikasi</option>
+                        <option value="ST2" th:selected="${laporan.id_status?.id_status == 'ST2'}">Terverifikasi / On Progress</option>
+                        <option value="ST3" th:selected="${laporan.id_status?.id_status == 'ST3'}">Tidak Terverifikasi</option>
+                        <option value="ST4" th:selected="${laporan.id_status?.id_status == 'ST4'}">Selesai</option>
                     </select>
 
                     <button type="submit" class="btn-simpan">Simpan</button>
                 </form>
 
-                <!-- Judul Log Penanganan & Tombol Tambah -->
+                <!-- Judul Log Penanganan & Tombol Tambah (aktif jika ST2) -->
                 <div class="log-header">
                     <h2>Log Penanganan</h2>
-                    <a th:href="${laporan != null and (laporan.status == 'Resmi' or laporan.status == 'Terverifikasi') ? '/penanganan/tambah/' + laporan.id : '#'}" 
-                    href="LogPenanganan.html" 
-                    class="btn-tambah"
-                    th:classappend="${laporan == null or (laporan.status != 'Resmi' and laporan.status != 'Terverifikasi') ? 'disabled' : ''}">
-                    Tambah
+                    <a th:href="${laporan.id_status?.id_status == 'ST2' ? '/penanganan/tambah/' + laporan.id_laporan : '#'}" 
+                       class="btn-tambah"
+                       th:classappend="${laporan.id_status?.id_status != 'ST2' ? 'disabled' : ''}">
+                        Tambah
                     </a>
                 </div>
 
@@ -370,17 +364,14 @@
                 <div class="log">
 
                     <div class="log-info">
-                        <div class="label">Badan Penanganan</div>
-                        <div th:text="${penanganan?.badanPenanganan ?: '-'}">-</div>
-
                         <div class="label">Jumlah Personel</div>
                         <div>
-                            <span th:text="${penanganan?.jumlahPersonel ?: '-'}">-</span>
-                            <span th:if="${penanganan?.jumlahPersonel != null}"> orang</span>
+                            <span th:text="${penanganan?.jumlah_personel ?: '-'}">-</span>
+                            <span th:if="${penanganan?.jumlah_personel != null}"> orang</span>
                         </div>
 
                         <div class="label">Tanggal</div>
-                        <div th:text="${penanganan?.tanggal ?: '-'}">-</div>
+                        <div th:text="${penanganan?.tanggal_penanganan != null ? #temporals.format(penanganan.tanggal_penanganan, 'dd MMMM yyyy') : '-'}">-</div>
 
                         <div class="label">Aktivitas</div>
                         <div th:text="${penanganan?.aktivitas ?: '-'}">-</div>
@@ -388,10 +379,12 @@
 
                     <div class="foto-penanganan">
                         <p>Foto Penanganan</p>
-                        <img th:if="${penanganan?.fotoPenanganan != null}" 
-                             th:src="@{${penanganan.fotoPenanganan}}"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        <img th:if="${penanganan != null and penanganan.foto_penanganan != null}" 
+                             th:src="@{/penanganan/foto/{id}(id=${penanganan.id_log})}"
                              alt="Foto Penanganan">
+                        <div th:if="${penanganan == null or penanganan.foto_penanganan == null}" class="empty-img-box-dark">
+                            Tidak ada foto
+                        </div>
                     </div>
 
                 </div>
