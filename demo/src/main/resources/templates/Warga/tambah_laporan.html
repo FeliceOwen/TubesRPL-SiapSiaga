@@ -261,7 +261,7 @@
             <h1>Buat Laporan Bencana</h1>
         </header>
         <main>
-            <form method="post" th:action="@{/warga/laporan/}" th:object="${laporanBencana}">
+            <form method="post" th:action="@{/warga/laporan/}" th:object="${laporanBencana}" enctype="multipart/form-data">
                 <div id="input-laporan">
                     <div id="bencana">
                         <h2>Bencana</h2>
@@ -282,7 +282,7 @@
                         </span>
                         <span id="foto-bencana">
                             <label>Foto Kejadian</label>
-                            <input type="file" accept="image/jpeg, image/png" name="foto" required>
+                            <input type="file" accept="image/jpeg, image/png" name="fotofile" required>
                         </span>
                     </div>
 

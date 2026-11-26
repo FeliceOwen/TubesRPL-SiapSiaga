@@ -27,9 +27,12 @@ public class LaporanBencana {
     @Column(length=3)
     private String id_laporan;
 
-    @ManyToOne
-    @JoinColumn(name="id_kel", referencedColumnName="id_kel", nullable = false)
-    private Kelurahan id_kel;
+    // @ManyToOne
+    // @JoinColumn(name="id_kel", referencedColumnName="id_kel", nullable = false)
+    // private Kelurahan id_kel;
+
+    @Column
+    private String id_kel;
 
     @ManyToOne
     @JoinColumn(name="id_sekolah", referencedColumnName="id_sekolah", nullable = true)
