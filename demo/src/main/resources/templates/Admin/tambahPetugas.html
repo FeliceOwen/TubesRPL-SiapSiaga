@@ -214,7 +214,7 @@
                 <a th:href="@{/admin/data-petugas}"
                    href="dataPetugas.html"
                    class="btn-back">
-                    <img src="../assets/back-black.png" alt="Kembali">
+                    <img th:src="@{/assets/back-black.png}" alt="Kembali">
                 </a>
 
                 <h3>Tambah Petugas</h3>
@@ -228,7 +228,7 @@
                 th:action="@{/admin/data-petugas/tambah}"
                 method="post">
 
-                <img src="../assets/profile-black.png" alt="Profile" class="profile-icon">
+                <img th:src="@{/assets/profile-black.png}" alt="Profile" class="profile-icon">
                 <div class="form-group">
                     <label for="nik">NIK</label>
 
