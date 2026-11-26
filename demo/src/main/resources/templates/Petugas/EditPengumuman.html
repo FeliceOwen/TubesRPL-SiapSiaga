@@ -238,50 +238,53 @@
 
         <main>
             <div class="page-title-container">
-                <a th:href="@{/dashboard-petugas}" href="DashboardPetugas.html" class="btn-back" title="Kembali">
-                    <img th:src="@{/assets/back-black.png}" src="../assets/back-black.png" alt="Kembali" class="btn-back-image">
+                <a th:href="@{/petugas/dashboard}" class="btn-back" title="Kembali">
+                    <img th:src="@{/assets/back-black.png}" alt="Kembali" class="btn-back-image">
                 </a>
                 <h2 class="page-title">Edit Pengumuman Bencana</h2>
             </div>
 
             <form class="form-card" 
-                  th:action="${pengumuman != null ? '/pengumuman/update/' + pengumuman.id : '#'}" 
+                  th:action="@{/pengumuman/update/{id}(id=${pengumuman.id_pengumuman})}" 
                   method="POST">
 
                 <div class="form-column">
                     <div class="form-group">
                         <label>Jenis Bencana</label>
-                        <div class="readonly-value" th:text="${pengumuman?.jenisBencana ?: '-'}">-</div>
+                        <div class="readonly-value" th:text="${laporan != null and laporan.id_bencana != null ? laporan.id_bencana.nama_bencana : '-'}">-</div>
                     </div>
 
                     <div class="form-group">
                         <label>Tanggal Kejadian</label>
-                        <div class="readonly-value" th:text="${pengumuman?.tanggalLaporan != null ? #temporals.format(pengumuman.tanggalLaporan, 'dd/MM/yyyy') : '-'}">-</div>
+                        <div class="readonly-value" th:text="${laporan != null and laporan.tanggalKejadian != null ? #temporals.format(laporan.tanggalKejadian, 'dd/MM/yyyy') : '-'}">-</div>
                     </div>
 
                     <div class="form-group">
                         <label>Waktu Kejadian</label>
-                        <div class="readonly-value" th:text="${pengumuman?.waktuLaporan != null ? #temporals.format(pengumuman.waktuLaporan, 'HH:mm') : '-'}">-</div>
+                        <div class="readonly-value" th:text="${laporan != null and laporan.jamKejadian != null ? #temporals.format(laporan.jamKejadian, 'HH:mm') : '-'}">-</div>
                     </div>
 
                     <div class="form-group top-aligned">
                         <label>Foto Kejadian</label>
                         <div class="image-preview-container">
-                            <img th:if="${pengumuman?.foto != null}" 
-                                 th:src="${pengumuman.foto}" 
+                            <img th:if="${laporan != null and laporan.foto != null and !laporan.foto.isEmpty()}" 
+                                 th:src="@{${laporan.foto}}" 
                                  alt="Foto Bencana" 
                                  class="image-preview">
+                            <div th:if="${laporan == null or laporan.foto == null or laporan.foto.isEmpty()}" class="image-placeholder-box">
+                                Tidak ada foto
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label>Provinsi</label>
-                        <div class="readonly-value" th:text="${pengumuman?.provinsi ?: '-'}">-</div>
+                        <div class="readonly-value" th:text="${namaProvinsi ?: '-'}">-</div>
                     </div>
 
                     <div class="form-group">
                         <label>Kabupaten / Kota</label>
-                        <div class="readonly-value" th:text="${pengumuman?.kabupaten ?: '-'}">-</div>
+                        <div class="readonly-value" th:text="${namaKotaKab ?: '-'}">-</div>
                     </div>
 
                     <div class="form-group top-aligned">
@@ -290,7 +293,7 @@
                                   name="detailLokasi" 
                                   class="input-control"
                                   placeholder="Isi detail lokasi daerah yang terdampak"
-                                  th:text="${pengumuman?.detailLokasi ?: ''}"></textarea>
+                                  th:text="${pengumuman != null and pengumuman.detail_lokasi != null ? pengumuman.detail_lokasi : ''}"></textarea>
                     </div>
                 </div>
 
@@ -301,7 +304,7 @@
                                   class="notes-textarea" 
                                   placeholder="Tulis catatan pengumuman disini" 
                                   required
-                                  th:text="${pengumuman?.catatanPetugas ?: ''}"></textarea>
+                                  th:text="${pengumuman != null and pengumuman.isi_pengumuman != null ? pengumuman.isi_pengumuman : ''}"></textarea>
                     </div>
 
                     <div class="action-container">
