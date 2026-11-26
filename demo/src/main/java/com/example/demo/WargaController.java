@@ -20,8 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.demo.model.LaporanBencana;
 import com.example.demo.model.Warga;
+import com.example.demo.model.StatusLaporan;
 import com.example.demo.repo.Bencana.BencanaRepository;
 import com.example.demo.repo.LaporanBencanaRepository;
+import com.example.demo.repo.StatusLaporanRepository;
 import com.example.demo.repo.Pengumuman.PengumumanRepository;
 import com.example.demo.repo.WargaRepository;
 
@@ -41,6 +43,9 @@ public class WargaController {
 
     @Autowired
     private PengumumanRepository pengumumanRepo;
+
+    @Autowired
+    private StatusLaporanRepository statusRepo;
 
     @Autowired
     private LaporanBencanaRepository laporanRepo;
@@ -68,23 +73,34 @@ public class WargaController {
         return "Warga/tambah_laporan";
     }
 
-    @PostMapping("laporan/")
+    @PostMapping({"/laporan/","laporan/"})
     public String kirimLaporan (@ModelAttribute LaporanBencana laporan,
                                 HttpSession session,
-                                @RequestParam("id_kel") String idkel,
-                                @RequestParam("foto") MultipartFile fileFoto) throws IOException {
+                                @RequestParam("fotofile") MultipartFile fileFoto) throws IOException {
          
         Path uploadPath = Paths.get("images/");
         String nama_foto = UUID.randomUUID().toString() + "_" + fileFoto.getOriginalFilename();
         Path filePath = uploadPath.resolve(nama_foto);
         Files.copy(fileFoto.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-        laporan.setFoto("/uploads/" + nama_foto);
+        laporan.setFoto("/images/" + nama_foto);
 
-        Warga nik_warga = (Warga) session.getAttribute("nik");
-        laporan.setId_warga(nik_warga);
+        String nik = (String) session.getAttribute("nik");
+        Warga warga_pelapor = wargaRepo.findById(nik).orElse(null);
+        laporan.setId_warga(warga_pelapor);
+
+        long id_laporan = laporanRepo.count() + 1;
+        laporan.setId_laporan(id_laporan + "");
+
+        StatusLaporan defaultStatus = statusRepo.findByStatusVerifikasi("Menunggu Verifikasi").orElse(null);
+        laporan.setId_status(defaultStatus);
 
         laporanRepo.save(laporan);
 
+        return "redirect:/warga/konfirmasi/";
+    }
+
+    @GetMapping("konfirmasi/")
+    public String konfirmasiLaporan() {
         return "Warga/konfirmasi_laporan";
     }
 

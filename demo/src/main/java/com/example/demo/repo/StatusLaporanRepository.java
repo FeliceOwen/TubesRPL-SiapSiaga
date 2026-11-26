@@ -13,4 +13,6 @@ public interface StatusLaporanRepository extends JpaRepository<StatusLaporan, St
 
     @Query("SELECT s FROM StatusLaporan s WHERE LOWER(s.status_verifikasi) = LOWER(:status)")
     Optional<StatusLaporan> findByStatusVerifikasi(@Param("status") String status);
+
+    
 }
