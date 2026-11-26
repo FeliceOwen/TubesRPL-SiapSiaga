@@ -169,11 +169,29 @@ public class PetugasController {
     public String formEditPengumuman(@PathVariable("id") String id, Model model) {
         Pengumuman pengumuman = pengumumanRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Pengumuman tidak ditemukan: " + id));
+
+        LaporanBencana laporan = pengumuman.getId_laporan();
+        String namaProvinsi = "-";
+        String namaKotaKab = "-";
+
+        if (laporan != null && laporan.getId_kel() != null && laporan.getId_kel().getId_kec() != null) {
+            var kotaKab = laporan.getId_kel().getId_kec().getId_kota_kab();
+            if (kotaKab != null) {
+                namaKotaKab = kotaKab.getNama_kota_kab() != null ? kotaKab.getNama_kota_kab() : "-";
+                if (kotaKab.getId_provinsi() != null && kotaKab.getId_provinsi().getNama_provinsi() != null) {
+                    namaProvinsi = kotaKab.getId_provinsi().getNama_provinsi();
+                }
+            }
+        }
+
         model.addAttribute("pengumuman", pengumuman);
-        model.addAttribute("laporan", pengumuman.getId_laporan());
+        model.addAttribute("laporan", laporan);
+        model.addAttribute("namaProvinsi", namaProvinsi);
+        model.addAttribute("namaKotaKab", namaKotaKab);
         return "Petugas/EditPengumuman";
     }
 
+    // Update Pengumuman (/pengumuman/update/{id})
     // Update Pengumuman (/pengumuman/update/{id})
     @PostMapping("/pengumuman/update/{id}")
     public String updatePengumuman(@PathVariable("id") String id,
@@ -186,6 +204,13 @@ public class PetugasController {
         pengumuman.setDetail_lokasi(detailLokasi);
         pengumuman.setIsi_pengumuman(catatanPetugas);
         pengumumanRepo.save(pengumuman);
+
+        // Sinkronkan juga ke catatan laporan agar langsung tampil di kartu dashboard
+        LaporanBencana laporan = pengumuman.getId_laporan();
+        if (laporan != null) {
+            laporan.setCatatan(catatanPetugas);
+            laporanRepo.save(laporan);
+        }
 
         redirectAttributes.addFlashAttribute("pesanSukses", "Pengumuman berhasil diperbarui!");
         return "redirect:/petugas/dashboard";
