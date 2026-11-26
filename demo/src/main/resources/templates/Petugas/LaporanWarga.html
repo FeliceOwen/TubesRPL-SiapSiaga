@@ -304,8 +304,6 @@
             }
         }
     </style>
-
-    <script src="script.js" defer></script>
 </head>
 
 <body>
@@ -321,134 +319,77 @@
             <!-- Value option disesuaikan agar sama dengan nilai status pada card -->
             <select class="filter-select" id="status_verifikasi">
                 <option value="semua">Semua</option>
-                <option value="Resmi">Terverifikasi</option>
-                <option value="Tidak Resmi">Tidak Terverifikasi</option>
-                <option value="Menunggu Verifikasi">Menunggu Verifikasi</option>
-                <option value="Selesai">Selesai</option>
+                <option value="ST1">Menunggu Verifikasi</option>
+                <option value="ST2">Terverifikasi</option>
+                <option value="ST3">Tidak Terverifikasi</option>
+                <option value="ST4">Selesai</option>
             </select>
         </div>
 
         <div class="reports-list" id="reportsList">
-            
-            <div class="report-card" th:each="laporan : ${listLaporan}" th:attr="data-status=${laporan.status}">
-                <h3 class="report-title" th:text="${laporan.jenisBencana}">Jenis Bencana</h3>
 
-                <div class="badge-status badge-bencana-baru" th:if="${laporan.status == 'Baru'}">
+            <div class="empty-state" th:if="${#lists.isEmpty(daftarLaporan)}">
+                <h3>Belum Ada Laporan Warga</h3>
+                <p>Semua laporan bencana dari warga akan tampil di sini.</p>
+            </div>
+
+            <div class="report-card"
+                 th:each="laporan : ${daftarLaporan}"
+                 th:attr="data-status=${laporan.id_status?.id_status}">
+
+                <h3 class="report-title"
+                    th:text="${laporan.id_bencana?.nama_bencana ?: 'Jenis Bencana'}">Jenis Bencana</h3>
+
+                <!-- Badge untuk status Baru / Menunggu Verifikasi -->
+                <div class="badge-status badge-bencana-baru"
+                     th:if="${laporan.id_status?.id_status == 'ST1'}">
                     <img src="../assets/triangle.png" class="alert-icon" alt="Peringatan">
-                    <span class="alert-text">Bencana Baru!</span>
+                    <span class="alert-text" th:text="${laporan.id_status?.status_verifikasi}">Bencana Baru!</span>
                 </div>
+
+                <!-- Badge untuk status lainnya (Terverifikasi, Tidak Terverifikasi, Selesai) -->
+                <div class="badge-status"
+                     th:unless="${laporan.id_status?.id_status == 'ST1'}"
+                     th:classappend="${laporan.id_status?.id_status == 'ST2' ? 'status-resmi' : (laporan.id_status?.id_status == 'ST3' ? 'status-tidak-resmi' : 'status-selesai')}"
+                     th:text="${laporan.id_status?.status_verifikasi}">Status</div>
 
                 <div class="report-details">
                     <span class="label">Lokasi</span>
-                    <span class="value" th:text="${laporan.lokasi ?: '-'}">-</span>
+                    <span class="value" th:text="${laporan.id_kel?.nama_kel ?: '-'}">-</span>
 
                     <span class="label">Tanggal</span>
-                    <span class="value" th:text="${laporan.tanggal != null ? #temporals.format(laporan.tanggal, 'dd MMMM yyyy') : '-'}">-</span>
+                    <span class="value" th:text="${laporan.tanggalKejadian != null ? #temporals.format(laporan.tanggalKejadian, 'dd MMMM yyyy') : '-'}">-</span>
 
                     <span class="label">Jam</span>
-                    <span class="value" th:text="${laporan.waktu != null ? #temporals.format(laporan.waktu, 'HH.mm') : '-'}">-</span>
+                    <span class="value" th:text="${laporan.jamKejadian != null ? #temporals.format(laporan.jamKejadian, 'HH.mm') : '-'}">-</span>
 
                     <span class="label">Catatan</span>
                     <span class="value" th:text="${laporan.catatan ?: '-'}">-</span>
                 </div>
 
                 <div class="action-buttons">
-                    <a th:href="@{/laporan/detail/{id}(id=${laporan.id})}" href="DetailBencana.html" class="btn-action">Lihat Detail</a>
-                    <a th:if="${laporan.status == 'Baru'}" th:href="@{/pengumuman/tambah/{id}(id=${laporan.id})}" href="TambahPengumuman.html" class="btn-action">Tambah Pengumuman</a>
+                    <a th:href="@{/laporan/detail/{id}(id=${laporan.id_laporan})}" class="btn-action">Lihat Detail</a>
+                    <a th:if="${laporan.id_status?.id_status == 'ST2'}"
+                       th:href="@{/pengumuman/tambah/{id}(id=${laporan.id_laporan})}"
+                       class="btn-action">Tambah Pengumuman</a>
                 </div>
             </div>
 
-            <div class="report-card" data-status="Resmi">
-                <div class="badge-status status-resmi">Terverifikasi</div>
-                <h3 class="report-title" th:text="${laporan.jenisBencana}">Jenis Bencana</h3>
-                <div class="report-details">
-                    <span class="label">Lokasi</span>
-                    <span class="value" th:text="${laporan.lokasi ?: '-'}">-</span>
-
-                    <span class="label">Tanggal</span>
-                    <span class="value" th:text="${laporan.tanggal != null ? #temporals.format(laporan.tanggal, 'dd MMMM yyyy') : '-'}">-</span>
-
-                    <span class="label">Jam</span>
-                    <span class="value" th:text="${laporan.waktu != null ? #temporals.format(laporan.waktu, 'HH.mm') : '-'}">-</span>
-
-                    <span class="label">Catatan</span>
-                    <span class="value" th:text="${laporan.catatan ?: '-'}">-</span>
-                </div>
-                <div class="action-buttons">
-                    <a th:href="@{/laporan/detail/{id}(id=${laporan.id})}" href="DetailBencana.html" class="btn-action">Lihat Detail</a>
-                    <a th:if="${laporan.status == 'Resmi'}" th:href="@{/pengumuman/tambah/{id}(id=${laporan.id})}" href="TambahPengumuman.html" class="btn-action">Tambah Pengumuman</a>
-                </div>
-            </div>
-
-            <div class="report-card" data-status="Menunggu Verifikasi">
-                <div class="badge-status status-menunggu">Menunggu Verifikasi</div>
-                <h3 class="report-title" th:text="${laporan.jenisBencana}">Jenis Bencana</h3>
-                <div class="report-details">
-                    <span class="label">Lokasi</span>
-                    <span class="value" th:text="${laporan.lokasi ?: '-'}">-</span>
-
-                    <span class="label">Tanggal</span>
-                    <span class="value" th:text="${laporan.tanggal != null ? #temporals.format(laporan.tanggal, 'dd MMMM yyyy') : '-'}">-</span>
-
-                    <span class="label">Catatan</span>
-                    <span class="value" th:text="${laporan.catatan ?: '-'}">-</span>
-                </div>
-                <div class="action-buttons">
-                    <a th:href="@{/laporan/detail/{id}(id=${laporan.id})}" href="DetailBencana.html" class="btn-action">Lihat Detail</a>
-                    <a th:if="${laporan.status == 'Menunggu Verifikasi'}" th:href="@{/pengumuman/tambah/{id}(id=${laporan.id})}" href="TambahPengumuman.html" class="btn-action">Tambah Pengumuman</a>
-                </div>
-            </div>
-
-            <div class="report-card" data-status="Tidak terverifikasi">
-                <div class="badge-status status-tidak-resmi">Tidak Terverifikasi</div>
-                <h3 class="report-title" th:text="${laporan.jenisBencana}">Jenis Bencana</h3>
-                <div class="report-details">
-                    <span class="label">Lokasi</span>
-                    <span class="value" th:text="${laporan.lokasi ?: '-'}">-</span>
-
-                    <span class="label">Tanggal</span>
-                    <span class="value" th:text="${laporan.tanggal != null ? #temporals.format(laporan.tanggal, 'dd MMMM yyyy') : '-'}">-</span>
-
-                    <span class="label">Catatan</span>
-                    <span class="value" th:text="${laporan.catatan ?: '-'}">-</span>
-                </div>
-                <div class="action-buttons">
-                    <a th:href="@{/laporan/detail/{id}(id=${laporan.id})}" href="DetailBencana.html" class="btn-action">Lihat Detail</a>
-                    <a th:if="${laporan.status == 'Tidak Resmi'}" th:href="@{/pengumuman/tambah/{id}(id=${laporan.id})}" href="TambahPengumuman.html" class="btn-action">Tambah Pengumuman</a>
-                </div>
-            </div>
-
-            <div class="report-card" data-status="Selesai">
-                <div class="badge-status status-selesai">Selesai</div>
-                <h3 class="report-title" th:text="${laporan.jenisBencana}">Jenis Bencana</h3>
-                <div class="report-details">
-                    <span class="label">Lokasi</span>
-                    <span class="value" th:text="${laporan.lokasi ?: '-'}">-</span>
-
-                    <span class="label">Tanggal</span>
-                    <span class="value" th:text="${laporan.tanggal != null ? #temporals.format(laporan.tanggal, 'dd MMMM yyyy') : '-'}">-</span>
-
-                    <span class="label">Catatan</span>
-                    <span class="value" th:text="${laporan.catatan ?: '-'}">-</span>
-                </div>
-                <div class="action-buttons">
-                    <a th:href="@{/laporan/detail/{id}(id=${laporan.id})}" href="DetailBencana.html" class="btn-action">Lihat Detail</a>
-                    <a th:if="${laporan.status == 'Tidak Resmi'}" th:href="@{/pengumuman/tambah/{id}(id=${laporan.id})}" href="TambahPengumuman.html" class="btn-action">Tambah Pengumuman</a>
-                </div>
-            </div>
         </div>
     </main>
 
     <nav class="bottom-nav">
-        <a th:href="@{/dashboard-petugas}" href="DashboardPetugas.html" class="nav-item">
+        <a th:href="@{/petugas/dashboard}" class="nav-item">
             <img src="../assets/home-black.png" alt="Beranda" class="nav-icon">
         </a>
-        <a href="#" class="nav-item active">
+        <a th:href="@{/laporan-warga}" class="nav-item active">
             <img src="../assets/report-green.png" alt="Laporan" class="nav-icon">
         </a>
-        <a href="#" class="nav-item">
+        <a th:href="@{/petugas/profil}" class="nav-item">
             <img src="../assets/profile-black.png" alt="Profil" class="nav-icon">
         </a>
     </nav>
+
+    <script th:src="@{/Petugas/script.js}" defer></script>
 </body>
 </html>
