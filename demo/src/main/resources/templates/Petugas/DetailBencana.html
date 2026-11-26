@@ -308,7 +308,7 @@
                     <div style="height: 8px;"></div>
 
                     <div class="label">Kelurahan</div>
-                    <div th:text="${laporan.id_kel?.nama_kel ?: '-'}">-</div>
+                    <div th:text="${lokasiLengkap ?: (laporan.id_kel ?: '-')}">-</div>
 
                     <div class="label">Sekolah</div>
                     <div th:text="${laporan.id_sekolah?.nama_sekolah ?: '-'}">-</div>

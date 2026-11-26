@@ -41,7 +41,7 @@
 
         main {
             flex: 1;
-            padding: 40px;
+            padding: 40px 40px 100px;
             max-width: 1200px;
             margin: 0 auto;
             width: 100%;
@@ -208,6 +208,11 @@
         }
 
         nav.bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
             background-color: #F5ECD5;
             border-top: 1px solid #e0d7c3;
             padding: 15px 0;
@@ -328,34 +333,29 @@
 
         <div class="reports-list" id="reportsList">
 
-            <div class="empty-state" th:if="${#lists.isEmpty(daftarLaporan)}">
-                <h3>Belum Ada Laporan Warga</h3>
-                <p>Semua laporan bencana dari warga akan tampil di sini.</p>
-            </div>
-
             <div class="report-card"
-                 th:each="laporan : ${daftarLaporan}"
-                 th:attr="data-status=${laporan.id_status?.id_status}">
+                th:each="laporan : ${daftarLaporan}"
+                th:attr="data-status=${laporan.id_status?.id_status}">
 
                 <h3 class="report-title"
                     th:text="${laporan.id_bencana?.nama_bencana ?: 'Jenis Bencana'}">Jenis Bencana</h3>
 
                 <!-- Badge untuk status Baru / Menunggu Verifikasi -->
                 <div class="badge-status badge-bencana-baru"
-                     th:if="${laporan.id_status?.id_status == 'ST1'}">
+                    th:if="${laporan.id_status?.id_status == 'ST1'}">
                     <img src="../assets/triangle.png" class="alert-icon" alt="Peringatan">
                     <span class="alert-text" th:text="${laporan.id_status?.status_verifikasi}">Bencana Baru!</span>
                 </div>
 
                 <!-- Badge untuk status lainnya (Terverifikasi, Tidak Terverifikasi, Selesai) -->
                 <div class="badge-status"
-                     th:unless="${laporan.id_status?.id_status == 'ST1'}"
-                     th:classappend="${laporan.id_status?.id_status == 'ST2' ? 'status-resmi' : (laporan.id_status?.id_status == 'ST3' ? 'status-tidak-resmi' : 'status-selesai')}"
-                     th:text="${laporan.id_status?.status_verifikasi}">Status</div>
+                    th:unless="${laporan.id_status?.id_status == 'ST1'}"
+                    th:classappend="${laporan.id_status?.id_status == 'ST2' ? 'status-resmi' : (laporan.id_status?.id_status == 'ST3' ? 'status-tidak-resmi' : 'status-selesai')}"
+                    th:text="${laporan.id_status?.status_verifikasi}">Status</div>
 
                 <div class="report-details">
                     <span class="label">Lokasi</span>
-                    <span class="value" th:text="${laporan.id_kel?.nama_kel ?: '-'}">-</span>
+                    <span class="value" th:text="${lokasiMap != null and lokasiMap[laporan.id_laporan] != null ? lokasiMap[laporan.id_laporan] : (laporan.id_kel ?: '-')}">-</span>
 
                     <span class="label">Tanggal</span>
                     <span class="value" th:text="${laporan.tanggalKejadian != null ? #temporals.format(laporan.tanggalKejadian, 'dd MMMM yyyy') : '-'}">-</span>
@@ -370,8 +370,8 @@
                 <div class="action-buttons">
                     <a th:href="@{/laporan/detail/{id}(id=${laporan.id_laporan})}" class="btn-action">Lihat Detail</a>
                     <a th:if="${laporan.id_status?.id_status == 'ST2'}"
-                       th:href="@{/pengumuman/tambah/{id}(id=${laporan.id_laporan})}"
-                       class="btn-action">Tambah Pengumuman</a>
+                    th:href="@{/pengumuman/tambah/{id}(id=${laporan.id_laporan})}"
+                    class="btn-action">Tambah Pengumuman</a>
                 </div>
             </div>
 
