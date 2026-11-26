@@ -6,7 +6,9 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.demo.model.Petugas;
 import com.example.demo.model.Warga;
@@ -78,6 +80,13 @@ public class AdminController {
 
         return "Admin/dataWarga";
     }
+    @PostMapping("/admin/data-warga/hapus/{nik}")
+    public String hapusWarga(@PathVariable String nik) {
+
+        wargaRepository.deleteById(nik);
+
+        return "redirect:/admin/data-warga";
+    }
     @GetMapping("/admin/data-wilayah")
     public String adminDataWilayah() {
         return "Admin/dataWilayah";
@@ -86,6 +95,7 @@ public class AdminController {
     public String adminDetail() {
         return "Admin/detailBencanaAdmin";
     }
+
     @GetMapping("/admin/data-petugas/edit/{nik}")
     public String editPetugas(@PathVariable String nik, Model model) {
         Petugas petugas = petugasRepository.findById(nik).orElse(null);
@@ -98,8 +108,34 @@ public class AdminController {
 
         return "Admin/editPetugas";
     }
+
+    @PostMapping("/admin/data-petugas/edit/{nik}")
+    public String updatePetugas(@PathVariable String nik,
+                            @ModelAttribute Petugas petugas) {
+
+        petugas.setNik(nik);
+        petugasRepository.save(petugas);
+
+        return "redirect:/admin/data-petugas";
+    }
+
+    @PostMapping("/admin/data-petugas/hapus/{nik}")
+    public String hapusPetugas(@PathVariable String nik) {
+
+        petugasRepository.deleteById(nik);
+
+        return "redirect:/admin/data-petugas";
+    }
+
     @GetMapping("/admin/data-petugas/tambah") 
     public String adminTambah() {
         return "Admin/tambahPetugas";
+    }
+    @PostMapping("/admin/data-petugas/tambah")
+    public String tambahPetugas(@ModelAttribute Petugas petugas) {
+
+        petugasRepository.save(petugas);
+
+        return "redirect:/admin/data-petugas";
     }
 }

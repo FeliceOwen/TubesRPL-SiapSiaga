@@ -54,13 +54,13 @@ INSERT INTO kelurahan (id_kel, nama_kel, id_kec) VALUES
 
 
 --Petugas Ada
-INSERT INTO Petugas VALUES
-(1234061006000002, 'Andi Pratama', 'andi1'),
-(4321061006000002, 'Siti Rahmawati', 'siti1'),
-(3421061006000002, 'Bagas Ramadhan', 'bagas1'),
-(4213061006000002, 'Rizky Maulana', 'rizky1'),
-(4312061006000002, 'Dinda Permatasari', 'dinda1'),
-(1432061006000002, 'Fajar Nugroho', 'fajar1');
+INSERT INTO Petugas (nik, nama_lengkap, kota_kerja, password) VALUES 
+(1234061006000002, 'Andi Pratama', 'Bandung','andi1'),
+(4321061006000002, 'Siti Rahmawati','Jakarta' ,'siti1'),
+(3421061006000002, 'Bagas Ramadhan', 'Surabaya','bagas1'),
+(4213061006000002, 'Rizky Maulana','Bandung' ,'rizky1'),
+(4312061006000002, 'Dinda Permatasari', 'Bogor','dinda1'),
+(1432061006000002, 'Fajar Nugroho','Malang' ,'fajar1');
 
 
 --Warga Ada

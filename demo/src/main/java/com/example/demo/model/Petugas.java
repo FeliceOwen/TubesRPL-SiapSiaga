@@ -24,6 +24,9 @@ public class Petugas {
     @Column(nullable = false, length = 50)
     private String nama_lengkap;
 
+    @Column(nullable = false, length = 50)
+    private String kota_kerja;
+
     @Column(nullable = false, length = 10)
     private String password;
 }

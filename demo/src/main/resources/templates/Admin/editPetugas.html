@@ -494,7 +494,7 @@
                         <label for="namaPetugas">Nama Lengkap</label>
                         <input type="text"
                             id="namaPetugas"
-                            th:field="*{namaPetugas}"
+                            th:field="*{nama_lengkap}"
                             class="form-control"
                             placeholder="Masukkan Nama Lengkap"
                             required>
@@ -503,7 +503,7 @@
                     <div class="form-group">
                         <label for="kotaLokasiKerja">Kota Saat Ini</label>
                         <select id="kotaLokasiKerja"
-                                th:field="*{kotaLokasiKerja}"
+                                th:field="*{kota_kerja}"
                                 class="form-control"
                                 required>
                             <option value="" disabled selected>Pilih Kota</option>
@@ -513,6 +513,15 @@
                             <option value="Lampung">Lampung</option>
                             <option value="Bali">Bali</option>
                         </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="text"
+                            id="password"
+                            th:field="*{password}"
+                            class="form-control"
+                            required> 
                     </div>
 
                     <div class="form-buttons">
@@ -533,7 +542,7 @@
                 </form>
 
                 <form id="deleteForm"
-                    th:action="@{/admin/data-petugas/hapus/{id}(id=${petugas.nik})}"
+                    th:action="@{/admin/data-petugas/hapus/{nik}(nik=${petugas.nik})}"
                     method="post">
                 </form>
 
