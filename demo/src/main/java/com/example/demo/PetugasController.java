@@ -7,6 +7,9 @@ import com.example.demo.model.StatusLaporan;
 import com.example.demo.repo.LaporanBencanaRepository;
 import com.example.demo.repo.LogPenangananRepository;
 import com.example.demo.repo.Pengumuman.PengumumanRepository;
+
+import jakarta.servlet.http.HttpSession;
+
 import com.example.demo.repo.StatusLaporanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -38,7 +41,12 @@ public class PetugasController {
 
     // 1. Daftar Laporan Warga
     @GetMapping("/laporan-warga")
-    public String laporanWarga(Model model) {
+    public String laporanWarga(HttpSession session, Model model) {
+        String role = (String) session.getAttribute("role");
+        if(role == null) {
+            return "redirect:/login";
+        }
+
         List<LaporanBencana> daftarLaporan = laporanRepo.findAllActiveLaporan();
         model.addAttribute("daftarLaporan", daftarLaporan);
         return "Petugas/LaporanWarga";
@@ -46,41 +54,40 @@ public class PetugasController {
 
     // 2. Detail Bencana
     @GetMapping("/laporan/detail/{id}")
-    public String detailBencana(@PathVariable("id") String id, Model model) {
-        LaporanBencana laporan = laporanRepo.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("ID Laporan tidak ditemukan: " + id));
+    public String detailLaporan(@PathVariable("id") String id, Model model) {
+        LaporanBencana laporan = laporanRepo.findById(id).orElse(null);
 
-        List<LogPenanganan> daftarLog = logRepo.findByIdLaporan(id);
+        if (laporan == null) {
+            return "redirect:/laporan-warga";
+        }
+
+        // Ambil log penanganan terbaru untuk laporan ini (jika ada)
+        LogPenanganan penanganan = logRepo.findAll().stream()
+                .filter(l -> l.getId_laporan() != null && id.equals(l.getId_laporan().getId_laporan()))
+                .reduce((first, second) -> second)
+                .orElse(null);
 
         model.addAttribute("laporan", laporan);
-        model.addAttribute("daftarLog", daftarLog);
-        model.addAttribute("logTerakhir", daftarLog.isEmpty() ? null : daftarLog.get(0));
-
+        model.addAttribute("penanganan", penanganan);
         return "Petugas/DetailBencana";
     }
 
     // 3. Update Status Verifikasi Laporan
     @PostMapping("/laporan/update-status/{id}")
     public String updateStatusLaporan(@PathVariable("id") String id,
-                                      @RequestParam("status") String statusBaru,
+                                      @RequestParam("status") String idStatusBaru,
                                       RedirectAttributes redirectAttributes) {
         LaporanBencana laporan = laporanRepo.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("ID Laporan tidak ditemukan: " + id));
 
-        // Mencari status berdasarkan teks verifikasi atau ID status (ST1/ST2/ST3)
-        StatusLaporan statusEntity = statusRepo.findByStatusVerifikasi(statusBaru)
-                .orElseGet(() -> statusRepo.findById(statusBaru)
-                        .orElseGet(() -> {
-                            StatusLaporan baru = new StatusLaporan();
-                            baru.setId_status(generateNextStatusId());
-                            baru.setStatus_verifikasi(statusBaru);
-                            return statusRepo.save(baru);
-                        }));
+        // Langsung cari berdasarkan ID status (ST1, ST2, ST3, ST4)
+        StatusLaporan statusEntity = statusRepo.findById(idStatusBaru)
+                .orElseThrow(() -> new IllegalArgumentException("Status tidak ditemukan: " + idStatusBaru));
 
         laporan.setId_status(statusEntity);
         laporanRepo.save(laporan);
 
-        redirectAttributes.addFlashAttribute("pesanSukses", "Status laporan berhasil diperbarui menjadi " + statusEntity.getStatus_verifikasi());
+        redirectAttributes.addFlashAttribute("pesanSukses", "Status berhasil diperbarui menjadi " + statusEntity.getStatus_verifikasi());
         return "redirect:/laporan/detail/" + id;
     }
 
