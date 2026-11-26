@@ -225,7 +225,7 @@
         <div class="form-container">
 
             <form class="petugas-form"
-                th:action="@{/admin/data-petugas/edit}"
+                th:action="@{/admin/data-petugas/tambah}"
                 method="post">
 
                 <img src="../assets/profile-black.png" alt="Profile" class="profile-icon">
@@ -236,8 +236,13 @@
                         id="nik"
                         name="nik"
                         class="form-control"
-                        value="61823010385485682"
-                        readonly>
+                        placeholder="Masukkan NIK"
+                        required
+                        minlength="16"
+                        maxlength="16"
+                        pattern="[0-9]{16}"
+                        inputmode="numeric"
+                        title="NIK harus terdiri dari 16 angka">
                 </div>
 
                 <!-- Nama Lengkap -->
@@ -246,7 +251,7 @@
 
                     <input type="text"
                         id="namaPetugas"
-                        name="namaPetugas"
+                        name="nama_lengkap"
                         class="form-control"
                         placeholder="Masukkan Nama Lengkap"
                         required>
@@ -257,7 +262,7 @@
                     <label for="kotaLokasiKerja">Kota Saat Ini</label>
 
                     <select id="kotaLokasiKerja"
-                            name="kotaLokasiKerja"
+                            name="kota_kerja"
                             class="form-control"
                             required>
 
@@ -269,6 +274,19 @@
                         <option value="Bali">Bali</option>
 
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+
+                    <input type="password"
+                        id="password"
+                        name="password"
+                        class="form-control"
+                        placeholder="Masukkan Password"
+                        minlength="8"
+                        maxlength="10"
+                        required>
                 </div>
 
                 <button type="submit" class="btn-submit">

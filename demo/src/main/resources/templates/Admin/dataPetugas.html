@@ -236,7 +236,8 @@
                     <tr>
                         <th>No</th>
                         <th>Nama Petugas</th>
-                        <th>Kota Lokasi Kerja</th>
+                        <th>NIK</th>
+                        <th>Kota Kerja</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -248,6 +249,7 @@
                         <td th:text="${petugas.nama_lengkap}">Andi Pratama</td>
 
                         <td th:text="${petugas.nik}">1234061006000002</td>
+                        <td th:text="${petugas.kota_kerja}">Bandung</td>
 
                         <td>
                             <a th:href="@{/admin/data-petugas/edit/{nik}(nik=${petugas.nik})}"
@@ -255,7 +257,8 @@
                             title="Edit Petugas">
                                 <img src="../assets/edit_icon.png" alt="Edit">
                             </a>
-                        </td>
+                        </td> 
+
                     </tr>
                 </tbody>
 
