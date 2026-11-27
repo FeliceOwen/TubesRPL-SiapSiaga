@@ -192,17 +192,18 @@
                    <img class="gambar-pengumuman" th:src="${pengumuman.gambar != null} ? @{'/assets/' + ${pengumuman.gambar}} : @{/assets/gunung_meletus.jpg}" alt="gambar-pengumuman"/>
             </div>
         </main>
-        <nav>
+         <nav>
             <a th:href="@{/warga/}">
-                <img src="../assets/dashboard-green.png" value="dashboard">
+                <img th:src=@{/assets/dashboard-green.png} value="dashboard">
             </a>
-            <a href="laporan.html">
-                <img src="../assets/report-black.png" value="laporan">
+            <a th:href="@{/warga/laporansaya/}">
+                <img th:src=@{/assets/report-black.png} value="laporan">
             </a>
-            <a href="profil.html" th:href="@{/profil}">
-                <img src="../assets/profile-black.png" value="profil">
+            <a th:href="@{/profil}">
+                <img th:src=@{/assets/profile-black.png} value="profil">
             </a>
         </nav>
+    </body>
     </body>
 </html>
 
