@@ -151,7 +151,6 @@ public class WargaController {
     @GetMapping("laporansaya/")
     public String tampilkanLaporan(HttpSession session, Model model) {
         String id_pelapor = (String) session.getAttribute("nik");
-
         return "Warga/laporan";
     }
 

@@ -157,7 +157,10 @@
             });
 
             kelurahan.addEventListener("change", function() {
-                updateSekolah();
+                updateSekolah();  
+                console.log(this.value);  
+                // const id_kel = document.querySelector("input[name=id_kel]");
+                // id_kel.value = kelurahan.option[this.selectedIndex].text;           
             });
 
             pilihBencana.addEventListener("change", function() {
@@ -324,7 +327,7 @@
                         <textarea th:field="*{catatan}" placeholder="Tambah catatan kejadian di sini" required></textarea>
                     </div>
                 </div>
-                <button id="submit-laporan">
+                <button type="submit" id="submit-laporan">
                     Buat Laporan
                 </button>
             </form>

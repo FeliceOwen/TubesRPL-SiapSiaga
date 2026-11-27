@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 public class Kelurahan {
 
     @Id
-    @Column(length=3)
+    @Column(length=20)
     private String id_kel;
 
     @ManyToOne

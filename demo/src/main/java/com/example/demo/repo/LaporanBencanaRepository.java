@@ -17,6 +17,7 @@ public interface LaporanBencanaRepository extends JpaRepository<LaporanBencana, 
     @Query("SELECT COUNT(l) FROM LaporanBencana l WHERE l.statusHapus = 0 AND LOWER(l.id_bencana.nama_bencana) = LOWER(:namaBencana)")
     long countByNamaBencana(@Param("namaBencana") String namaBencana);
 
+
     @Query(value = """
         SELECT
             laporan.id_laporan AS id,
