@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 public class Provinsi {
 
     @Id
-    @Column(length=5)
+    @Column(length=20)
     private String id_provinsi;
 
     @Column(nullable = false, length = 50, unique = true)

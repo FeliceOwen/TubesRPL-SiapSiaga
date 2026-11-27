@@ -23,10 +23,11 @@ public class Kelurahan {
     @Column(length=20)
     private String id_kel;
 
+    @Column(length=30)
+    private String nama_kel;    
+    
     @ManyToOne
     @JoinColumn(name="id_kec", referencedColumnName="id_kec", nullable = false)
     private Kecamatan id_kec;
 
-    @Column(length=30)
-    private String nama_kel;    
 }

@@ -63,12 +63,14 @@
                 resetBelow([kabkot, kecamatan, kelurahan]);
                 if (this.value === "") return;
                 fetchWilayah("/regencies/" + this.value + ".json", kabkot, "Pilih Kabupaten / Kota");
+                setNamaWilayah("input[name=nama_provinsi]", this.value ? this.options[this.selectedIndex].text : "");
             });
 
             kabkot.addEventListener("change", function() {
                 resetBelow([kecamatan, kelurahan]);
                 if (this.value === "") return;
                 fetchWilayah("/districts/" + this.value + ".json", kecamatan, "Pilih Kecamatan");
+                setNamaWilayah("input[name=nama_kota_kab]", this.value ? this.options[this.selectedIndex].text : "");
             });
 
             let sekolahCache = { kode: null, list: [] };
@@ -154,13 +156,19 @@
                 updateSekolah();
                 if (this.value === "") return;
                 fetchWilayah("/villages/" + this.value + ".json", kelurahan, "Pilih Kelurahan");
+                setNamaWilayah("input[name=nama_kec]", this.value ? this.options[this.selectedIndex].text : "");
             });
 
             kelurahan.addEventListener("change", function() {
                 updateSekolah();  
                 console.log(this.value);  
+                setNamaWilayah("input[name=nama_kel]", this.value ? this.options[this.selectedIndex].text : "");
                 // const id_kel = document.querySelector("input[name=id_kel]");
                 // id_kel.value = kelurahan.option[this.selectedIndex].text;           
+            });
+
+            sekolah.addEventListener("change", function() {
+                setNamaWilayah("input[name=nama_sekolah]", this.value ? this.options[this.selectedIndex].text : "");
             });
 
             pilihBencana.addEventListener("change", function() {
@@ -169,6 +177,11 @@
 
             fetchWilayah("/provinces.json", provinsi, "Pilih Provinsi");
             });
+
+            function setNamaWilayah(query, nama_wilayah) {
+                const elemen = document.querySelector(query);
+                elemen.value = nama_wilayah;
+            }
         </script>
         <style>
             * {
@@ -293,28 +306,33 @@
                         <h2>Lokasi</h2>
                         <span id="provinsi-bencana">
                             <label for="provinsi-kejadian">Provinsi</label>
-                            <select id="provinsi-kejadian" name="provinsi-bencana" required>
+                            <select id="provinsi-kejadian" name="id_provinsi" required>
                             </select>
+                            <input type="hidden" name="nama_provinsi">
                         </span>
                         <span id="kabkot-bencana">
                             <label for="kabkot-kejadian">Kabupaten / Kota</label>
-                            <select id="kabkot-kejadian" name="kabkot-bencana" data-label="Kabupaten / Kota" disabled required>
+                            <select id="kabkot-kejadian" name="id_kota_kab" disabled required>
                             </select>
+                            <input type="hidden" name="nama_kota_kab">
                         </span>
                         <span id="kecamatan-bencana">
                             <label for="kecamatan-kejadian">Kecamatan</label>
-                            <select id="kecamatan-kejadian" name="kecamatan-bencana" data-label="Kecamatan" disabled required>
+                            <select id="kecamatan-kejadian" name="id_kec" disabled required>
                             </select>
+                            <input type="hidden" name="nama_kec">
                         </span>
                         <span id="kelurahan-bencana">
                             <label for="kelurahan-bencana">Kelurahan</label>
                             <select id="kelurahan-kejadian" name="id_kel" disabled required>
                             </select>
+                            <input type="hidden" name="nama_kel">
                         </span>
                         <span id="sekolah-bencana">
                             <label for="sekolah-kejadian">Sekolah</label>
                             <select id="sekolah-kejadian" name="id_sekolah" disabled>
                             </select>
+                            <input type="hidden" name="nama_sekolah">
                         </span>
                         <span id="alamat-bencana">
                             <label for="alamat-bencana">Alamat</label>

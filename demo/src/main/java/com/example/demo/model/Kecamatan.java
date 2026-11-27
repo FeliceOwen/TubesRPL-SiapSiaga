@@ -23,10 +23,10 @@ public class Kecamatan {
     @Column(length=20)
     private String id_kec;
 
+    @Column(length=30)
+    private String nama_kec;  
+    
     @ManyToOne
     @JoinColumn(name="id_kota_kab", referencedColumnName="id_kota_kab", nullable = false)
     private KotaKabupaten id_kota_kab;
-
-    @Column(length=30)
-    private String nama_kec;    
 }

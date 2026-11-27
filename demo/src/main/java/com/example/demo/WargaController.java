@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.repo.KelurahanRepository;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,19 +19,28 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.example.demo.dto.WilayahRequest;
 import com.example.demo.model.LaporanBencana;
 import com.example.demo.model.StatusLaporan;
 import com.example.demo.model.Bencana;
 import com.example.demo.model.Kelurahan;
+import com.example.demo.model.Kecamatan;
+import com.example.demo.model.KotaKabupaten;
+import com.example.demo.model.Provinsi;
 import com.example.demo.model.Sekolah;
 import com.example.demo.model.Warga;
 import com.example.demo.repo.Bencana.BencanaRepository;
 import com.example.demo.repo.SekolahRepository;
-//import com.example.demo.repo.KelurahanRepository;
 import com.example.demo.repo.LaporanBencanaRepository;
 import com.example.demo.repo.Pengumuman.PengumumanRepository;
 import com.example.demo.repo.StatusLaporanRepository;
 import com.example.demo.repo.WargaRepository;
+
+import com.example.demo.repo.KelurahanRepository;
+import com.example.demo.repo.KecamatanRepository;
+import com.example.demo.repo.KotaKabupatenRepository;
+import com.example.demo.repo.ProvinsiRepository;
+import com.example.demo.repo.SekolahRepository;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -38,6 +48,8 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/warga")
 
 public class WargaController {
+
+    private final KelurahanRepository kelurahanRepository;
 
     @Autowired
     private WargaRepository wargaRepo;
@@ -55,11 +67,27 @@ public class WargaController {
     private LaporanBencanaRepository laporanRepo;
 
     @Autowired
+    private ProvinsiRepository provinsiRepo;
+
+    @Autowired
+    private KotaKabupatenRepository kotakabRepo;
+
+    @Autowired
+    private KecamatanRepository kecamatanRepo;
+
+    @Autowired
+    private KelurahanRepository kelurahanRepo;
+
+    @Autowired
     private SekolahRepository sekolahRepo;
 
     // @Autowired
     // private KelurahanRepository kelurahanRepo;
     private final String UPLOAD_DIR = "uploads/";
+
+    WargaController(KelurahanRepository kelurahanRepository) {
+        this.kelurahanRepository = kelurahanRepository;
+    }
 
     @GetMapping("/")
     public String home(HttpSession session, Model model) {
@@ -83,10 +111,11 @@ public class WargaController {
     }
 
     @PostMapping("laporan/")
-    public String kirimLaporan(@ModelAttribute LaporanBencana laporan,
+    public String kirimLaporan(
+            @ModelAttribute LaporanBencana laporan,
+            @ModelAttribute WilayahRequest wilayah,
             HttpSession session,
             @RequestParam("id_bencana") String idbencana,
-            @RequestParam(value = "id_sekolah", required = false) String idsekolah,
             @RequestParam("fotofile") MultipartFile fileFoto) throws IOException {
 
         // input NIK sebagai id pelapor
@@ -102,15 +131,21 @@ public class WargaController {
         }
         laporan.setId_warga(warga_pelapor);
 
-        // // if(kelurahanRepo.findById(idkelurahan)==null) {
-        // //     Kelurahan kelurahan = new Kelurahan();
-        // //     kelurahan.setId_kel(idkelurahan);
-        // //     kelurahan.setId_kec(idkecamatan);
-        // //     kelurahan.setNama_kel(namakelurahan);
-        // //     kelurahanRepo.save(kelurahan);
-        // // }
-        // // Kelurahan kelurahan_kejadian = kelurahanRepo.findById(idkelurahan).orElse(null);
-        // laporan.setId_kel(idkelurahan);
+        Provinsi prov = provinsiRepo.findById(wilayah.getId_provinsi()).orElseGet(()
+                -> provinsiRepo.save(new Provinsi(wilayah.getId_provinsi(), wilayah.getNama_provinsi()))
+        );
+        KotaKabupaten kab = kotakabRepo.findById(wilayah.getId_kota_kab()).orElseGet(()
+                -> kotakabRepo.save(new KotaKabupaten(wilayah.getId_kota_kab(), wilayah.getNama_kota_kab(), prov))
+        );
+        Kecamatan kec = kecamatanRepo.findById(wilayah.getId_kec()).orElseGet(()
+                -> kecamatanRepo.save(new Kecamatan(wilayah.getId_kec(), wilayah.getNama_kec(), kab))
+        );
+        Kelurahan kel = kelurahanRepo.findById(wilayah.getId_kel()).orElseGet(()
+                -> kelurahanRepo.save(new Kelurahan(wilayah.getId_kel(), wilayah.getNama_kel(), kec))
+        );
+
+        laporan.setId_kel(kel);
+
         // input file foto
         if (!fileFoto.isEmpty()) {
             Path uploadPath = Paths.get("images/");
@@ -136,8 +171,10 @@ public class WargaController {
         laporan.setId_bencana(bencana);
 
         //input id sekolah
-        if (idsekolah != null && !idsekolah.isEmpty()) {
-            Sekolah sekolah = sekolahRepo.findById(idsekolah.trim()).orElse(null);
+        if (wilayah.getId_sekolah() != null) {
+            Sekolah sekolah = sekolahRepo.findById(wilayah.getId_sekolah()).orElseGet(()
+                    -> sekolahRepo.save(new Sekolah(wilayah.getId_sekolah(), wilayah.getNama_sekolah(), kel))
+            );
             laporan.setId_sekolah(sekolah);
         } else {
             laporan.setId_sekolah(null);
@@ -151,6 +188,7 @@ public class WargaController {
     @GetMapping("laporansaya/")
     public String tampilkanLaporan(HttpSession session, Model model) {
         String id_pelapor = (String) session.getAttribute("nik");
+        model.addAttribute("laporanList", laporanRepo.findLaporanSaya(id_pelapor));
         return "Warga/laporan";
     }
 

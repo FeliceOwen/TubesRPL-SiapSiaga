@@ -19,16 +19,13 @@ import lombok.NoArgsConstructor;
 public class Sekolah {
 
     @Id
-    @Column(length=5)
+    @Column(length = 20)
     private String id_sekolah;
 
-    @ManyToOne
-    @JoinColumn(name="id_kel", referencedColumnName="id_kel", nullable = false)
-    private Kelurahan id_kel;
-
-    @Column(length=30)
+    @Column(length = 30)
     private String nama_sekolah;
-    
-    @Column(length=50)
-    private String alamat;
+
+    @ManyToOne
+    @JoinColumn(name = "id_kel", referencedColumnName = "id_kel", nullable = false)
+    private Kelurahan id_kel;
 }

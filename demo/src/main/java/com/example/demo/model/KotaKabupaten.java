@@ -15,13 +15,13 @@ import lombok.Data;
 public class KotaKabupaten {
 
     @Id
-    @Column(length=3)
+    @Column(length = 20)
     private String id_kota_kab;
 
-    @ManyToOne
-    @JoinColumn(name="id_provinsi", referencedColumnName="id_provinsi", nullable = false)
-    private Provinsi id_provinsi;
+    @Column(length = 30)
+    private String nama_kota_kab;
 
-    @Column(length=30)
-    private String nama_kota_kab;    
+    @ManyToOne
+    @JoinColumn(name = "id_provinsi", referencedColumnName = "id_provinsi", nullable = false)
+    private Provinsi id_provinsi;
 }

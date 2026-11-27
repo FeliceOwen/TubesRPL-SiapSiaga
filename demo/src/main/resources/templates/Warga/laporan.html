@@ -65,9 +65,13 @@
                             display: flex;
                             align-items: center;
                             h3 {
-                                width: 100px;
                                 margin: 0;
+                                width: 50px;
+                                margin-right: 50px;
                             }
+                        }
+                        img {
+                            width: 150px;
                         }
                         .log-pembaruan {
                             display: flex;
@@ -78,19 +82,21 @@
                             }
                         }
                         div#action-laporan {
-                            margin-top: 10px;
                             display: flex;
                             flex-direction: row;
                             justify-content: center;
+                            margin-top: 20px;
                             gap: 10px;
                             #delete-btn {
                                 background: none;
                                 border: none;
                                 margin: 0;
                                 margin-top: 4px;
+                                width: 1px;
                             }
                             a#perbarui-laporan {
                                 margin: 0;
+                                width: 10px;
                             }
                             .disable-btn {
                                 pointer-events: none;
@@ -184,7 +190,7 @@
                 <div class="card" th:each="laporan : ${laporanList}" th:data-id="${laporan.id}">
                     <div class="card-laporan ">
                         <span id="header-laporan">
-                            <p id="jenis-laporan" th:text="${laporan.jenis}">Bencana</p>
+                            <p id="jenis-laporan" th:text="${laporan.bencana}">Bencana</p>
                             <p id="status-laporan" th:data-status="${laporan.status}" th:text="${laporan.status}">Status</p>
                         </span>
                         
@@ -213,14 +219,14 @@
                         </div>
                         <div id="foto-kejadian">
                             <h3>Foto Kejadian</h3>
-                            <img th:src="@{'/assets/' + ${laporan.gambar}}" alt="gambar-laporan">
+                            <img th:src="@{${laporan.gambar}}" alt="gambar-laporan">
                         </div>
                         <div id="action-laporan">
                             <a id="perbarui-laporan" href="perbarui_laporan.html">Perbarui Laporan</a>
                             <a id="delete-btn" 
                                th:data-id="${laporan.id}" 
                                th:classappend="${laporan.status == 'Terverifikasi'} ? 'disabled-btn' : ''">
-                                <img src="../assets/delete-red.png" alt="delete-btn">
+                                <img th:src=@{/assets/delete-red.png} alt="delete-btn">
                             </a>
                         </div>
                         

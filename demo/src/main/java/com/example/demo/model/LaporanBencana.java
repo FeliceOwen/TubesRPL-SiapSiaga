@@ -24,39 +24,38 @@ import java.time.LocalTime;
 public class LaporanBencana {
 
     @Id
-    @Column(length=3)
+    @Column(length = 3)
     private String id_laporan;
 
-    // @ManyToOne
-    // @JoinColumn(name="id_kel", referencedColumnName="id_kel", nullable = false)
-    // private Kelurahan id_kel;
-
-    @Column
-    private String id_kel;
+    @ManyToOne
+    @JoinColumn(name="id_kel", referencedColumnName="id_kel", nullable = false)
+    private Kelurahan id_kel;
+    // @Column
+    // private String id_kel;
 
     @ManyToOne
-    @JoinColumn(name="id_sekolah", referencedColumnName="id_sekolah", nullable = true)
+    @JoinColumn(name = "id_sekolah", referencedColumnName = "id_sekolah", nullable = true)
     private Sekolah id_sekolah;
 
     @ManyToOne
-    @JoinColumn(name="id_status", referencedColumnName="id_status", nullable = false)
+    @JoinColumn(name = "id_status", referencedColumnName = "id_status", nullable = false)
     private StatusLaporan id_status;
 
     @ManyToOne
-    @JoinColumn(name="id_bencana", referencedColumnName="id_bencana", nullable = false)
+    @JoinColumn(name = "id_bencana", referencedColumnName = "id_bencana", nullable = false)
     private Bencana id_bencana;
 
     @ManyToOne
-    @JoinColumn(name="id_warga", referencedColumnName="nik", nullable = false)
+    @JoinColumn(name = "id_warga", referencedColumnName = "nik", nullable = false)
     private Warga id_warga;
 
-    @Column(length=300)
+    @Column(length = 300)
     private String catatan;
 
-    @Column(length=300)
+    @Column(length = 300)
     private String alamat;
-    
-    @Column(length=500)
+
+    @Column(length = 500)
     private String foto;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
