@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${judul}">Berhasil</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #000000;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .btn-dashboard {
+            background-color: #626F47;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .btn-dashboard:hover {
+            background-color: #4F5A39;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 th:text="${judul}">Berhasil</h1>
+    <a th:href="@{/petugas/dashboard}" class="btn-dashboard">Kembali ke Dashboard</a>
+</body>
+
+</html>

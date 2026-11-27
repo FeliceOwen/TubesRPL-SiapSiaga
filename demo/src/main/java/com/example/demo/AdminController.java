@@ -175,9 +175,9 @@ public class AdminController {
 
         try (InputStream isi = file.getInputStream()) {
             ImportDataService.Hasil hasil = importDataService.importData(jenisData, isi);
-            // Semua baris masuk: tampilkan halaman berhasil. Kalau ada yang gagal,
-            // tetap di halaman upload supaya alasannya terlihat.
-            if (hasil.berhasil() > 0 && hasil.gagal().isEmpty()) {
+            // Ada data yang masuk: tampilkan halaman berhasil.
+            // Kalau tidak ada yang masuk, tetap di halaman upload.
+            if (hasil.berhasil() > 0) {
                 redirect.addFlashAttribute("jenisData", jenisData);
                 return "redirect:/admin/import-berhasil";
             }

@@ -342,11 +342,11 @@
                       th:action="@{/laporan/update-status/{id}(id=${laporan.id_laporan})}" 
                       method="POST">
 
-                    <select class="filter-select" id="status_verifikasi">
-                        <option value="ST1">Menunggu Verifikasi</option>
-                        <option value="ST2">Terverifikasi</option>
-                        <option value="ST3">Tidak Terverifikasi</option>
-                        <option value="ST4">Selesai</option>
+                    <select class="filter-select" id="status_verifikasi" name="status">
+                        <option value="ST1" th:selected="${laporan.id_status?.id_status == 'ST1'}">Menunggu Verifikasi</option>
+                        <option value="ST2" th:selected="${laporan.id_status?.id_status == 'ST2'}">Terverifikasi</option>
+                        <option value="ST3" th:selected="${laporan.id_status?.id_status == 'ST3'}">Tidak Terverifikasi</option>
+                        <option value="ST4" th:selected="${laporan.id_status?.id_status == 'ST4'}">Selesai</option>
                     </select>
 
                     <button type="submit" class="btn-simpan">Simpan</button>

@@ -148,8 +148,18 @@ public class PetugasController {
         laporan.setId_status(statusEntity);
         laporanRepo.save(laporan);
 
-        redirectAttributes.addFlashAttribute("pesanSukses", "Status berhasil diperbarui menjadi " + statusEntity.getStatus_verifikasi());
-        return "redirect:/laporan/detail/" + id;
+        redirectAttributes.addFlashAttribute("judul", "Status Laporan Berhasil Diperbarui");
+        return "redirect:/petugas/berhasil";
+    }
+
+    // Halaman berhasil setelah membuat/mengedit pengumuman atau memperbarui status
+    @GetMapping("/petugas/berhasil")
+    public String halamanBerhasil(Model model) {
+        // judul hanya ada tepat setelah aksi berhasil
+        if (!model.containsAttribute("judul")) {
+            return "redirect:/petugas/dashboard";
+        }
+        return "Petugas/Berhasil";
     }
 
     // 4. Form & Simpan Log Penanganan
@@ -221,8 +231,8 @@ public class PetugasController {
         pengumuman.setIsi_pengumuman(catatanPetugas);
 
         pengumumanRepo.save(pengumuman);
-        redirectAttributes.addFlashAttribute("pesanSukses", "Pengumuman berhasil diterbitkan!");
-        return "redirect:/petugas/dashboard";
+        redirectAttributes.addFlashAttribute("judul", "Pengumuman Berhasil Dibuat");
+        return "redirect:/petugas/berhasil";
     }
 
     // Form Edit Pengumuman (/pengumuman/edit/{id})
@@ -284,8 +294,8 @@ public class PetugasController {
             laporanRepo.save(laporan);
         }
 
-        redirectAttributes.addFlashAttribute("pesanSukses", "Pengumuman berhasil diperbarui!");
-        return "redirect:/petugas/dashboard";
+        redirectAttributes.addFlashAttribute("judul", "Pengumuman Berhasil Diedit");
+        return "redirect:/petugas/berhasil";
     }
 
     // // 6. Endpoint Render Foto dari Database
