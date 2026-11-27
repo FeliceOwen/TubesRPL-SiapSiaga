@@ -221,11 +221,11 @@
 
     <main>
         <div class="page-title-container">
-            <a th:href="${laporanId != null ? '/laporan/detail/' + laporanId : 'DetailBencana.html'}"
-               href="DetailBencana.html"
-               class="btn-back"
-               title="Kembali">
-               <img th:src="@{/assets/back-black.png}" src="../assets/back-black.png" alt="Kembali" class="btn-back-image">
+            <a th:href="${laporan != null and !#strings.isEmpty(laporan.id_laporan)} ? @{/laporan/detail/{id}(id=${laporan.id_laporan})} : @{/laporan-warga}"
+                href="DetailBencana.html"
+                class="btn-back"
+                title="Kembali">
+                <img th:src="@{/assets/back-black.png}" src="../assets/back-black.png" alt="Kembali" class="btn-back-image">
             </a>
             <h2 class="page-title">Tambah Log Penanganan</h2>
         </div>
@@ -262,8 +262,7 @@
             <div class="form-group top-aligned">
                 <label for="foto-penanganan">Foto Penanganan</label>
                 <div class="file-upload-wrapper">
-                    <input type="file" id="foto_penanganan" name="fotoPenanganan" class="file-input-control" accept=".jpg,.jpeg,.png"
-                    required>
+                    <input type="file" id="foto_penanganan" name="fotoPenanganan" class="file-input-control" accept=".jpg,.jpeg,.png">
                 <span class="file-hint">Format file yang didukung: .jpg, .jpeg, .png</span>
                 </div>
             </div>
