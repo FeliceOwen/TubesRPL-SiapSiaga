@@ -15,14 +15,20 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.demo.model.LaporanBencana;
+import com.example.demo.model.LogPenanganan;
 import com.example.demo.model.Petugas;
 import com.example.demo.model.Warga;
 import com.example.demo.repo.LaporanBencanaRepository;
+import com.example.demo.repo.LogPenangananRepository;
 import com.example.demo.repo.PetugasRepository;
 import com.example.demo.repo.RekapLaporanTerverifikasi;
 
 import jakarta.servlet.http.HttpSession;
 import com.example.demo.repo.WargaRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import java.util.List;
 
 
 @Controller
@@ -31,17 +37,21 @@ public class AdminController {
     private final LaporanBencanaRepository laporanBencanaRepository;
     private final WargaRepository wargaRepository;
     private final PetugasRepository petugasRepository;
+    private final LogPenangananRepository LogPenangananRepository;
     private final ImportDataService importDataService;
 
+    
     // Constructor untuk menghubungkan Repository
     public AdminController(LaporanBencanaRepository laporanBencanaRepository
                             ,WargaRepository wargaRepository
                             ,PetugasRepository petugasRepository
-                            ,ImportDataService importDataService) {
+                            ,ImportDataService importDataService
+                            ,LogPenangananRepository logPenangananRepository) {
         this.laporanBencanaRepository = laporanBencanaRepository;
         this.wargaRepository = wargaRepository;
         this.petugasRepository = petugasRepository;
         this.importDataService = importDataService;
+        this.LogPenangananRepository = logPenangananRepository;
     }
 
     @GetMapping("/admin/laporan-warga")
@@ -76,10 +86,7 @@ public class AdminController {
         model.addAttribute("daftarPetugas", daftarPetugas);
         return "Admin/dataPetugas";
     }
-    @GetMapping("/admin/data-sekolah")
-    public String adminDataSekolah() {
-        return "Admin/dataSekolah";
-    }
+
     @GetMapping("/admin/data-warga")
     public String dataWarga(Model model) {
         List<Warga> daftarWarga = wargaRepository.findAll();
@@ -95,12 +102,41 @@ public class AdminController {
 
         return "redirect:/admin/data-warga";
     }
-    @GetMapping("/admin/data-wilayah")
-    public String adminDataWilayah() {
-        return "Admin/dataWilayah";
-    }
-    @GetMapping("/laporan/detailAdmin/{id}") 
-    public String adminDetail() {
+
+
+    @PersistenceContext
+    private EntityManager entityManager;
+    
+    @GetMapping("/admin/detailAdmin/{id}")
+    public String detailBencana(@PathVariable String id, Model model) {
+        
+        LaporanBencana laporan = laporanBencanaRepository.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Laporan tidak ditemukan: " + id));
+
+        String lokasiLengkap = laporan.getId_kel() != null ? laporan.getId_kel().getNama_kel() : "-";
+        @SuppressWarnings("unchecked")
+        List<String> hasilLokasi = entityManager.createNativeQuery("""
+                SELECT CONCAT_WS(', ', kelurahan.nama_kel, kecamatan.nama_kec, kota_kabupaten.nama_kota_kab, provinsi.nama_provinsi)
+                FROM laporan_bencana AS laporan
+                JOIN kelurahan ON kelurahan.id_kel = laporan.id_kel
+                JOIN kecamatan ON kecamatan.id_kec = kelurahan.id_kec
+                JOIN kota_kabupaten ON kota_kabupaten.id_kota_kab = kecamatan.id_kota_kab
+                JOIN provinsi ON provinsi.id_provinsi = kota_kabupaten.id_provinsi
+                WHERE laporan.id_laporan = :idLaporan
+                """)
+                .setParameter("idLaporan", id)
+                .getResultList();
+
+        if (!hasilLokasi.isEmpty() && hasilLokasi.get(0) != null) {
+            lokasiLengkap = hasilLokasi.get(0);
+        }
+
+        //masukkan log penanganan
+        List<LogPenanganan> penanganan = LogPenangananRepository.findByIdLaporan(id);
+        model.addAttribute("penanganan", penanganan);
+        model.addAttribute("laporan", laporan);
+        model.addAttribute("lokasiLengkap", lokasiLengkap);
+
         return "Admin/detailBencanaAdmin";
     }
 

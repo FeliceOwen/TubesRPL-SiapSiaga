@@ -197,7 +197,7 @@
             position: absolute;
             top: 20px;
             right: 24px;
-            color: #626262;
+            color: #626F47;
             padding: 7px 16px;
             border-radius: 6px;
             font-size: 17px;
@@ -224,7 +224,7 @@
     <main>
 
         <div class="back">
-            <a th:href="@{/laporan-warga}" href="laporanWargaVerif.html">
+            <a th:href="@{/admin/laporan-warga}" href="laporanWargaVerif.html">
                 <img th:src="@{/assets/back-black.png}" src="../assets/back-black.png" alt="Kembali">
                 Detail
             </a>
@@ -236,47 +236,39 @@
             <!-- Bagian Kiri -->
             <section class="detail">
 
-                <h2 class="judul" th:text="${laporan.id_bencana?.nama_bencana ?: '-'}">-</h2>
+                <h2 class="judul" th:text="${laporan.id_bencana != null ? laporan.id_bencana.nama_bencana : '-'}">-</h2>
                 
                 <div class="informasi">
                     <div class="label">Jenis Bencana</div>
                     <div th:text="${laporan.id_bencana?.nama_bencana ?: '-'}">-</div>
-                    
+
                     <div class="label">Tanggal Kejadian</div>
-                    <div th:text="${laporan?.tanggalKejadian ?: '-'}">-</div>
+                    <div th:text="${laporan.tanggalKejadian != null ? #temporals.format(laporan.tanggalKejadian, 'dd MMMM yyyy') : '-'}">-</div>
 
                     <div class="label">Waktu Kejadian</div>
-                    <div th:text="${laporan?.jamKejadian ?: '-'}">-</div>
+                    <div th:text="${laporan.jamKejadian != null ? #temporals.format(laporan.jamKejadian, 'HH.mm') : '-'}">-</div>
 
                     <div style="height: 8px;"></div>
                     <div style="height: 8px;"></div>
 
-                    <div class="label">Provinsi</div>
-                    <div th:text="${laporan?.provinsi ?: '-'}">-</div>
-
-                    <div class="label">Kabupaten / Kota</div>
-                    <div th:text="${laporan.id_bencana.nama_bencana}"></div>
-
-                    <div class="label">Kecamatan</div>
-                    <div th:text="${laporan?.kecamatan ?: '-'}">-</div>
-
-                    <div class="label">Kelurahan</div>
-                    <div th:text="${laporan?.kelurahan ?: '-'}">-</div>
-
+                    <div class="label">Lokasi</div>
+                    <div th:text="${lokasiLengkap}">-</div>
+                    
                     <div class="label">Sekolah</div>
-                    <div th:text="${laporan?.sekolah ?: '-'}">-</div>
+                    <div th:text="${laporan.id_sekolah?.nama_sekolah ?: '-'}">-</div>
 
-                    <div class="label">Alamat</div>
-                    <div th:text="${laporan?.alamat ?: '-'}">-</div>
+                    <div class="label">Catatan / Detail</div>
+                    <div th:text="${laporan.catatan ?: '-'}">-</div>
                 </div>
 
                 <div class="foto">
                     <p>Foto Kejadian</p>
-                    <!-- Muncul jika foto dari DB ada -->
-                    <img th:if="${laporan?.fotoKejadian != null}" 
-                         th:src="@{${laporan.fotoKejadian}}"
-                         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                    <img th:if="${laporan.foto != null}" 
+                         th:src="@{/laporan/foto/{id}(id=${laporan.id_laporan})}"
                          alt="Foto Kejadian">
+                    <div th:if="${laporan.foto == null}" class="empty-img-box">
+                        Tidak ada foto
+                    </div>
                 </div>
 
             </section>
@@ -288,20 +280,17 @@
                 </div>
 
                 <!-- Kotak Log Penanganan -->
-                <div class="log">
+                <!-- <div class="log">
 
-                    <div class="log-info">
-                        <div class="label">Badan Penanganan</div>
-                        <div th:text="${penanganan?.badanPenanganan ?: '-'}">-</div>
-
+                     <div class="log-info">
                         <div class="label">Jumlah Personel</div>
                         <div>
-                            <span th:text="${penanganan?.jumlahPersonel ?: '-'}">-</span>
-                            <span th:if="${penanganan?.jumlahPersonel != null}"> orang</span>
+                            <span th:text="${penanganan?.jumlah_personel ?: '-'}">-</span>
+                            <span th:if="${penanganan?.jumlah_personel != null}"> orang</span>
                         </div>
 
                         <div class="label">Tanggal</div>
-                        <div th:text="${penanganan?.tanggal ?: '-'}">-</div>
+                        <div th:text="${penanganan?.tanggal_penanganan != null ? #temporals.format(penanganan.tanggal_penanganan, 'dd MMMM yyyy') : '-'}">-</div>
 
                         <div class="label">Aktivitas</div>
                         <div th:text="${penanganan?.aktivitas ?: '-'}">-</div>
@@ -309,14 +298,52 @@
 
                     <div class="foto-penanganan">
                         <p>Foto Penanganan</p>
-                        <img th:if="${penanganan?.fotoPenanganan != null}" 
-                             th:src="@{${penanganan.fotoPenanganan}}"
-                             onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                        <img th:if="${penanganan != null and penanganan.foto_penanganan != null}" 
+                             th:src="@{/penanganan/foto/{id}(id=${penanganan.id_log})}"
                              alt="Foto Penanganan">
+                        <div th:if="${penanganan == null or penanganan.foto_penanganan == null}" class="empty-img-box-dark">
+                            Tidak ada foto
+                        </div>
+                    </div>
+                </div> -->
+                <!-- Jika ada data penanganan -->
+                <div th:if="${not #lists.isEmpty(penanganan)}"
+                    th:each="log : ${penanganan}"
+                    class="log">
+
+                    <div class="log-info">
+                        <div class="label">Jumlah Personel</div>
+                        <div>
+                            <span th:text="${log.jumlah_personel}">-</span>
+                            <span> orang</span>
+                        </div>
+
+                        <div class="label">Tanggal</div>
+                        <div th:text="${log.tanggal_penanganan != null ? #temporals.format(log.tanggal_penanganan, 'dd MMMM yyyy') : '-'}">-</div>
+
+                        <div class="label">Aktivitas</div>
+                        <div th:text="${log.aktivitas ?: '-'}">-</div>
+                    </div>
+
+                    <div class="foto-penanganan">
+                        <p>Foto Penanganan</p>
+
+                        <img th:if="${log.foto_penanganan != null}"
+                            th:src="@{/penanganan/foto/{id}(id=${log.id_log})}"
+                            alt="Foto Penanganan">
+
+                        <div th:if="${log.foto_penanganan == null}"
+                            class="empty-img-box-dark">
+                            Tidak ada foto
+                        </div>
                     </div>
 
                 </div>
 
+                <!-- Jika belum ada data penanganan -->
+                <div th:if="${#lists.isEmpty(penanganan)}" class="log">
+                    Belum ada data penanganan.
+                </div>
             </section>
 
         </div>
