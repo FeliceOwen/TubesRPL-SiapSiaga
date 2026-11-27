@@ -50,6 +50,34 @@ public class PetugasController {
     public String laporanWarga(Model model) {
         List<LaporanBencana> daftarLaporan = laporanRepo.findAll();
 
+        // Urutan prioritas status: semakin kecil angka = semakin di atas
+        java.util.Map<String, Integer> prioritasStatus = java.util.Map.of(
+                "ST1", 1, // Menunggu Verifikasi
+                "ST2", 2, // Sedang Diproses / Ditangani
+                "ST3", 3,
+                "ST4", 4  // Selesai
+        );
+
+        daftarLaporan.sort((a, b) -> {
+            String idStatusA = (a.getId_status() != null && a.getId_status().getId_status() != null)
+                    ? a.getId_status().getId_status().trim()
+                    : "";
+            String idStatusB = (b.getId_status() != null && b.getId_status().getId_status() != null)
+                    ? b.getId_status().getId_status().trim()
+                    : "";
+
+            int rankA = prioritasStatus.getOrDefault(idStatusA, 99);
+            int rankB = prioritasStatus.getOrDefault(idStatusB, 99);
+
+            if (rankA != rankB) {
+                return Integer.compare(rankA, rankB);
+            }
+
+            String idA = a.getId_laporan() != null ? a.getId_laporan() : "";
+            String idB = b.getId_laporan() != null ? b.getId_laporan() : "";
+            return idA.compareTo(idB);
+        });
+
         @SuppressWarnings("unchecked")
         List<Object[]> rowsLokasi = entityManager.createNativeQuery("""
                 SELECT 
@@ -63,17 +91,17 @@ public class PetugasController {
                 """)
                 .getResultList();
 
-        java.util.Map<String, String> lokasiMap = new java.util.HashMap<>();
-        for (Object[] row : rowsLokasi) {
-            if (row[0] != null && row[1] != null) {
-                lokasiMap.put(row[0].toString(), row[1].toString());
-            }
-        }
+                java.util.Map<String, String> lokasiMap = new java.util.HashMap<>();
+                for (Object[] row : rowsLokasi) {
+                    if (row[0] != null && row[1] != null) {
+                        lokasiMap.put(row[0].toString(), row[1].toString());
+                    }
+                }
 
-        model.addAttribute("daftarLaporan", daftarLaporan);
-        model.addAttribute("lokasiMap", lokasiMap);
-        return "Petugas/LaporanWarga";
-    }
+                model.addAttribute("daftarLaporan", daftarLaporan);
+                model.addAttribute("lokasiMap", lokasiMap);
+                return "Petugas/LaporanWarga";
+            }
 
     // 2. Detail Bencana
     @GetMapping("/laporan/detail/{id}")
@@ -84,7 +112,7 @@ public class PetugasController {
         String lokasiLengkap = laporan.getId_kel() != null ? laporan.getId_kel() : "-";
 
         @SuppressWarnings("unchecked")
-        List<String> hasilLokasi = entityManager.createNativeQuery("""
+        List<Object> hasilLokasi = entityManager.createNativeQuery("""
                 SELECT CONCAT_WS(', ', kelurahan.nama_kel, kecamatan.nama_kec, kota_kabupaten.nama_kota_kab, provinsi.nama_provinsi)
                 FROM laporan_bencana AS laporan
                 JOIN kelurahan ON kelurahan.id_kel = laporan.id_kel
@@ -97,7 +125,7 @@ public class PetugasController {
                 .getResultList();
 
         if (!hasilLokasi.isEmpty() && hasilLokasi.get(0) != null) {
-            lokasiLengkap = hasilLokasi.get(0);
+            lokasiLengkap = hasilLokasi.get(0).toString();
         }
 
         model.addAttribute("laporan", laporan);
