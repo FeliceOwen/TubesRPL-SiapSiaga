@@ -91,7 +91,7 @@ public class AdminController {
     public String adminDataWilayah() {
         return "Admin/dataWilayah";
     }
-    @GetMapping("/admin/detail-bencana") 
+    @GetMapping("/laporan/detailAdmin/{id}") 
     public String adminDetail() {
         return "Admin/detailBencanaAdmin";
     }
@@ -137,5 +137,10 @@ public class AdminController {
         petugasRepository.save(petugas);
 
         return "redirect:/admin/data-petugas";
+    }
+
+     @GetMapping("/admin/upload-data") 
+    public String adminUpload() {
+        return "Admin/uploadData";
     }
 }

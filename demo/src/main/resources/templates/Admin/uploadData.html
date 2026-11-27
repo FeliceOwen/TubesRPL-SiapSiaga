@@ -218,7 +218,7 @@
         <div class="top-bar">
 
             <div class="page-title">
-                <a th:href="@{/admin/manajemen-data}" href="importData.html" class="btn-back">
+                <a th:href="@{/admin/import-data}" href="importData.html" class="btn-back">
                     <img src="../assets/back-black.png" alt="">
                 </a>
 
@@ -250,9 +250,9 @@
                     <label for="file">Upload File</label>
 
                     <input type="file" id="file" name="file"
-                           class="form-control" accept=".csv, .xlsx" required>
+                           class="form-control" accept=".xlsx" required>
                 </div>
-                <p id="note">*Format file yang didukung: .xlsx atau .csv</p>
+                <p id="note">*Format file yang didukung: .xlsx</p>
                 <div class="form-actions">
                     <button type="submit" class="btn-import"> Import Data </button>
                 </div>
