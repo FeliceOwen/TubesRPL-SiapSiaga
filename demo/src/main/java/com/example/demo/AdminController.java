@@ -1,6 +1,8 @@
 
 package com.example.demo;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.model.Petugas;
 import com.example.demo.model.Warga;
@@ -26,14 +31,17 @@ public class AdminController {
     private final LaporanBencanaRepository laporanBencanaRepository;
     private final WargaRepository wargaRepository;
     private final PetugasRepository petugasRepository;
+    private final ImportDataService importDataService;
 
     // Constructor untuk menghubungkan Repository
     public AdminController(LaporanBencanaRepository laporanBencanaRepository
                             ,WargaRepository wargaRepository
-                            ,PetugasRepository petugasRepository) {
+                            ,PetugasRepository petugasRepository
+                            ,ImportDataService importDataService) {
         this.laporanBencanaRepository = laporanBencanaRepository;
         this.wargaRepository = wargaRepository;
         this.petugasRepository = petugasRepository;
+        this.importDataService = importDataService;
     }
 
     @GetMapping("/admin/laporan-warga")
@@ -91,7 +99,7 @@ public class AdminController {
     public String adminDataWilayah() {
         return "Admin/dataWilayah";
     }
-    @GetMapping("/admin/detail-bencana") 
+    @GetMapping("/laporan/detailAdmin/{id}") 
     public String adminDetail() {
         return "Admin/detailBencanaAdmin";
     }
@@ -137,5 +145,52 @@ public class AdminController {
         petugasRepository.save(petugas);
 
         return "redirect:/admin/data-petugas";
+    }
+
+     @GetMapping("/admin/upload-data") 
+    public String adminUpload(HttpSession session) {
+        if (!AuthController.ROLE_ADMIN.equals(session.getAttribute("role"))) {
+            return "redirect:/login";
+        }
+        return "Admin/uploadData";
+    }
+
+    @GetMapping("/admin/import-berhasil")
+    public String importBerhasil(Model model) {
+        // jenisData hanya ada tepat setelah import berhasil
+        if (!model.containsAttribute("jenisData")) {
+            return "redirect:/admin/dashboard";
+        }
+        return "Admin/importBerhasil";
+    }
+
+    @PostMapping("/admin/import-data")
+    public String importData(@RequestParam("jenisData") String jenisData,
+                             @RequestParam("file") MultipartFile file,
+                             HttpSession session,
+                             RedirectAttributes redirect) {
+        if (!AuthController.ROLE_ADMIN.equals(session.getAttribute("role"))) {
+            return "redirect:/login";
+        }
+
+        try (InputStream isi = file.getInputStream()) {
+            ImportDataService.Hasil hasil = importDataService.importData(jenisData, isi);
+            // Semua baris masuk: tampilkan halaman berhasil. Kalau ada yang gagal,
+            // tetap di halaman upload supaya alasannya terlihat.
+            if (hasil.berhasil() > 0 && hasil.gagal().isEmpty()) {
+                redirect.addFlashAttribute("jenisData", jenisData);
+                return "redirect:/admin/import-berhasil";
+            }
+            redirect.addFlashAttribute("pesan",
+                    hasil.berhasil() + " data " + jenisData + " berhasil disimpan, "
+                    + hasil.gagal().size() + " baris gagal.");
+            redirect.addFlashAttribute("daftarGagal", hasil.gagal());
+        } catch (IllegalArgumentException e) {
+            redirect.addFlashAttribute("pesan", e.getMessage());
+        } catch (IOException | RuntimeException e) {
+            e.printStackTrace();
+            redirect.addFlashAttribute("pesan", "Import gagal. Pastikan file berformat .xlsx dan tidak rusak.");
+        }
+        return "redirect:/admin/upload-data";
     }
 }

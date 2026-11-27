@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -97,6 +98,33 @@ public class WargaController {
         laporanRepo.save(laporan);
 
         return "redirect:/warga/konfirmasi/";
+    }
+
+    // Laporan tidak benar-benar dihapus, hanya ditandai statusHapus = 1
+    @PostMapping("laporan/hapus/{id}")
+    public String hapusLaporan(@PathVariable("id") String id, HttpSession session) {
+        String nik = (String) session.getAttribute("nik");
+        if (nik == null) {
+            return "redirect:/login";
+        }
+
+        LaporanBencana laporan = laporanRepo.findById(id).orElse(null);
+        // Hanya pemilik laporan, dan hanya selama belum diverifikasi (ST2) atau selesai (ST4)
+        if (laporan == null
+                || !nik.equals(laporan.getId_warga().getNik())
+                || "ST2".equals(laporan.getId_status().getId_status())
+                || "ST4".equals(laporan.getId_status().getId_status())) {
+            return "redirect:/warga/";
+        }
+
+        laporan.setStatusHapus(1);
+        laporanRepo.save(laporan);
+        return "redirect:/warga/konfirmasi-hapus/";
+    }
+
+    @GetMapping("konfirmasi-hapus/")
+    public String konfirmasiHapus() {
+        return "Warga/konfirmasi_hapus";
     }
 
     @GetMapping("konfirmasi/")

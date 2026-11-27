@@ -105,7 +105,7 @@
             }
 
             async function updateSekolah() {
-                const aktif = pilihBencana.value === "keracunan-mbg" && kecamatan.value !== "";
+                const aktif = pilihBencana.value === "B06" && kecamatan.value !== "";
                 if (!aktif) {
                     sekolahCache = { kode: null, list: [] };
                     setOptions(sekolah, [], "Pilih Sekolah");
@@ -256,7 +256,7 @@
     <body>
         <header>
             <a th:href="@{/warga/instruksi/}">
-                <img src="../assets/back-black.png" value="back">
+                <img th:src="@{/assets/back-black.png}" value="back">
             </a>
             <h1>Buat Laporan Bencana</h1>
         </header>

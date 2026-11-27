@@ -149,6 +149,19 @@
             background-color: #4F5A39;
         }
 
+        .hasil-import {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 20px;
+            color: #333333;
+            font-size: 0.9rem;
+        }
+
+        .hasil-import ul {
+            margin: 8px 0 0 18px;
+        }
+
         #note {
             font-size: 0.8rem;
         }
@@ -218,7 +231,7 @@
         <div class="top-bar">
 
             <div class="page-title">
-                <a th:href="@{/admin/manajemen-data}" href="importData.html" class="btn-back">
+                <a th:href="@{/admin/import-data}" href="importData.html" class="btn-back">
                     <img src="../assets/back-black.png" alt="">
                 </a>
 
@@ -228,6 +241,13 @@
         </div>
 
         <div class="import-container">
+
+            <div class="hasil-import" th:if="${pesan}">
+                <strong th:text="${pesan}">Hasil import</strong>
+                <ul th:if="${daftarGagal != null and !daftarGagal.isEmpty()}">
+                    <li th:each="baris : ${daftarGagal}" th:text="${baris}">Baris gagal</li>
+                </ul>
+            </div>
 
             <form class="import-form"
                   th:action="@{/admin/import-data}"
@@ -239,10 +259,8 @@
 
                     <select id="jenisData" name="jenisData" class="form-control" required>
                         <option value="" disabled selected>Pilih Jenis Data</option>
-                        <option value="Warga">Warga</option>
                         <option value="Petugas">Petugas</option>
-                        <option value="Wilayah">Wilayah</option>
-                        <option value="Sekolah">Sekolah</option>
+                        <option value="Admin">Admin</option>
                     </select>
                 </div>
 
@@ -250,9 +268,10 @@
                     <label for="file">Upload File</label>
 
                     <input type="file" id="file" name="file"
-                           class="form-control" accept=".csv, .xlsx" required>
+                           class="form-control" accept=".xlsx" required>
                 </div>
-                <p id="note">*Format file yang didukung: .xlsx atau .csv</p>
+                <p id="note">*Format file yang didukung: .xlsx. Baris pertama berisi nama kolom:
+                    nik (format Text), nama_lengkap, kota_kerja (khusus Petugas), password.</p>
                 <div class="form-actions">
                     <button type="submit" class="btn-import"> Import Data </button>
                 </div>
