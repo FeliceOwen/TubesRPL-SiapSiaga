@@ -27,16 +27,15 @@
         }
 
         header {
-            background-color: #626F47;
-            padding: 25px 40px;
+            top: 0;
+            position: sticky;
+            z-index: 1000;
             width: 100%;
-        }
-
-        header h1 {
+            background-color: #626F47;
             color: #F5ECD5;
-            font-size: 2.5rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
+            padding: 16px 28px;
+            font-weight: bold;
+            font-size: 26px;
         }
 
         main {
@@ -221,21 +220,14 @@
             align-items: center;
         }
 
-        .nav-item {
-            color: #626F47;
-            font-size: 2rem;
-            text-decoration: none;
-            transition: color 0.2s;
+        .nav-icon {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
         }
 
         .nav-item:hover {
             color: #3f4a30;
-        }
-
-        .nav-icon {
-            width: 36px;
-            height: 36px;
-            object-fit: contain;
         }
 
         @media (max-width: 600px) {
@@ -313,7 +305,7 @@
 
 <body>
     <header>
-        <h1>SiapSiaga</h1>
+        SiapSiaga
     </header>
 
     <main>
@@ -355,7 +347,7 @@
 
                 <div class="report-details">
                     <span class="label">Lokasi</span>
-                    <span class="value" th:text="${lokasiMap != null and lokasiMap[laporan.id_laporan] != null ? lokasiMap[laporan.id_laporan] : (laporan.id_kel ?: '-')}">-</span>
+                    <span class="value" th:text="${laporan.id_kel != null ? laporan.id_kel.nama_kel + ', ' + laporan.id_kel.id_kec?.id_kota_kab?.nama_kota_kab + ', ' + laporan.id_kel.id_kec?.id_kota_kab?.id_provinsi?.nama_provinsi : '-'}">-</span>
 
                     <span class="label">Tanggal</span>
                     <span class="value" th:text="${laporan.tanggalKejadian != null ? #temporals.format(laporan.tanggalKejadian, 'dd MMMM yyyy') : '-'}">-</span>

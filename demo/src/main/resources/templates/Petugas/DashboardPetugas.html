@@ -25,17 +25,14 @@
             }
 
             header {
+                top: 0;
+                position: sticky;
+                z-index: 1000;
                 background-color: #626F47;
-                width: 100%;
-                padding: 25px 40px;
-                display: block;
-            }
-
-            header h1 {
                 color: #F5ECD5;
-                font-size: 2.5rem;
-                font-weight: 700;
-                letter-spacing: -0.5px;
+                padding: 16px 28px;
+                font-weight: bold;
+                font-size: 26px;
             }
 
             main {
@@ -166,11 +163,10 @@
                 align-items: center;
             }
 
-            .nav-item {
-                color: #626F47;
-                font-size: 2rem;
-                text-decoration: none;
-                transition: color 0.2s;
+            .nav-icon {
+                width: 32px;
+                height: 32px;
+                object-fit: contain;
             }
 
             .nav-item:hover {
@@ -180,7 +176,7 @@
     </head>
     <body>
         <header>
-            <h1>SiapSiaga</h1>
+            SiapSiaga
         </header>
 
         <main>
@@ -189,15 +185,19 @@
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="label">Kebakaran</div>
-                        <div class="value" th:text="${statistik['Kebakaran']}">0</div>
+                        <div class="value" th:text="${statistik['Kebakaran Hutan']}">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="label">Gunung<br>Meletus</div>
+                        <div class="value" th:text="${statistik['Gunung Meletus']}">0</div>
                     </div>
                     <div class="stat-card">
                         <div class="label">Gempa</div>
-                        <div class="value" th:text="${statistik['Gempa']}">0</div>
+                        <div class="value" th:text="${statistik['Gempa Bumi']}">0</div>
                     </div>
                     <div class="stat-card">
                         <div class="label">Keracunan<br>Makanan</div>
-                        <div class="value" th:text="${statistik['Keracunan Makanan']}">0</div>
+                        <div class="value" th:text="${statistik['Keracunan MBG']}">0</div>
                     </div>
                     <div class="stat-card">
                         <div class="label">Banjir</div>

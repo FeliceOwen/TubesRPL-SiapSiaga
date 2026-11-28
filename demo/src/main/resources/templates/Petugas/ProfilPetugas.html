@@ -25,17 +25,15 @@
             }
 
             header {
-                background-color: #626F47;
+                top: 0;
+                position: sticky;
+                z-index: 1000;
                 width: 100%;
-                padding: 25px 40px;
-                display: block;
-            }
-
-            header h1 {
+                background-color: #626F47;
                 color: #F5ECD5;
-                font-size: 2.5rem;
-                font-weight: 700;
-                letter-spacing: -0.5px;
+                padding: 16px 28px;
+                font-weight: bold;
+                font-size: 26px;
             }
 
             main {
@@ -106,11 +104,10 @@
                 align-items: center;
             }
 
-            .nav-item {
-                color: #626F47;
-                font-size: 2rem;
-                text-decoration: none;
-                transition: color 0.2s;
+            .nav-icon {
+                width: 32px;
+                height: 32px;
+                object-fit: contain;
             }
 
             .nav-item:hover {
@@ -120,7 +117,7 @@
     </head>
     <body>
         <header>
-            <h1>SiapSiaga</h1>
+            SiapSiaga
         </header>
 
         <main>
