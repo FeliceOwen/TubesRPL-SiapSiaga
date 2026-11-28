@@ -102,7 +102,22 @@ public class PageController {
             return redirect;
         }
 
-        model.addAttribute("statistik", statistikKosong());
+        // Mengambil statistik bencana tahun ini
+        int tahun = LocalDate.now().getYear();
+
+        List<RekapBencana> hasilStatistik =
+                bencanaRepository.rekapBencana(tahun);
+
+        Map<String, Integer> statistik = statistikKosong();
+
+        for (RekapBencana data : hasilStatistik) {
+            statistik.put(
+                    data.getNamaBencana(),
+                    data.getJumlahKejadian()
+            );
+        }
+
+        model.addAttribute("statistik", statistik);
 
         List<RekapPengumuman> daftarPengumuman =
                 pengumumanRepository.pengumumanAktif();
